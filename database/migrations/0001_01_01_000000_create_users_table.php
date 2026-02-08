@@ -17,7 +17,6 @@
                 $table->string('password');
                 $table->enum('role',['Kontingen', 'Sekretariat', 'Cabang Lomba', 'Admin']);
                 $table->timestamps();
-
                 $table->foreignId('house_id')
                       ->nullable()
                       ->constrained('houses')

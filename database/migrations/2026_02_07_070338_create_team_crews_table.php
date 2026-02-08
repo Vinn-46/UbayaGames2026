@@ -17,12 +17,13 @@ return new class extends Migration
                   ->constrained()
                   ->cascadeOnDelete();
             $table->string('name',255);
+            $table->string('whatsapp', 20);
             $table->enum('role', ['Coach', 'Assistant Coach', 'Medic', 'Official']);
             $table->string('nrp',20)->nullable();
             $table->string('major',45)->nullable();
-            $table->string('ktm_photo')->nullable();
+            $table->text('ktm_photo')->nullable();
             $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
-            $table->string('revision')->nullable();
+            $table->text('revision')->nullable();
         });
     }
 

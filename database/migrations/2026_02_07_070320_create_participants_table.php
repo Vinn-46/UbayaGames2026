@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('name', 255);
             $table->string('nrp',9);
             $table->string('major',45);
-            $table->string('ktm_photo');
+            $table->text('ktm_photo');
             $table->string('whatsapp',20);
             $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
-            $table->string('revision')->nullable();
+            $table->text('revision')->nullable();
         });
     }
 
