@@ -16,8 +16,6 @@
                 $table->string('username', 45);
                 $table->string('password');
                 $table->enum('role',['Kontingen', 'Sekretariat', 'Cabang Lomba', 'Admin']);
-                $table->string('password');
-                $table->rememberToken();
                 $table->timestamps();
 
                 $table->foreignId('house_id')
