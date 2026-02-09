@@ -17,7 +17,12 @@ Route::get('/house', function () {
     return view('house');
 })->name('house');
 
-// untuk registration
-Route::get('/registration', function () {
-    return view('registration');
+// untuk teamdetail
+Route::get('/teamdetail', function () {
+    return view('teamdetail');
+})->name('teamdetail');
+
+// untuk teamlist
+Route::get('/teamlist', function () {
+    return view('teamlist');
 });
