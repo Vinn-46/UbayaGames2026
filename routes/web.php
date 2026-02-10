@@ -25,4 +25,15 @@ Route::get('/teamdetail', function () {
 // untuk teamlist
 Route::get('/teamlist', function () {
     return view('teamlist');
-});
+})->name('teamlist');
+
+// untuk leaderboard
+Route::get('/leaderboard', function () {
+    return view('leaderboard');
+})->name('leaderboard');
+
+// untuk login
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
+

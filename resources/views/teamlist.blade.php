@@ -29,8 +29,7 @@
                 class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white
                        bg-blue-600 hover:bg-blue-500 rounded-lg transition
                        shadow-lg shadow-blue-600/20 border border-blue-400/20">
-                +
-                Add Team
+                <i data-feather ="plus-square"></i>
             </button>
 
         </header>
@@ -90,7 +89,7 @@
                                         bg-white/10 hover:bg-white/20
                                         transition text-sm text-white
                                         border border-white/10">
-                                      Detail
+                                      <i data-feather = "info"></i>
                                     </a>
 
 
@@ -100,7 +99,7 @@
                                                text-red-200 hover:text-white
                                                transition text-sm
                                                border border-red-500/20">
-                                        Delete Team
+                                        <i data-feather="trash-2"></i>
                                     </button>
                                 </div>
                             </td>
@@ -171,5 +170,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+</script>
+<script src="https:unpkg.com/feather-icons"></script>
+<script>
+    feather.replace()
 </script>
 @endsection

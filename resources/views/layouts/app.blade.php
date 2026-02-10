@@ -10,7 +10,7 @@
         @font-face {
             font-family: 'GameofThrones';
             src: url("{{ asset('assets/fonts/GameofThrones.ttf') }}") format('truetype');
-            font-weight: normal;
+            font-weight: normal ;
             font-style: normal;
         }
         .font-heading {
@@ -25,15 +25,41 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;"
->
-    {{-- NAVBAR --}}
+    >{{-- NAVBAR --}}
     <nav class="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-md">
-        <div class="w-full max-w-6xl mx-auto flex justify-center gap-10 py-4 text-xs sm:text-sm uppercase tracking-widest">
-            <a href="{{ route('aboutus') }}" class="hover:text-yellow-400">About Us</a>
-            <a href="{{ route('schedule') }}" class="hover:text-yellow-400">Schedule</a> {{-- Belum ada schedulenya --}}
-            <a href="{{ route('house') }}" class="hover:text-yellow-400">House</a> {{-- Belum ada housenya --}}
+
+        <div class="relative w-full max-w-6xl mx-auto h-20 grid grid-cols-3 items-center text-xs sm:text-sm uppercase tracking-widest">
+
+            {{-- LEFT --}}
+            <div class="flex justify-end pr-0">
+                <a href="{{ route('schedule') }}" class="hover:text-yellow-400 transition">
+                    Schedule
+                </a>
+            </div>
+
+            {{-- CENTER (empty, logo overlay) --}}
+            <div></div>
+
+            {{-- RIGHT --}}
+            <div class="flex justify-start pl-0">
+                <a href="{{ route('house') }}" class="hover:text-yellow-400 transition">
+                    House
+                </a>
+            </div>
+
+            {{-- LOGO ABSOLUTE CENTER --}}
+            <a href="/" class="absolute left-1/2 -translate-x-1/2">
+                <img src="{{ asset('assets/Logo_UG.png') }}" class="h-12 object-contain">
+            </a>
+
         </div>
+
     </nav>
+
+
+
+
+
 
     {{-- CONTENT --}}
     <main class="pt-28">
