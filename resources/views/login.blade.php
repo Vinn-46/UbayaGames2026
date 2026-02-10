@@ -16,6 +16,16 @@
         .font-heading {
             font-family: 'GameofThrones', serif !important;
         }
+        .alert-danger {
+            color: #ff6b6b;
+            background: rgba(50, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid #ff6b6b;
+        }
     </style>
 </head>
 <body 
@@ -31,40 +41,29 @@
 
         <div class="modal-card">
 
-            <!-- TITLE -->
-            <h2 class="modal-title">Login</h2>
+            <h2 class="modal-title font-heading">Login</h2>
 
-            <!-- FORM -->
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login.action') }}">
                 @csrf
 
-                <!-- Username -->
-                <div style="margin-bottom:16px;">
-                    <label style="font-size:18px;opacity:1;">
-                        Username
-                    </label><br>
+                @if ($errors->any())
+                    <div class="alert-danger">
+                        @foreach ($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                        @endforeach
+                    </div>
+                @endif
 
-                    <input type="text" name="username" class="form-input h40" required>
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:18px;opacity:1;">Username</label><br>
+                    <input type="text" name="username" class="form-input h40" value="{{ old('username') }}" required autofocus>
                 </div>
 
-                <!-- Password -->
                 <div style="margin-bottom:20px;">
-                    <label style="font-size:18px;opacity:1;">
-                        Password
-                    </label><br>
-
+                    <label style="font-size:18px;opacity:1;">Password</label><br>
                     <input type="password" name="password" class="form-input h40" required>
                 </div>
 
-                {{-- REMEMBER ME --}}
-                <div style="margin-bottom:20px;">
-                    <label style="font-size:16px;opacity:1;">
-                        <input type="checkbox" name="remember">
-                        Remember me
-                    </label>
-                </div>
-
-                <!-- BUTTONS -->
                 <div class="modal-actions">
                     <button type="button" id="closeModal" class="btn btn-cancel">
                         Cancel
@@ -74,16 +73,12 @@
                         Login
                     </button>
                 </div>
-
             </form>
-
         </div>
     </div>
-
     
     <script>
         const cancelBtn = document.getElementById('closeModal');
-
         cancelBtn.onclick = () => window.location.href = "/"; 
     </script>
 

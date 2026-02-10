@@ -19,18 +19,37 @@
     <div class="w-full max-w-6xl mx-auto">
 
         {{-- HEADER --}}
-        <header class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <header class="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            
+            {{-- JUDUL KIRI --}}
             <h2 class="text-xl sm:text-2xl font-bold text-white font-heading uppercase tracking-widest">
                 Team List
             </h2>
 
-            {{-- ADD TEAM --}}
-            <button id="openModal"
-                class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white
-                       bg-blue-600 hover:bg-blue-500 rounded-lg transition
-                       shadow-lg shadow-blue-600/20 border border-blue-400/20">
-                <i data-feather ="plus-square"></i>
-            </button>
+            {{-- BAGIAN KANAN --}}
+            <div class="flex flex-col items-end gap-3">
+                
+                {{-- TEKS SELAMAT DATANG (Sudah benar) --}}
+                <div class="text-[#CBDCC1] font-['Georgia'] text-sm sm:text-base text-right">
+                    Haii, Selamat Datang 
+                    <span class="text-white font-bold">
+                        {{ Auth::user()->username ?? 'Admin' }}
+                    </span>
+                </div>
+
+                {{-- TOMBOL ADD TEAM (Diperbaiki sesuai gambar 'tombol login.png') --}}
+                <button id="openModal"
+                    class="inline-flex items-center gap-2 px-5 py-2 text-white
+                            bg-blue-600 hover:bg-blue-500 rounded-lg transition
+                            shadow-lg shadow-blue-600/20 border border-blue-400/20">
+                    
+                    {{-- Teks menggunakan font Georgia agar sesuai tema --}}
+                    <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Team</span>
+                    
+                    {{-- Icon Plus Square --}}
+                    <i data-feather="plus-square" class="w-5 h-5"></i>
+                </button>
+            </div>
 
         </header>
 

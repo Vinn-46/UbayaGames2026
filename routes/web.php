@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 // untuk aboutus (jadi tampilan utama saat web dibuka)
 Route::get('/', function () {
@@ -25,7 +27,7 @@ Route::get('/teamdetail', function () {
 // untuk teamlist
 Route::get('/teamlist', function () {
     return view('teamlist');
-})->name('teamlist');
+})->middleware('auth')->name('teamlist');
 
 // untuk leaderboard
 Route::get('/leaderboard', function () {
@@ -36,4 +38,13 @@ Route::get('/leaderboard', function () {
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+use App\Http\Controllers\LoginController;
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login.action');
 
+// Route untuk Logout
+Route::post('/logout', function (Illuminate\Http\Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout');
