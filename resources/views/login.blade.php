@@ -26,16 +26,23 @@
             text-align: center;
             border: 1px solid #ff6b6b;
         }
+
+        .custom-bg-responsive {
+            background-image: url("{{ asset('assets/bgvertical.png') }}");
+            background-attachment: fixed; 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        @media (min-width: 768px) {
+            .custom-bg-responsive {
+                background-image: url("{{ asset('assets/bghorizontal.png') }}");
+            }
+        }
     </style>
 </head>
-<body 
-    class="text-[#CBDCC1] font-['Georgia'] min-h-screen"
-    style="
-        background-image: url('{{ asset('assets/bg.jpg') }}');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;"
->
+<body class="text-[#CBDCC1] font-['Georgia'] min-h-screen custom-bg-responsive">
 
     <div id="loginModal" class="modal-overlay show">
 

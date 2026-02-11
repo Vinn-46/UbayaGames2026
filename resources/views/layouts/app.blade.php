@@ -6,6 +6,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/Logo_UG.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
+    
     <style>
         @font-face {
             font-family: 'GameofThrones';
@@ -16,16 +17,27 @@
         .font-heading {
             font-family: 'GameofThrones', serif !important;
         }
+
+        /* Setting Khusus HP */
+        .custom-bg-responsive {
+            background-image: url("{{ asset('assets/bgvertical.png') }}");
+            background-attachment: fixed; 
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat;
+        }
+
+        /* Setting Khusus Laptop */
+        @media (min-width: 768px) {
+            .custom-bg-responsive {
+                background-image: url("{{ asset('assets/bghorizontal.png') }}");
+                background-position: center bottom !important;
+            }
+        }
     </style>
 </head>
-<body 
-    class="text-[#CBDCC1] font-['Georgia'] min-h-screen"
-    style="
-        background-image: url('{{ asset('assets/bg.jpg') }}');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;"
-    >
+
+<body class="text-[#CBDCC1] font-['Georgia'] min-h-screen custom-bg-responsive">
     
     {{-- NAVBAR --}}
     <nav class="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-md px-4 sm:px-6"> 
