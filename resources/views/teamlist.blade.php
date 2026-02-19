@@ -2,18 +2,6 @@
 
 @section('content')
 
-<style>
-    @font-face {
-        font-family: 'GameofThrones';
-        src: url("{{ asset('assets/fonts/GameofThrones.ttf') }}") format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-    .font-heading {
-        font-family: 'GameofThrones', serif !important;
-    }
-</style>
-
 
 <section class="w-full px-4 sm:px-6 mb-36">
     <div class="w-full max-w-6xl mx-auto">
@@ -165,7 +153,8 @@
 
             <!-- BUTTONS -->
             <div class="modal-actions">
-                <button id="closeModal" class="btn btn-cancel">Cancel</button>
+                <button type="button" id="closeModal" class="btn btn-cancel">Cancel
+                </button>
                 <button class="btn btn-primary">Add Team</button>
             </div>
         </form>
