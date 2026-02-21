@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_crews', function (Blueprint $table) {
+        Schema::create('crews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
             $table->string('name',255);
             $table->string('whatsapp', 20);
             $table->enum('role', ['Coach', 'Assistant Coach', 'Medic', 'Official']);
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('team_crews');
+        Schema::dropIfExists('crews');
     }
 };
