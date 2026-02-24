@@ -57,61 +57,57 @@
                     </thead>
 
                     <tbody class="divide-y divide-white/10 text-base">
-                        @php
-                            $teams = [
-                                ['id'=>1,'name'=>'Hahahhaha','house'=>'House of Arcana', 'competition'=>'Basket', 'status'=>'Menunggu'],
-                                ['id'=>2,'name'=>'Beta Team','house'=>'House of Arcana', 'competition'=>'Dance', 'status'=>'Ditolak'],
-                                ['id'=>3,'name'=>'Gamma Team','house'=>'House of Arcana', 'competition'=>'Basket','status'=>'Diterima'],
-                                ['id'=>4,'name'=>'Delta Team','house'=>'House of Arcana', 'competition'=>'Badminton','status'=>'Diterima'],
-                            ];
-                        @endphp
-
-                        @foreach ($teams as $team)
+                        
+                        @forelse ($teams as $team)
                         <tr class="hover:bg-white/5 transition" style="white-space: nowrap;">
+
                             <td class="px-6 py-4 text-center text-white/70">
-                                {{ $team['id'] }}
+                                {{ $team->id }}
                             </td>
 
                             <td class="px-6 py-4">
-                                {{ $team['name'] }}
+                                {{ $team->name }}
                             </td>
 
                             <td class="px-6 py-4 text-center">
-                                {{ $team['house'] }}
+                                {{ $team->house->name ?? '-' }}
                             </td>
 
                             <td class="px-6 py-4 text-center">
-                                {{ $team['competition'] }}
+                                {{ $team->competition }}
                             </td>
 
                             <td class="px-6 py-4 text-center">
-                                {{ $team['status'] }}
+                                {{ $team->status }}
                             </td>
 
-                            {{-- ACTION --}}
                             <td class="px-6 py-4">
                                 <div class="flex justify-center gap-2">
-                                    <a href="{{ route('teamdetail') }}"
-                                        class="shrink-0 px-3 py-1.5 rounded-lg
-                                        bg-white/10 hover:bg-white/20
-                                        transition text-sm text-white
-                                        border border-white/10">
-                                      <i data-feather = "info"></i>
+                                    <!-- Detail Button -->
+                                    <a 
+                                        href="{{ route('teamdetail') }}" 
+                                        class="shrink-0 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
+                                    >
+                                        <i data-feather="info"></i>
                                     </a>
 
-
-                                    <button
-                                        class="shrink-0 px-3 py-1.5 rounded-lg
-                                               bg-red-500/20 hover:bg-red-500/40
-                                               text-red-200 hover:text-white
-                                               transition text-sm
-                                               border border-red-500/20">
+                                    <!-- Delete Button -->
+                                    <button 
+                                        class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20"
+                                    >
                                         <i data-feather="trash-2"></i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-6 text-white/50">
+                                Belum ada data team
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -123,40 +119,42 @@
 <div id="teamModal" class="modal-overlay">
     <div class="modal-card">
 
-        <!-- TITLE -->
         <h2 class="modal-title">Add Team</h2>
 
-        <!-- FORM -->
-        <form>
+        <form method="POST" action="{{ route('teams.store') }}">
+            @csrf
 
             <!-- Team Name -->
             <div style="margin-bottom:16px;">
-                <label style="font-size:18px;opacity:1;">
-                    Team Name
-                </label><br>
-
-                <input type="text" class="form-input">
+                <label style="font-size:18px;">Team Name</label><br>
+                <input type="text" name="name" class="form-input" required>
             </div>
 
             <!-- Competition -->
             <div style="margin-bottom:20px;">
-                <label style="font-size:18px;opacity:1;">
-                    Competition
-                </label><br>
-
-                <select class="form-input h40">
-                    <option style="color:black;">Basket</option>
-                    <option style="color:black;">Dance</option>
-                    <option style="color:black;">Badminton</option>
+                <label style="font-size:18px;">Competition</label><br>
+                <select name="competition" class="form-input h40" required>
+                    <option style="color:black;" value="Basket">Basket</option>
+                    <option style="color:black;" value="Futsal">Futsal</option>
+                    <option style="color:black;" value="Voli">Voli</option>
+                    <option style="color:black;" value="E-sport">E-sport</option>
+                    <option style="color:black;" value="Poster">Poster</option>
+                    <option style="color:black;" value="Lukis">Lukis</option>
+                    <option style="color:black;" value="Dance">Dance</option>
+                    <option style="color:black;" value="Fotografi">Fotografi</option>
+                    
                 </select>
             </div>
 
-            <!-- BUTTONS -->
             <div class="modal-actions">
-                <button type="button" id="closeModal" class="btn btn-cancel">Cancel
+                <button type="button" id="closeModal" class="btn btn-cancel">
+                    Cancel
                 </button>
-                <button class="btn btn-primary">Add Team</button>
+                <button type="submit" class="btn btn-primary">
+                    Add Team
+                </button>
             </div>
+
         </form>
     </div>
 </div>

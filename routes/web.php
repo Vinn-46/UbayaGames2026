@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\TeamController;
 
 // untuk aboutus (jadi tampilan utama saat web dibuka)
 Route::get('/', function () {
@@ -24,11 +25,6 @@ Route::get('/teamdetail', function () {
     return view('teamdetail');
 })->name('teamdetail');
 
-// untuk teamlist
-Route::get('/teamlist', function () {
-    return view('teamlist');
-})->middleware('auth')->name('teamlist');
-
 // untuk leaderboard
 Route::get('/leaderboard', function () {
     return view('leaderboard');
@@ -48,3 +44,12 @@ Route::post('/logout', function (Illuminate\Http\Request $request) {
     $request->session()->regenerateToken();
     return redirect('/login');
 })->name('logout');
+
+//teamlist
+Route::get('/teamlist',[TeamController::class,'index'])
+    ->middleware('auth')
+    ->name('teamlist');
+
+Route::post('/teams', [TeamController::class, 'store'])
+    ->middleware('auth')
+    ->name('teams.store');    
