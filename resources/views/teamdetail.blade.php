@@ -115,7 +115,7 @@
 
                                 <td class="px-6 py-4 text-center">
                                     <a href="#"
-                                       class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                       class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                               bg-cyan-500/20 text-cyan-300 border border-cyan-500/20
                                               hover:bg-cyan-500/30 transition">
                                         Details
@@ -124,7 +124,7 @@
 
                                 <td class="px-6 py-4 text-center">
                                     <a href="#"
-                                       class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                       class="openPlayerEdit inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                               bg-yellow-500/20 text-yellow-300 border border-yellow-500/20
                                               hover:bg-yellow-500/30 transition">
                                         Edit
@@ -203,7 +203,7 @@
 
                                 <td class="px-6 py-4 text-center">
                                     <a href="#"
-                                    class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                    class="openCrewDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                             bg-cyan-500/20 text-cyan-300 border border-cyan-500/20
                                             hover:bg-cyan-500/30 transition">
                                         Details
@@ -212,7 +212,7 @@
 
                                 <td class="px-6 py-4 text-center">
                                     <a href="#"
-                                    class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                    class="openCrewEdit inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                             bg-yellow-500/20 text-yellow-300 border border-yellow-500/20
                                             hover:bg-yellow-500/30 transition">
                                         Edit
@@ -246,10 +246,10 @@
 
 <div id="addPlayerModal" class="modal-overlay">
 
-    <div class="modal-card small">
+    <div class="modal-card">
 
         <!-- TITLE -->
-        <h2 class="modal-title small">Add Player</h2>
+        <h2 class="modal-title">Add Player</h2>
 
         <!-- FORM -->
         <form>
@@ -329,7 +329,7 @@
     <div class="modal-card">
 
         <!-- TITLE -->
-        <h2 class="modal-title small">Add Crew</h2>
+        <h2 class="modal-title">Add Crew</h2>
 
         <!-- FORM -->
         <form>
@@ -425,21 +425,372 @@
     </div>
 </div>
 
+{{-- POP UP DETAIL PLAYER --}}
+<div id="playerDetailModal" class="modal-overlay">
+    <div class="modal-card">
+
+        <h2 class="modal-title">Detail Player</h2><br>
+
+        <!-- Name -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">Name: </label>
+            <label style="font-size:16px;">Juan Melolo</label>
+        </div>
+
+        <!-- NRP -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">NRP: </label>
+            <label style="font-size:16px;">160424999 </label>
+        </div>
+
+        <!-- MAJOR -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">Major: </label>
+            <label style="font-size:16px;">Teknik Informatika </label>
+        </div>
+
+        <!-- KTM -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">KTM: </label><br>
+            <label style="font-size:16px;">juanGanteng.jpg </label>
+        </div>
+
+        <!-- WHATSAPP -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">WhatsApp Number: </label>
+            <label style="font-size:16px;">+6285888889999 </label>
+        </div>
+
+        <!-- STATUS -->
+        <div style="margin-bottom:16px;">
+            <label style="font-size:16px;">Status: </label>
+            <label style="font-size:16px;">Hidup </label>
+        </div>
+
+        <!-- BUTTONS -->
+        <div style="
+            display:flex;
+            justify-content:flex-end;
+            gap:8px;
+        ">
+
+            <div class="modal-actions">
+                <button type="button" id="closePlayerModal" class="btn btn-cancel">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- POP UP DETAIL CREW --}}
+<div id="crewDetailModal" class="modal-overlay">
+    <div class="modal-card">
+
+        <h2 class="modal-title">Detail Crew</h2><br>
+
+        <!-- Name -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">Name: </label>
+            <label style="font-size:16px;">Juan Melolo</label>
+        </div>
+
+        <!-- WHATSAPP -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">WhatsApp Number: </label>
+            <label style="font-size:16px;">+6285888889999 </label>
+        </div>
+
+        <!-- ROLE -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">Role: </label>
+            <label style="font-size:16px;">Coach </label>
+        </div>
+
+        <!-- NRP -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">NRP: </label>
+            <label style="font-size:16px;">160424999 </label>
+        </div>
+
+        <!-- MAJOR -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">Major: </label>
+            <label style="font-size:16px;">Teknik Informatika </label>
+        </div>
+
+        <!-- KTM -->
+        <div style="margin-bottom:10px;">
+            <label style="font-size:16px;">KTM: </label><br>
+            <label style="font-size:16px;">juanGanteng.jpg </label>
+        </div>
+
+        <!-- STATUS -->
+        <div style="margin-bottom:16px;">
+            <label style="font-size:16px;">Status: </label>
+            <label style="font-size:16px;">Hidup </label>
+        </div>
+
+        <!-- BUTTONS -->
+        <div style="
+            display:flex;
+            justify-content:flex-end;
+            gap:8px;
+        ">
+
+            <div class="modal-actions">
+                <button type="button" id="closeCrewModal" class="btn btn-cancel">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- POP UP EDIT PLAYER --}}
+<div id="playerEditModal" class="modal-overlay">
+
+    <div class="modal-card">
+
+        <!-- TITLE -->
+        <h2 class="modal-title">Edit Player</h2>
+
+        <!-- FORM -->
+        <form>
+
+            <!-- Player Name -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    Player Name
+                </label><br>
+
+                <input class="form-input h35" type="text" value="Juan Melolo">
+            </div>
+
+            <!-- NRP -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    NRP
+                </label><br>
+
+                <input class="form-input h35" type="text" value="160424999">
+            </div>
+
+            <!-- Major -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    Major
+                </label><br>
+
+                <select class="form-input h40">
+                    <option style="color:black;">Teknik Informatika</option>
+                    <option style="color:black;">Teknik Industri</option>
+                    <option style="color:black;">Teknik Elektro</option>
+                </select>
+            </div>
+
+            <!-- KTM -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    Upload KTM
+                </label><br>
+
+               <input type="file" class="form-input h45">
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div style="margin-bottom:16px;">
+                <label style="font-size:16px;opacity:1;">
+                    Whatsapp Number
+                </label><br>
+
+                <input class="form-input h35" type="text" value="+6285888889999">
+            </div>
+
+            <!-- BUTTONS -->
+            <div style="
+                display:flex;
+                justify-content:flex-end;
+                gap:8px;
+            ">
+
+                <button type="button" id="cancelPlayerEditModal" class="btn btn-cancel">
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Edit
+                </button>
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- POP UP EDIT CREW --}}
+<div id="crewEditModal" class="modal-overlay">
+
+    <div class="modal-card">
+
+        <!-- TITLE -->
+        <h2 class="modal-title">Edit Crew</h2>
+
+        <!-- FORM -->
+        <form>
+
+            <!-- Crew Name -->
+            <div style="margin-bottom:5px;">
+                <label style="font-size:16px;opacity:1;">
+                    Crew Name
+                </label><br>
+
+                <input class="form-input h35" type="text" value="Juan Melolo">
+            </div>
+
+            <!-- WhatsApp Number -->
+            <div style="margin-bottom:5px;">
+                <label style="font-size:16px;opacity:1;">
+                    Whatsapp Number
+                </label><br>
+
+                <input class="form-input h35" type="text" value="+6285888889999">
+            </div>
+
+            <!-- Role -->
+            <div style="margin-bottom:5px;">
+                <label style="font-size:16px;opacity:1;">
+                    Role
+                </label><br>
+
+                <select class="form-input h40">
+                    <option style="color:black;">Official</option>
+                    <option style="color:black;">Coach</option>
+                    <option style="color:black;">Assistant Coach</option>
+                    <option style="color:black;">Role</option>
+                </select>
+            </div>
+
+            <!-- NRP -->
+            <div style="margin-bottom:5px;">
+                <label style="font-size:16px;opacity:1;">
+                    NRP
+                    <span style="opacity:0.5;">(optional)</span>
+                </label>
+
+                <input class="form-input h35" type="text" value="160424999">
+            </div>
+
+            <!-- Major -->
+            <div style="margin-bottom:5px;">
+                <label style="font-size:16px;">
+                    Major 
+                    <span style="opacity:0.5;">(optional)</span>
+                </label>
+
+                <select class="form-input h40">
+
+                    <!-- NULL OPTION -->
+                    <option style="color:black;" value="">Tidak ada</option>
+                    <option style="color:black;" value="Teknik Informatika">Teknik Informatika</option>
+                    <option style="color:black;" value="Teknik Industri">Teknik Industri</option>
+                    <option style="color:black;" value="Teknik Elektro">Teknik Elektro</option>
+                
+                </select>
+            </div>
+
+            <!-- KTM -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    Upload KTM
+                    <span style="opacity:0.5;">(optional)</span>
+                </label>
+
+               <input class="form-input h35" type="file" class="form-input h45">
+            </div>
+           
+
+            <!-- BUTTONS -->
+            <div style="
+                display:flex;
+                justify-content:flex-end;
+                gap:8px;
+            ">
+
+                <button type="button" id="cancelCrewEditModal" class="btn btn-cancel">
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Edit
+                </button>
+                
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
+    //Add Player
     const addPlayerBtn = document.getElementById('openAddPlayer');
     const addPlayerModal = document.getElementById('addPlayerModal');
     const cancelAddPlayerBtn = document.getElementById('closeAddPlayerModal');
-
     addPlayerBtn.onclick = () => addPlayerModal.style.display = "flex";
     cancelAddPlayerBtn.onclick = () => addPlayerModal.style.display = "none";
 
+    //Add Crew
     const addCrewBtn = document.getElementById('openAddCrew');
     const addCrewModal = document.getElementById('addCrewModal');
     const cancelAddCrewBtn = document.getElementById('closeAddCrewModal');
-
     addCrewBtn.onclick = () => addCrewModal.style.display = "flex";
     cancelAddCrewBtn.onclick = () => addCrewModal.style.display = "none";
+
+    //Detail Player
+    const playerDetailBtns = document.querySelectorAll('.openPlayerDetail');
+    const playerDetailModal = document.getElementById('playerDetailModal');
+    const closePlayerDetailBtn = document.getElementById('closePlayerModal');
+    playerDetailBtns.forEach(btn => {
+        btn.onclick = (e) => {
+            e.preventDefault();
+            playerDetailModal.style.display = "flex";
+        }
+    });
+    closePlayerDetailBtn.onclick = () => {playerDetailModal.style.display = "none";}
+
+    //Detail Crew
+    const crewDetailBtns = document.querySelectorAll('.openCrewDetail');
+    const crewDetailModal = document.getElementById('crewDetailModal');
+    const closeCrewDetailBtn = document.getElementById('closeCrewModal');
+    crewDetailBtns.forEach(btn => {
+        btn.onclick = (e) => {
+            e.preventDefault();
+            crewDetailModal.style.display = "flex";
+        }
+    });
+    closeCrewDetailBtn.onclick = () => {crewDetailModal.style.display = "none";}
+
+    //Edit Player
+    const playerEditBtns = document.querySelectorAll('.openPlayerEdit');
+    const playerEditModal = document.getElementById('playerEditModal');
+    const cancelPlayerEditBtn = document.getElementById('cancelPlayerEditModal');
+    playerEditBtns.forEach(btn => {
+        btn.onclick = (e) => {
+            e.preventDefault();
+            playerEditModal.style.display = "flex";
+        }
+    });
+    cancelPlayerEditBtn.onclick = () => {playerEditModal.style.display = "none";}
+
+    //Edit Crew
+    const crewEditBtns = document.querySelectorAll('.openCrewEdit');
+    const crewEditModal = document.getElementById('crewEditModal');
+    const cancelCrewEditBtn = document.getElementById('cancelCrewEditModal');
+    crewEditBtns.forEach(btn => {
+        btn.onclick = (e) => {
+            e.preventDefault();
+            crewEditModal.style.display = "flex";
+        }
+    });
+    cancelCrewEditBtn.onclick = () => {crewEditModal.style.display = "none";}
 </script>
 
 @endsection
