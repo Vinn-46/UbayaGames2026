@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $users = [
+            //kontingen
             [
                 'username' => 'Farmasi',
                 'password' => Hash::make('admin123'),
@@ -87,6 +88,11 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            //sekret
+
+            //cablom
+
+            //admin
         ];
         DB::table('users')->insert($users);
     }

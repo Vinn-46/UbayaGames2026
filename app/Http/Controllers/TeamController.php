@@ -19,7 +19,7 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:45',
+            'name' => 'required|max:255',
             'competition' => 'required'
         ]);
 
@@ -32,5 +32,17 @@ class TeamController extends Controller
         ]);
 
         return redirect()->back()->with('success','Team berhasil ditambahkan');
+    }
+
+    public function show(Request $request)
+    {
+        $id = $request->id;
+
+        $team = Team::with([
+            'participantTeams.participant',
+            'crewTeams.crew'
+        ])->findOrFail($id);
+
+        return view('teamdetail', compact('team'));
     }
 }

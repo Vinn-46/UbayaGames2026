@@ -30,35 +30,25 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @php
-                                $team = [
-                                    'id' => 1,
-                                    'name' => 'Hahahhaha',
-                                    'house' => 'House of Arcana',
-                                    'competition' => 'Basket',
-                                    'status' => 'Menunggu'
-                                ];
-                            @endphp
-
                             <tr class="hover:bg-white/5 transition">
                                 <td class="px-6 py-4 text-center text-white/70">
-                                    {{ $team['id'] }}
+                                    {{ $team->id }}
                                 </td>
 
                                 <td class="px-6 py-4">
-                                    {{ $team['name'] }}
+                                    {{ $team->name }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    {{ $team['house'] }}
+                                    {{ $team->house->name ?? '-' }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    {{ $team['competition'] }}
+                                    {{ $team->competition }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    {{ $team['status'] }}
+                                    {{ $team->status }}
                                 </td>
                             </tr>
                         </tbody>
