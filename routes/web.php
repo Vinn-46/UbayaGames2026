@@ -47,8 +47,12 @@ Route::get('/teamlist',[TeamController::class,'index'])
 
 Route::post('/teams', [TeamController::class, 'store'])
     ->middleware('auth')
-    ->name('teams.store'); 
+    ->name('teams.store');
     
+//teamdetail
 Route::get('/teamdetail', [TeamController::class, 'show'])
     ->middleware('auth')
     ->name('teamdetail');
+
+Route::post('/teams/{team}/add-player', [TeamController::class, 'addPlayer'])
+    ->name('teams.addPlayer');

@@ -15,9 +15,14 @@ class Participant extends Model
         'ktm_photo',
         'whatsapp',
         'mobilelegend',
+        'status',
+        'revision'
     ];
 
-    protected $guarded = ['status', 'revision',];
+     public function participantTeams()
+    {
+        return $this->hasMany(ParticipantTeam::class);
+    }
 
 
 }

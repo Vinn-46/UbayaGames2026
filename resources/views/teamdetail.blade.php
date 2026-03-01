@@ -89,18 +89,10 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @php
-                                $players = [
-                                    ['id' => 1, 'name' => 'John Snow'],
-                                    ['id' => 2, 'name' => 'Arya Stark'],
-                                    ['id' => 3, 'name' => 'Tyrion Lannister'],
-                                ];
-                            @endphp
-
                             @foreach ($players as $player)
                             <tr class="hover:bg-white/5 transition">
                                 <td class="px-6 py-4">
-                                    {{ $player['name'] }}
+                                    {{ $player->participant->name }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
@@ -174,21 +166,15 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @php
-                                $crews = [
-                                    ['id' => 1, 'name' => 'Brandon Stark', 'role' => 'Coach'],
-                                    ['id' => 2, 'name' => 'Eddard Stark', 'role' => 'Coach'],
-                                ];
-                            @endphp
 
                             @foreach ($crews as $crew)
                             <tr class="hover:bg-white/5 transition">
                                 <td class="px-6 py-4">
-                                    {{ $crew['name'] }}
+                                    {{ $crew->crew->name }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    {{ $crew['role'] }}
+                                    {{ $crew->crew->role }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
@@ -242,7 +228,8 @@
         <h2 class="modal-title">Add Player</h2>
 
         <!-- FORM -->
-        <form>
+        <form action="{{ route('teams.addPlayer', $team->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
             <!-- Player Name -->
             <div style="margin-bottom:10px;">
@@ -268,10 +255,12 @@
                     Major
                 </label><br>
 
-                <select class="form-input h40">
-                    <option style="color:black;">Teknik Informatika</option>
-                    <option style="color:black;">Teknik Industri</option>
-                    <option style="color:black;">Teknik Elektro</option>
+                <select name="major" class="form-input h40 text-black" required>
+                    @foreach($majorsForCurrentHouse as $major)
+                        <option style="color:black;" value="{{ $major }}">
+                            {{ $major }} 
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
@@ -293,6 +282,16 @@
                 <input class="form-input h35">
             </div>
 
+            <!-- Mobile Legend -->
+            @if ($team->competition === 'E-sport')
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Mobile Legend
+                    </label><br>
+                    <input type="text" name="mobilelegend" class="form-input h35">
+                </div>
+            @endif
+
             <!-- BUTTONS -->
             <div style="
                 display:flex;
@@ -305,7 +304,7 @@
                 </button>
 
                 <button type="submit" class="btn btn-primary">
-                    Add Team
+                    Add Participant
                 </button>
                 
             </div>
@@ -373,14 +372,12 @@
                     <span style="opacity:0.5;">(optional)</span>
                 </label>
 
-                <select class="form-input h40">
-
-                    <!-- NULL OPTION -->
-                    <option style="color:black;" value="">Tidak ada</option>
-                    <option style="color:black;" value="Teknik Informatika">Teknik Informatika</option>
-                    <option style="color:black;" value="Teknik Industri">Teknik Industri</option>
-                    <option style="color:black;" value="Teknik Elektro">Teknik Elektro</option>
-                
+                <select name="major" class="form-input h40 text-black" >
+                    @foreach($majorsForCurrentHouse as $major)
+                        <option style="color:black;" value="{{ $major }}">
+                            {{ $major }} 
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
@@ -424,37 +421,49 @@
         <!-- Name -->
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">Name: </label>
-            <label style="font-size:16px;">Juan Melolo</label>
+            <label style="font-size:16px;">
+                {{ $player->participant->name }}
+            </label>
         </div>
 
         <!-- NRP -->
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">NRP: </label>
-            <label style="font-size:16px;">160424999 </label>
+            <label style="font-size:16px;">
+                {{ $player->participant->nrp }} 
+            </label>
         </div>
 
         <!-- MAJOR -->
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">Major: </label>
-            <label style="font-size:16px;">Teknik Informatika </label>
+            <label style="font-size:16px;">
+                {{ $player->participant->major }}
+            </label>
         </div>
 
         <!-- KTM -->
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">KTM: </label><br>
-            <label style="font-size:16px;">juanGanteng.jpg </label>
+            <label style="font-size:16px;">
+                {{ $player->participant->ktm_photo }}
+            </label>
         </div>
 
         <!-- WHATSAPP -->
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">WhatsApp Number: </label>
-            <label style="font-size:16px;">+6285888889999 </label>
+            <label style="font-size:16px;">
+                {{ $player->participant->whatsapp }}
+            </label>
         </div>
 
         <!-- STATUS -->
         <div style="margin-bottom:16px;">
             <label style="font-size:16px;">Status: </label>
-            <label style="font-size:16px;">Hidup </label>
+            <label style="font-size:16px;">
+                {{ $player->participant->status }}
+            </label>
         </div>
 
         <!-- BUTTONS -->

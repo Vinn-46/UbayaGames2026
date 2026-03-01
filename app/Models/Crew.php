@@ -14,10 +14,10 @@ class Crew extends Model
         'role',
         'nrp',
         'major',
-        'ktm_photo'
+        'ktm_photo',
+        'status',
+        'revision'
     ];
-
-    protected $guarded = ['status', 'revision'];
 
     public function crewTeams()
     {
