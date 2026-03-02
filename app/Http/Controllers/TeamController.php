@@ -46,19 +46,27 @@ class TeamController extends Controller
 
         $majorsForCurrentHouse = getMajorsByHouse($team->house->name);
 
-        $players = getPlayersByTeam($team);
+        $houseParticipants = Participant::where('house_id', Auth::user()->house_id)->get();
+        
+        $players = $team->participants;
         $crews = getCrewsByTeam($team);
 
-        return view('teamdetail', compact('team', 'majorsForCurrentHouse', 'players', 'crews'));
+        return view('teamdetail', compact(
+            'team',
+            'majorsForCurrentHouse',
+            'players',
+            'crews',
+            'houseParticipants'
+        ));
     }
 
     public function addPlayer(Request $request, Team $team)
     {
-        dd('addPlayer HIT');
+        //dd($request->all());
         
         $validated = $request->validate([
             'name' => 'required',
-            'nrp' => 'required|max:9',
+            'nrp' => 'required|max:9|unique:participants,nrp',
             'major' => 'required',
             'ktm_photo' => 'required|image',
             'whatsapp' => 'required',
@@ -68,28 +76,43 @@ class TeamController extends Controller
         $path = $request->file('ktm_photo')->store('ktm_photos', 'public');
 
         // Cari participant berdasarkan NRP supaya tidak duplikat
-        $participant = Participant::firstOrCreate(
-            ['nrp' => $validated['nrp']],
-            [
-                'name' => $validated['name'],
-                'major' => $validated['major'],
-                'ktm_photo' => $path,
-                'whatsapp' => $validated['whatsapp'],
-                'mobilelegend' => $team->competition == 'E-sport'
-                    ? $validated['mobilelegend']
-                    : null,
-                'status' => 'Menunggu',
-                'revision' => null
-            ]
-        );
+        $participant = Participant::create([
+            'house_id' => Auth::user()->house_id,
+            'name' => $validated['name'],
+            'nrp' => $validated['nrp'],
+            'major' => $validated['major'],
+            'ktm_photo' => $path,
+            'whatsapp' => $validated['whatsapp'],
+            'mobilelegend' => $team->competition == 'E-sport'
+                ? $validated['mobilelegend']
+                : null,
+            'status' => 'Menunggu',
+            'revision' => null
+        ]);
 
-        // Masukkan relasi ke pivot
-        $team->participantTeams()->firstOrCreate([
+        $team->participantTeams()->create([
             'participant_id' => $participant->id,
         ]);
 
         return redirect()->back()->with('success','Player berhasil ditambahkan');
     }
-    
+    public function attachExistingPlayer(Request $request, Team $team)
+    {
+        $request->validate([
+            'participant_id' => 'required|exists:participants,id'
+        ]);
+
+        $team->participants()->syncWithoutDetaching([
+            $request->participant_id
+        ]);
+
+        return redirect()->back()->with('success', 'Player berhasil ditambahkan ke team');
+    }
+    public function destroyPlayer(Team $team, Participant $participant)
+    {
+        $team->participants()->detach($participant->id);
+
+        return redirect()->back()->with('success', 'Player berhasil dihapus');
+    }
 }
     

@@ -68,11 +68,15 @@
                 </h2>
 
                 <button id="openAddPlayer"
-                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white
-                           bg-blue-600 hover:bg-blue-500 rounded-lg transition
-                           shadow-lg shadow-blue-600/20 border border-blue-400/20">
-                    +
-                    Add Player
+                    class="inline-flex items-center gap-2 px-5 py-2 text-white
+                            bg-blue-600 hover:bg-blue-500 rounded-lg transition
+                            shadow-lg shadow-blue-600/20 border border-blue-400/20">
+                    
+                    {{-- Teks menggunakan font Georgia agar sesuai tema --}}
+                    <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Player</span>
+                    
+                    {{-- Icon Plus Square --}}
+                    <i data-feather="plus-square" class="w-5 h-5"></i>
                 </button>
             </header>
 
@@ -89,44 +93,56 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @foreach ($players as $player)
+                            @forelse ($players as $player)
                             <tr class="hover:bg-white/5 transition">
                                 <td class="px-6 py-4">
-                                    {{ $player->participant->name }}
+                                    {{ $player->name }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    <a href="#"
-                                       class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                              bg-cyan-500/20 text-cyan-300 border border-cyan-500/20
-                                              hover:bg-cyan-500/30 transition">
-                                        Details
+                                    <!-- Detail Button -->
+                                    <a 
+                                        href="{{ route('teamdetail', ['id' => $team->id])}}" 
+                                        class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                              bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">                                        
+                                        <i data-feather="info"></i>
                                     </a>
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    <a href="#"
-                                       class="openPlayerEdit inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                              bg-yellow-500/20 text-yellow-300 border border-yellow-500/20
-                                              hover:bg-yellow-500/30 transition">
-                                        Edit
+                                    <a 
+                                        href="{{ route('teamdetail', ['id' => $team->id])}}" 
+                                        class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                              bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">                                        
+                                        <i data-feather="edit"></i>
                                     </a>
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    <form action="#" method="POST" class="inline">
+                                   <form action="{{ route('teams.destroyPlayer', [$team->id, $player->id]) }}"
+                                        method="POST"
+                                        class="inline"
+                                        onsubmit="return confirm('Yakin ingin menghapus player ini?')">
+
                                         @csrf
                                         @method('DELETE')
+
                                         <button type="submit"
                                             class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                                   bg-red-500/20 text-red-300 border border-red-500/20
-                                                   hover:bg-red-500/30 transition">
-                                            Delete
+                                                bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30">                                        
+                                            <i data-feather="trash-2"></i>
+                                            
                                         </button>
                                     </form>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-6 text-white/50">
+                                    Belum ada data pemain
+                                </td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -144,11 +160,15 @@
                 </h2>
 
                 <button id="openAddCrew"
-                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white
-                        bg-blue-600 hover:bg-blue-500 rounded-lg transition
-                        shadow-lg shadow-blue-600/20 border border-blue-400/20">
-                    +
-                    Add Crew
+                    class="inline-flex items-center gap-2 px-5 py-2 text-white
+                            bg-blue-600 hover:bg-blue-500 rounded-lg transition
+                            shadow-lg shadow-blue-600/20 border border-blue-400/20">
+                    
+                    {{-- Teks menggunakan font Georgia agar sesuai tema --}}
+                    <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Crew</span>
+                    
+                    {{-- Icon Plus Square --}}
+                    <i data-feather="plus-square" class="w-5 h-5"></i>
                 </button>
             </header>
 
@@ -167,7 +187,7 @@
 
                         <tbody class="divide-y divide-white/10">
 
-                            @foreach ($crews as $crew)
+                            @forelse ($crews as $crew)
                             <tr class="hover:bg-white/5 transition">
                                 <td class="px-6 py-4">
                                     {{ $crew->crew->name }}
@@ -208,7 +228,13 @@
                                     </form>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-6 text-white/50">
+                                    Belum ada data crew
+                                </td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -219,8 +245,73 @@
     </div>
 </section>
 
+{{-- POP UP ADD EXISTING PLAYER --}}
+<div id="addExistingPlayerModal" class="modal-overlay">
 
-<div id="addPlayerModal" class="modal-overlay">
+    <div class="modal-card">
+
+        <h2 class="modal-title">Add Player</h2>
+
+        <form action="{{ route('teams.attachPlayer', $team->id) }}" method="POST">
+            @csrf
+
+            <!-- Dropdown Participant -->
+            <div style="margin-bottom:20px;">
+                <label style="font-size:16px;opacity:1;">
+                    Select Participant
+                </label><br>
+
+                <select name="participant_id" class="form-input h40 text-black" required>
+                    @foreach($houseParticipants as $participant)
+                        <option style="color:black;" value="{{ $participant->id }}">
+                            {{ $participant->name }} ({{ $participant->nrp }})
+                        </option>
+                    @endforeach
+                </select>
+
+                
+            </div>
+
+            <!-- BUTTONS -->
+            <div style="
+                display:flex;
+                flex-direction:column;
+                gap:12px;
+            ">
+
+                <!-- Baris Atas: Cancel & Add Player -->
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    gap:12px;
+                ">
+                    <button type="button" 
+                            id="closeAddExistingPlayerModal"
+                            class="btn btn-cancel">
+                        Cancel
+                    </button>
+
+                    <button type="submit" 
+                            class="btn btn-primary">
+                        Add Player
+                    </button>
+                </div>
+
+                <!-- Baris Bawah: Add New Player -->
+                <button type="button" 
+                        id="openAddNewPlayerModal"
+                        class="btn btn-secondary"
+                        style="width:100%;">
+                    + Add New Player
+                </button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div id="addNewPlayerModal" class="modal-overlay">
 
     <div class="modal-card">
 
@@ -237,7 +328,7 @@
                     Player Name
                 </label><br>
 
-                <input class="form-input h35">
+                <input type="text" name="name" class="form-input h35" required>
             </div>
 
             <!-- NRP -->
@@ -246,7 +337,7 @@
                     NRP
                 </label><br>
 
-                <input class="form-input h35">
+                <input type="text" name="nrp" class="form-input h35" required>
             </div>
 
             <!-- Major -->
@@ -270,7 +361,7 @@
                     Upload KTM
                 </label><br>
 
-               <input type="file" class="form-input h45">
+               <input type="file" name="ktm_photo" class="form-input h45" required>
             </div>
 
             <!-- WhatsApp Number -->
@@ -279,7 +370,7 @@
                     Whatsapp Number
                 </label><br>
 
-                <input class="form-input h35">
+                <input type="text" name="whatsapp" class="form-input h35" required>
             </div>
 
             <!-- Mobile Legend -->
@@ -299,7 +390,7 @@
                 gap:8px;
             ">
 
-                <button type="button" id="closeAddPlayerModal" class="btn btn-cancel">
+                <button type="button" id="closeAddNewPlayerModal" class="btn btn-cancel">
                     Cancel
                 </button>
 
@@ -422,7 +513,7 @@
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">Name: </label>
             <label style="font-size:16px;">
-                {{ $player->participant->name }}
+                {{ $player->participant->name ?? '-' }}
             </label>
         </div>
 
@@ -430,7 +521,7 @@
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">NRP: </label>
             <label style="font-size:16px;">
-                {{ $player->participant->nrp }} 
+                {{ $player->participant->nrp ?? '-' }} 
             </label>
         </div>
 
@@ -438,7 +529,7 @@
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">Major: </label>
             <label style="font-size:16px;">
-                {{ $player->participant->major }}
+                {{ $player->participant->major ?? '-' }}
             </label>
         </div>
 
@@ -446,7 +537,7 @@
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">KTM: </label><br>
             <label style="font-size:16px;">
-                {{ $player->participant->ktm_photo }}
+                {{ $player->participant->ktm_photo ?? '-' }}
             </label>
         </div>
 
@@ -454,7 +545,7 @@
         <div style="margin-bottom:10px;">
             <label style="font-size:16px;">WhatsApp Number: </label>
             <label style="font-size:16px;">
-                {{ $player->participant->whatsapp }}
+                {{ $player->participant->whatsapp ?? '-' }}
             </label>
         </div>
 
@@ -462,7 +553,7 @@
         <div style="margin-bottom:16px;">
             <label style="font-size:16px;">Status: </label>
             <label style="font-size:16px;">
-                {{ $player->participant->status }}
+                {{ $player->participant->status ?? '-' }}
             </label>
         </div>
 
@@ -730,11 +821,47 @@
 
 <script>
     //Add Player
-    const addPlayerBtn = document.getElementById('openAddPlayer');
-    const addPlayerModal = document.getElementById('addPlayerModal');
-    const cancelAddPlayerBtn = document.getElementById('closeAddPlayerModal');
-    addPlayerBtn.onclick = () => addPlayerModal.style.display = "flex";
-    cancelAddPlayerBtn.onclick = () => addPlayerModal.style.display = "none";
+    // ===== EXISTING PLAYER MODAL =====
+    const openExistingBtn = document.getElementById('openAddPlayer');
+    const existingModal = document.getElementById('addExistingPlayerModal');
+    const closeExistingBtn = document.getElementById('closeAddExistingPlayerModal');
+
+    if(openExistingBtn){
+        openExistingBtn.onclick = () => existingModal.style.display = "flex";
+    }
+
+    if(closeExistingBtn){
+        closeExistingBtn.onclick = () => existingModal.style.display = "none";
+    }
+
+
+    // ===== NEW PLAYER MODAL =====
+    const openNewBtn = document.getElementById('openAddNewPlayerModal');
+    const newModal = document.getElementById('addNewPlayerModal');
+    const closeNewBtn = document.getElementById('closeAddNewPlayerModal');
+
+    if(openNewBtn){
+        openNewBtn.onclick = () => {
+            existingModal.style.display = "none";
+            newModal.style.display = "flex";
+        };
+    }
+
+    if(closeNewBtn){
+        closeNewBtn.onclick = () => newModal.style.display = "none";
+    }
+
+
+    // ===== CLOSE MODAL WHEN CLICK OUTSIDE =====
+    window.onclick = function(event) {
+        if (event.target === existingModal) {
+            existingModal.style.display = "none";
+        }
+        if (event.target === newModal) {
+            newModal.style.display = "none";
+        }
+    };
+    
 
     //Add Crew
     const addCrewBtn = document.getElementById('openAddCrew');
@@ -791,5 +918,8 @@
     });
     cancelCrewEditBtn.onclick = () => {crewEditModal.style.display = "none";}
 </script>
-
+<script src="https:unpkg.com/feather-icons"></script>
+<script>
+    feather.replace()
+</script>
 @endsection

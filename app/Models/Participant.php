@@ -9,6 +9,7 @@ class Participant extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'house_id',
         'name',
         'nrp',
         'major',

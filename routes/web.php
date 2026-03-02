@@ -54,5 +54,15 @@ Route::get('/teamdetail', [TeamController::class, 'show'])
     ->middleware('auth')
     ->name('teamdetail');
 
+//add player
+Route::post('/teams/{team}/attach-player', 
+    [TeamController::class, 'attachExistingPlayer']
+)->name('teams.attachPlayer');
+
 Route::post('/teams/{team}/add-player', [TeamController::class, 'addPlayer'])
     ->name('teams.addPlayer');
+
+//hapus player
+Route::delete('/teams/{team}/participant/{participant}',
+    [TeamController::class, 'destroyPlayer']
+)->name('teams.destroyPlayer');

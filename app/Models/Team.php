@@ -31,4 +31,13 @@ class Team extends Model
     {
         return $this->hasMany(CrewTeam::class);
     }
+    public function participants()
+    {
+        return $this->belongsToMany(
+            Participant::class,
+            'participant_team',
+            'team_id',
+            'participant_id'
+        );
+    }
 }
