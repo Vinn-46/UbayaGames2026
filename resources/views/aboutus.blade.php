@@ -1,5 +1,26 @@
 @extends('layouts.app')
 @section('content')
+    <style>
+    .reveal-left {
+        opacity: 0;
+        transform: translateX(-80px);
+        transition: all 0.8s ease;
+    }
+
+    .reveal-right {
+        opacity: 0;
+        transform: translateX(80px);
+        transition: all 0.8s ease;
+    }
+
+    .reveal-left.show,
+    .reveal-right.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    </style>
+
+
     {{-- HERO --}}
     <section class="w-full px-4 sm:px-6 mb-36">
         <div class="w-full max-w-6xl mx-auto flex flex-col items-center text-center">
@@ -13,7 +34,7 @@
     <section id="about" class="w-full px-4 sm:px-6 mb-32">
         <div class="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <div
-                class="bg-black/30 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl h-full flex flex-col justify-center">
+                class="bg-black/30 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl h-full flex flex-col justify-center reveal-left">
                 <h2 class="mb-4 text-sm sm:text-lg font-bold text-white uppercase tracking-wide font-heading">
                     About Ubaya Games 2026
                 </h2>
@@ -42,7 +63,7 @@
                     class="w-full h-full object-cover hover:scale-105 transition duration-500">
             </div>
             <div
-                class="bg-black/30 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl h-full flex flex-col justify-center">
+                class="bg-black/30 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl h-full flex flex-col justify-center reveal-right">
                 <h2 class="mb-4 text-sm sm:text-lg font-bold text-white uppercase tracking-wide font-heading">
                     Song Of The Fallen Crowns
                 </h2>
@@ -63,7 +84,7 @@
     {{-- MASKOT --}}
     <section class="w-full px-4 sm:px-6 mb-32">
         <div class="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div class="bg-black/30 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl">
+            <div class="bg-black/30 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl reveal-left">
                 <h2 class="mb-4 text-sm sm:text-lg font-bold text-white uppercase tracking-wide font-heading">
                     Penjelasan Maskot
                 </h2>
@@ -186,4 +207,24 @@
             © Information Systems UBAYA GAMES 2026
         </p>
     </section>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const elements = document.querySelectorAll('.reveal-left, .reveal-right');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        elements.forEach(el => observer.observe(el));
+
+    });
+    </script>
 @endsection
