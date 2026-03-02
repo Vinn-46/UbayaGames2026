@@ -24,9 +24,8 @@
     {{-- HERO --}}
     <section class="w-full px-4 sm:px-6 mb-36">
         <div class="w-full max-w-6xl mx-auto flex flex-col items-center text-center">
-            <img src="{{ asset('assets/Logo_UG.png') }}" class="w-40 sm:w-52 md:w-64 mb-6">
-            <h1 class="text-lg sm:text-xl tracking-[0.35em] font-heading font-bold text-white">UBAYA GAMES</h1>
-            <p class="text-xs text-gray-400 mt-2">2026</p>
+            {{-- UBAH DISINI: Nilai lebarresponsif ditingkatkan untuk memperbesar logo --}}
+            <img src="{{ asset('assets/homepage.png') }}" class="w-64 sm:w-80 md:w-96 mb-6">
         </div>
     </section>
 
@@ -106,106 +105,70 @@
         </div>
     </section>
 
-    {{-- CABANG LOMBA --}}
-    <section class="w-full px-4 sm:px-6 mb-32">
-        <h2 class="text-center text-sm sm:text-xl mb-10 font-bold text-white font-heading">Cabang Lomba</h2>
-
-        <div class="relative w-full">
-            <div class="w-full overflow-x-auto scrollbar-hide" style="scroll-padding-left: 50%;">
-                <div class="flex flex-nowrap gap-4 md:gap-6 w-max mx-auto justify-center pb-4">
-                    @php
-                        $cabangs = [
-                            ['name' => 'Basket', 'icon' => 'assets/icons/Basket.png'],
-                            ['name' => 'Futsal', 'icon' => 'assets/icons/Futsal.png'],
-                            ['name' => 'Voli', 'icon' => 'assets/icons/Volley.png'],
-                            ['name' => 'Badminton', 'icon' => 'assets/icons/Badminton.png'],
-                            ['name' => 'E-Sport', 'icon' => 'assets/icons/Esport.png'],
-                            ['name' => 'Dance', 'icon' => 'assets/icons/Dance.png'],
-                            ['name' => 'Fotografi', 'icon' => 'assets/icons/Fotografi.png'],
-                            ['name' => 'Lukis', 'icon' => 'assets/icons/Melukis.png'],
-                            ['name' => 'Poster', 'icon' => 'assets/icons/Poster.png'],
-                        ];
-                    @endphp
-                    @foreach ($cabangs as $namacabang)
-                        <div
-                            class="w-[200px] sm:w-[240px] md:w-[280px]
-                        flex-shrink-0 
-                        bg-black/20 backdrop-blur-md border border-white/30 shadow-lg
-                        rounded-2xl p-2 flex items-center justify-center aspect-square">
-                            <img src="{{ asset($namacabang['icon']) }}" class="w-full h-full object-contain drop-shadow-md"
-                                style="width: 100% !important; height: 100% !important;" alt="{{ $namacabang['name'] }}">
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- COLLABORATION --}}
-    <section class="w-full px-4 sm:px-6 mb-24">
-        <h2 class="text-center text-xs sm:text-sm tracking-widest mb-8 text-gray-300">
-            In collaboration with
-        </h2>
-        <img src="{{ asset('assets/Collaboration.png') }}" alt="Collaboration Partners"
-            class="mx-auto h-10 sm:h-14 md:h-18 object-contain">
-    </section>
-
-    {{-- CONTACT --}}
+    {{-- FOOTER / CONTACT & SPONSOR --}}
     <section class="w-full bg-black/30 py-16 px-4 sm:px-6">
-        <div class="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 text-xs sm:text-sm">
-            <div>
-                <h3 class="mb-4 font-semibold text-white">Contact Us</h3>
-                <ul class="space-y-2 text-gray-300">
-                    <li class="flex items-center gap-2">
-                        <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-5 h-5 object-contain">
-                        <span>Juan Morello (082335144017)</span>
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-5 h-5 object-contain">
-                        <span>Debrina (087857481815)</span>
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <img src="{{ asset('assets/icons/instagram.png') }}" alt="Instagram" class="w-5 h-5 object-contain">
-                        <span>@ubayagames2026</span>
-                    </li>
-                </ul>
+        <div class="w-full max-w-6xl mx-auto flex flex-col">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0 text-xs sm:text-sm">
+                {{-- KOLOM 1: CONTACT US --}}
+                <div class="md:pr-8 md:border-r md:border-white/20 pb-12 flex flex-col items-center md:items-start">
+                    <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase">Contact Us</h3>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-center gap-3">
+                            <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-5 h-5 object-contain">
+                            <span>Tiara (083866142476)</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-5 h-5 object-contain">
+                            <span>Jeje (081233508315)</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <img src="{{ asset('assets/icons/instagram.png') }}" alt="Instagram" class="w-5 h-5 object-contain">
+                            <span>@ubayagames2026</span>
+                        </li>
+                    </ul>
+                </div>
+
+                {{-- KOLOM 2: SUPPORTED BY --}}
+                <div class="md:px-8 md:border-r md:border-white/20 pb-12 flex flex-col items-center">
+                    <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase">Supported By</h3>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="h-12 w-32 sm:w-36 bg-white rounded-md flex items-center justify-center p-1 hover:scale-105 transition">
+                            <img src="{{ asset('assets/collab/Logo ubaya.jpg') }}" class="h-full w-full object-contain" alt="Logo Ubaya">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 w-32 sm:w-36">
+                            <div class="aspect-square bg-white rounded-md flex items-center justify-center p-1.5 hover:scale-105 transition">
+                                <img src="{{ asset('assets/collab/Logo bem ubaya.jpg') }}" class="h-full w-full object-contain" alt="BEM Ubaya">
+                            </div>
+                            <div class="aspect-square bg-white rounded-md flex items-center justify-center p-1.5 hover:scale-105 transition">
+                                <img src="{{ asset('assets/collab/Logo kabinet invictus.jpg') }}" class="h-full w-full object-contain" alt="Kabinet Invictus">
+                            </div>
+                            <div class="aspect-square bg-white rounded-md flex items-center justify-center p-1.5 hover:scale-105 transition">
+                                <img src="{{ asset('assets/collab/Kementrian SeniBudaya.jpg') }}" class="h-full w-full object-contain" alt="Seni Budaya">
+                            </div>
+                            <div class="aspect-square bg-white rounded-md flex items-center justify-center p-1.5 hover:scale-105 transition">
+                                <img src="{{ asset('assets/collab/Kementrian_Olahraga.jpg') }}" class="h-full w-full object-contain" alt="Olahraga">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- KOLOM 3: SPONSORED BY --}}
+                <div class="md:pl-8 pb-12 flex flex-col items-center md:items-start">
+                    <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase">Sponsored By</h3>
+                    <div class="flex flex-col gap-4">
+                        <div class="h-12 w-32 sm:w-36 px-2 bg-white rounded-md flex items-center justify-center hover:scale-105 transition">
+                            <img src="{{ asset('assets/sponsor/Logo_surken.png') }}" class="h-full w-full object-contain" alt="Surken Logo">
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="flex gap-3 md:justify-end justify-center flex-wrap items-center">
-                {{-- Logo UBAYA --}}
-                <div
-                    class="h-10 sm:h-12 w-32 sm:w-40 bg-white rounded-md flex items-center justify-center p-1 hover:scale-105 transition">
-                    <img src="{{ asset('assets/collab/Logo ubaya.jpg') }}" class="h-full w-full object-contain"
-                        alt="Logo Ubaya">
-                </div>
-                {{-- Logo BEM UBAYA --}}
-                <div
-                    class="h-10 w-10 sm:h-12 sm:w-12 bg-white rounded-md flex items-center justify-center p-1 hover:scale-105 transition">
-                    <img src="{{ asset('assets/collab/Logo bem ubaya.jpg') }}" class="h-full w-full object-contain"
-                        alt="BEM Ubaya">
-                </div>
-                {{-- Logo Kabinet Invictus --}}
-                <div
-                    class="h-10 w-10 sm:h-12 sm:w-12 bg-white rounded-md flex items-center justify-center p-1 hover:scale-105 transition">
-                    <img src="{{ asset('assets/collab/Logo kabinet invictus.jpg') }}" class="h-full w-full object-contain"
-                        alt="Kabinet Invictus">
-                </div>
-                {{-- Kementrian Seni Budaya --}}
-                <div
-                    class="h-10 w-10 sm:h-12 sm:w-12 bg-white rounded-md flex items-center justify-center p-1 hover:scale-105 transition">
-                    <img src="{{ asset('assets/collab/Kementrian SeniBudaya.jpg') }}" class="h-full w-full object-contain"
-                        alt="Seni Budaya">
-                </div>
-                {{-- Kementrian Olahraga --}}
-                <div
-                    class="h-10 w-10 sm:h-12 sm:w-12 bg-white rounded-md flex items-center justify-center p-1 hover:scale-105 transition">
-                    <img src="{{ asset('assets/collab/Kementrian_Olahraga.jpg') }}" class="h-full w-full object-contain"
-                        alt="Olahraga">
-                </div>
+            <div class="w-full text-center mt-2">
+                <p class="text-[10px] text-gray-400">
+                    © Information Systems UBAYA GAMES 2026
+                </p>
             </div>
         </div>
-        <p class="text-center text-[10px] text-gray-400 mt-10">
-            © Information Systems UBAYA GAMES 2026
-        </p>
     </section>
 
     <script>
