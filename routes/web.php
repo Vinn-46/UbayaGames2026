@@ -20,11 +20,6 @@ Route::get('/house', function () {
     return view('house');
 })->name('house');
 
-// untuk teamdetail
-Route::get('/teamdetail', function () {
-    return view('teamdetail');
-})->name('teamdetail');
-
 // untuk leaderboard
 Route::get('/leaderboard', function () {
     return view('leaderboard');
@@ -52,4 +47,12 @@ Route::get('/teamlist',[TeamController::class,'index'])
 
 Route::post('/teams', [TeamController::class, 'store'])
     ->middleware('auth')
-    ->name('teams.store');    
+    ->name('teams.store');
+    
+//teamdetail
+Route::get('/teamdetail', [TeamController::class, 'show'])
+    ->middleware('auth')
+    ->name('teamdetail');
+
+Route::post('/teams/{team}/add-player', [TeamController::class, 'addPlayer'])
+    ->name('teams.addPlayer');

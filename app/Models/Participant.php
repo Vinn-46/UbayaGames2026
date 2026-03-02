@@ -6,5 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Participant extends Model
 {
-    //
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'nrp',
+        'major',
+        'ktm_photo',
+        'whatsapp',
+        'mobilelegend',
+        'status',
+        'revision'
+    ];
+
+     public function participantTeams()
+    {
+        return $this->hasMany(ParticipantTeam::class);
+    }
+
+
 }

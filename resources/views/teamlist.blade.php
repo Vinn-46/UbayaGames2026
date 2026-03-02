@@ -84,11 +84,10 @@
                             <td class="px-6 py-4">
                                 <div class="flex justify-center gap-2">
                                     <!-- Detail Button -->
-                                    <a 
-                                        href="{{ route('teamdetail') }}" 
-                                        class="shrink-0 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
-                                    >
-                                        <i data-feather="info"></i>
+                                     <a 
+                                     href="{{ route('teamdetail', ['id' => $team->id])}}" 
+                                     class="shrink-0 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10" >
+                                     <i data-feather="info"></i>
                                     </a>
 
                                     <!-- Delete Button -->

@@ -21,4 +21,14 @@ class Team extends Model
     {
         return $this->belongsTo(House::class);
     }
+
+    public function participantTeams()
+    {
+        return $this->hasMany(ParticipantTeam::class);
+    }
+
+    public function crewTeams()
+    {
+        return $this->hasMany(CrewTeam::class);
+    }
 }
