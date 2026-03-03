@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('house_id')
+                  ->constrained('houses')
+                  ->cascadeOnDelete();
             $table->string('name', 255);
             $table->string('nrp',9);
             $table->string('major',45);
