@@ -48,7 +48,7 @@
                 </p>
             </div>
             <div class="w-full h-full min-h-[300px] rounded-2xl overflow-hidden shadow-xl border border-white/10">
-                <img src="{{ asset('assets/Foto1.jpg') }}"
+                <img src="{{ asset('assets/Foto1.png') }}"
                     class="w-full h-full object-cover hover:scale-105 transition duration-500">
             </div>
         </div>
@@ -58,7 +58,7 @@
     <section class="w-full px-4 sm:px-6 mb-32">
         <div class="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <div class="w-full h-full min-h-[300px] rounded-2xl overflow-hidden shadow-xl border border-white/10">
-                <img src="{{ asset('assets/foto2.jpg') }}"
+                <img src="{{ asset('assets/foto2.png') }}"
                     class="w-full h-full object-cover hover:scale-105 transition duration-500">
             </div>
             <div
@@ -157,15 +157,15 @@
                     <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase">Sponsored By</h3>
                     <div class="flex flex-col gap-4">
                         <div class="h-12 w-32 sm:w-36 px-2 bg-white rounded-md flex items-center justify-center">
-                            <img src="{{ asset('assets/sponsor/Logo_surken.png') }}" class="h-full w-full object-contain" alt="Surken Logo">
+                            <img src="{{ asset('assets/sponsor/surken.png') }}" class="h-full w-full object-contain" alt="Surken Logo">
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class="w-full text-center mt-2">
+            <div class="w-full text-center mt-2">   
                 <p class="text-[10px] text-gray-400">
-                    © Information Systems UBAYA GAMES 2026
+                    &copy; Information Systems UBAYA GAMES 2026
                 </p>
             </div>
         </div>
