@@ -92,3 +92,19 @@ Route::get('/teamdetail-sekre', [TeamController::class, 'showSekre'])
 Route::post('/teams/revision', [TeamController::class, 'updateRevision'])
     ->middleware('auth')
     ->name('teams.updateRevision');
+
+Route::put('/participants/{id}/status', 
+    [ParticipantController::class, 'updateStatus'])
+    ->name('participants.updateStatus');
+
+Route::post('/participants/revision',
+    [ParticipantController::class, 'updateRevision'])
+    ->name('participants.updateRevision');
+
+Route::put('/crews/{id}/status',
+    [CrewController::class,'updateStatus'])
+    ->name('crews.updateStatus');
+
+Route::put('/crews/{id}/revision',
+    [CrewController::class,'updateRevision'])
+    ->name('crews.updateRevision');

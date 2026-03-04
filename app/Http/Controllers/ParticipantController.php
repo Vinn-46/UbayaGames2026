@@ -114,4 +114,24 @@ class ParticipantController extends Controller
 
         return redirect()->back()->with('success', 'Player berhasil diupdate');
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $participant = Participant::findOrFail($id);
+
+        $participant->status = $request->status;
+        $participant->save();
+
+        return back();
+    }
+
+    public function updateRevision(Request $request)
+    {
+        $participant = Participant::findOrFail($request->id);
+
+        $participant->revision = $request->revision;
+        $participant->save();
+
+        return back();
+    }
 }
