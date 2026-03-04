@@ -76,3 +76,19 @@ Route::put('/teams/{team}/participant/{participant}',
 //delete team
 Route::delete('/teams/{id}', [TeamController::class, 'deleteTeam'])
     ->name('teams.destroy');
+
+Route::get('/teamlist-sekre', [TeamController::class, 'indexSekre'])
+    ->middleware('auth')
+    ->name('teamlist.sekre');
+
+Route::put('/teams/{id}/status', [TeamController::class, 'updateStatus'])
+    ->middleware('auth')
+    ->name('teams.updateStatus');
+
+Route::get('/teamdetail-sekre', [TeamController::class, 'showSekre'])
+    ->middleware('auth')
+    ->name('teamdetail.sekre');
+
+Route::post('/teams/revision', [TeamController::class, 'updateRevision'])
+    ->middleware('auth')
+    ->name('teams.updateRevision');

@@ -109,5 +109,49 @@ class TeamController extends Controller
 
         return redirect()->back()->with('success', 'Team berhasil dihapus');
     }
+
+    # POV Sekretaris
+    public function indexSekre()
+    {
+        $teams = Team::with('house')->get();
+        return view('teamlist_sekre', compact('teams'));
+    }
+    public function updateRevision(Request $request)
+    {
+        $request->validate([
+            'team_id' => 'required',
+            'revision' => 'nullable|string']);
+        $team = Team::findOrFail($request->team_id);
+        $team->revision = $request->revision;
+        $team->save();
+        return redirect()->back()->with('success','Revision berhasil disimpan');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Menunggu,Ditolak,Diterima']);
+        $team = Team::findOrFail($id);
+        $team->status = $request->status;
+        $team->save();
+        return back()->with('success','Status berhasil diupdate');
+    }
+
+    public function showSekre(Request $request)
+    {
+        $id = $request->id;
+        $team = Team::with([
+            'participantTeams.participant',
+            'crewTeams.crew',
+            'house'
+        ])->findOrFail($id);
+        $players = $team->participants;
+        $crews = getCrewsByTeam($team);
+        return view('teamdetail_sekre', compact(
+            'team',
+            'players',
+            'crews'
+        ));
+    }
 }
     
