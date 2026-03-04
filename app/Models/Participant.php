@@ -20,7 +20,13 @@ class Participant extends Model
         'revision'
     ];
 
-     public function participantTeams()
+    public function index()
+    {
+        $participants = Participant::all();
+        return view('participants.index', compact('participants'));
+    }
+
+    public function participantTeams()
     {
         return $this->hasMany(ParticipantTeam::class);
     }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->string('name',45);
-            $table->enum('competition', ['Basket', 'Futsal', 'Voli', 'Badminton', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
+            $table->string('name',45)->unique();
+            $table->enum('competition', ['Basket Putra', 'Basket Putri', 'Futsal', 'Voli Putra', 'Voli Putri', 'Badminton Ganda Putra',  'Badminton Ganda Putri',  'Badminton Ganda Campuran',  'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
             $table->foreignId('house_id')
                   ->constrained('houses')
                   ->cascadeOnDelete();

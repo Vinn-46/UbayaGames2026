@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\ParticipantController;
 
 // untuk aboutus (jadi tampilan utama saat web dibuka)
 Route::get('/', function () {
@@ -56,13 +57,22 @@ Route::get('/teamdetail', [TeamController::class, 'show'])
 
 //add player
 Route::post('/teams/{team}/attach-player', 
-    [TeamController::class, 'attachExistingPlayer']
-)->name('teams.attachPlayer');
+    [ParticipantController::class, 'attachExistingPlayer']
+)->name('participant.attachPlayer');
 
-Route::post('/teams/{team}/add-player', [TeamController::class, 'addPlayer'])
-    ->name('teams.addPlayer');
+Route::post('/teams/{team}/add-player', [ParticipantController::class, 'addPlayer'])
+    ->name('participant.addPlayer');
 
 //hapus player
 Route::delete('/teams/{team}/participant/{participant}',
     [TeamController::class, 'destroyPlayer']
 )->name('teams.destroyPlayer');
+
+//edit player
+Route::put('/teams/{team}/participant/{participant}', 
+    [ParticipantController::class, 'update']
+)->name('participant.update');
+
+//delete team
+Route::delete('/teams/{id}', [TeamController::class, 'deleteTeam'])
+    ->name('teams.destroy');

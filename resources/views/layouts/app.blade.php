@@ -85,7 +85,31 @@
 
     {{-- CONTENT --}}
     <main class="pt-28">
+        {{-- FLASH MESSAGE --}}
+        @if(session('success'))
+            <div id="flashMessage"
+                class="max-w-6xl mx-auto mb-6 px-4">
+                <div class="bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg">
+                    {{ session('success') }}
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(function () {
+                        const flash = document.getElementById("flashMessage");
+                        if (flash) {
+                            flash.style.transition = "opacity 0.5s ease";
+                            flash.style.opacity = "0";
+                            setTimeout(() => flash.remove(), 500);
+                        }
+                    }, 3000);
+                });
+            </script>
+        @endif
+
         @yield('content')
     </main>
 </body>
+
 </html>

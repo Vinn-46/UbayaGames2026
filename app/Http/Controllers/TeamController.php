@@ -24,10 +24,41 @@ class TeamController extends Controller
             'competition' => 'required'
         ]);
 
+        $houseId = Auth::user()->house_id;
+        $competition = $request->competition;
+        $teamName = $request->name;
+
+        // Hitung jumlah tim dengan house dan kompetisi yang sama
+        $existingCount = Team::where('house_id', $houseId)
+                            ->where('competition', $competition)
+                            ->count();
+
+        // Aturan khusus E-sport
+        if ($competition === 'E-sport') {
+            if ($existingCount >= 2) {
+                return redirect()->back()
+                    ->withErrors(['competition' => 'E-sport maksimal 2 tim per kontingen'])
+                    ->withInput();
+            }
+        } else {
+            if ($existingCount >= 1) {
+                return redirect()->back()
+                    ->withErrors(['competition' => 'Kompetisi ini sudah memiliki tim untuk kontingen Anda'])
+                    ->withInput();
+            }
+        }
+        //aturan nama unik
+        if (Team::where('name', $teamName)->exists()) {
+            return redirect()->back()
+                    ->withErrors(['name' => 'Nama tim sudah ada'])
+                    ->withInput();
+        }           
+
+        // Jika lolos validasi
         Team::create([
             'name' => $request->name,
-            'competition' => $request->competition,
-            'house_id' => Auth::user()->house_id,
+            'competition' => $competition,
+            'house_id' => $houseId,
             'status' => 'Menunggu',
             'revision' => null
         ]);
@@ -58,61 +89,25 @@ class TeamController extends Controller
             'crews',
             'houseParticipants'
         ));
-    }
+    }   
 
-    public function addPlayer(Request $request, Team $team)
-    {
-        //dd($request->all());
-        
-        $validated = $request->validate([
-            'name' => 'required',
-            'nrp' => 'required|max:9|unique:participants,nrp',
-            'major' => 'required',
-            'ktm_photo' => 'required|image',
-            'whatsapp' => 'required',
-            'mobilelegend' => 'nullable'
-        ]);
-
-        $path = $request->file('ktm_photo')->store('ktm_photos', 'public');
-
-        // Cari participant berdasarkan NRP supaya tidak duplikat
-        $participant = Participant::create([
-            'house_id' => Auth::user()->house_id,
-            'name' => $validated['name'],
-            'nrp' => $validated['nrp'],
-            'major' => $validated['major'],
-            'ktm_photo' => $path,
-            'whatsapp' => $validated['whatsapp'],
-            'mobilelegend' => $team->competition == 'E-sport'
-                ? $validated['mobilelegend']
-                : null,
-            'status' => 'Menunggu',
-            'revision' => null
-        ]);
-
-        $team->participantTeams()->create([
-            'participant_id' => $participant->id,
-        ]);
-
-        return redirect()->back()->with('success','Player berhasil ditambahkan');
-    }
-    public function attachExistingPlayer(Request $request, Team $team)
-    {
-        $request->validate([
-            'participant_id' => 'required|exists:participants,id'
-        ]);
-
-        $team->participants()->syncWithoutDetaching([
-            $request->participant_id
-        ]);
-
-        return redirect()->back()->with('success', 'Player berhasil ditambahkan ke team');
-    }
     public function destroyPlayer(Team $team, Participant $participant)
     {
         $team->participants()->detach($participant->id);
 
         return redirect()->back()->with('success', 'Player berhasil dihapus');
+    }
+    public function deleteTeam($id)
+    {
+        $team = Team::findOrFail($id);
+
+        // Hapus semua relasi di pivot table
+        $team->participants()->detach();
+
+        // Hapus team
+        $team->delete();
+
+        return redirect()->back()->with('success', 'Team berhasil dihapus');
     }
 }
     

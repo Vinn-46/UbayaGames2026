@@ -9,8 +9,8 @@
             <header class="mb-6">
                 <h2 class="text-xl sm:text-2xl font-heading font-bold text-white uppercase tracking-widest">
                     Team Detail
-                </h2>
-                <a href="{{ url()->previous() }}"
+                </h2> 
+                <a href="{{ route('teamlist')}}" 
                    class="inline-block mt-2 text-lg text-white/75 hover:text-white transition">
                     ← Back
                 </a>
@@ -102,20 +102,32 @@
                                 <td class="px-6 py-4 text-center">
                                     <!-- Detail Button -->
                                     <a 
-                                        href="{{ route('teamdetail', ['id' => $team->id])}}" 
                                         class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                              bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">                                        
+                                              bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
+                                              data-name="{{ $player->name }}"
+                                              data-nrp="{{ $player->nrp }}"
+                                              data-major="{{ $player->major }}"
+                                              data-ktm="{{ $player->ktm_photo }}"
+                                              data-whatsapp="{{ $player->whatsapp }}"
+                                              data-status="{{ $player->status }}"
+                                              data-mobilelegend="{{ $player->mobilelegend }}">                                        
                                         <i data-feather="info"></i>
                                     </a>
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    <a 
-                                        href="{{ route('teamdetail', ['id' => $team->id])}}" 
-                                        class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                              bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">                                        
+                                    <button type="button"
+                                        class="editPlayerButton inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
+                                        data-id="{{ $player->id }}"
+                                        data-name="{{ $player->name }}"
+                                        data-nrp="{{ $player->nrp }}"
+                                        data-major="{{ $player->major }}"
+                                        data-whatsapp="{{ $player->whatsapp }}"
+                                        data-status="{{ $player->status }}"
+                                        data-mobilelegend="{{ $player->mobilelegend }}">                                         
                                         <i data-feather="edit"></i>
-                                    </a>
+                                    </button>
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
@@ -252,7 +264,7 @@
 
         <h2 class="modal-title">Add Player</h2>
 
-        <form action="{{ route('teams.attachPlayer', $team->id) }}" method="POST">
+        <form action="{{ route('participant.attachPlayer', $team->id) }}" method="POST">
             @csrf
 
             <!-- Dropdown Participant -->
@@ -262,14 +274,19 @@
                 </label><br>
 
                 <select name="participant_id" class="form-input h40 text-black" required>
-                    @foreach($houseParticipants as $participant)
+                    @forelse($houseParticipants as $participant)
                         <option style="color:black;" value="{{ $participant->id }}">
                             {{ $participant->name }} ({{ $participant->nrp }})
                         </option>
-                    @endforeach
-                </select>
-
-                
+                    @empty
+                        <option value="" disabled selected>Belum ada pemain</option>
+                    @endforelse
+                </select>    
+                @error('participant', 'addExistingPlayer')
+                    <div style="color:red; margin-top:6px;">
+                        {{ $message }}
+                    </div>
+                @enderror          
             </div>
 
             <!-- BUTTONS -->
@@ -287,12 +304,12 @@
                 ">
                     <button type="button" 
                             id="closeAddExistingPlayerModal"
-                            class="btn btn-cancel">
+                            class="btn btn-cancel hover:bg-gray-500">
                         Cancel
                     </button>
 
                     <button type="submit" 
-                            class="btn btn-primary">
+                            class="btn btn-primary bg-blue-600 hover:bg-blue-500">
                         Add Player
                     </button>
                 </div>
@@ -300,7 +317,7 @@
                 <!-- Baris Bawah: Add New Player -->
                 <button type="button" 
                         id="openAddNewPlayerModal"
-                        class="btn btn-secondary"
+                        class="btn btn-secondary hover:bg-blue-500"
                         style="width:100%;">
                     + Add New Player
                 </button>
@@ -319,7 +336,7 @@
         <h2 class="modal-title">Add Player</h2>
 
         <!-- FORM -->
-        <form action="{{ route('teams.addPlayer', $team->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('participant.addPlayer', $team->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <!-- Player Name -->
@@ -338,6 +355,12 @@
                 </label><br>
 
                 <input type="text" name="nrp" class="form-input h35" required>
+
+                @error('nrp', 'addNewPlayer')
+                    <div style="color:red; margin-top:6px;">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Major -->
@@ -374,14 +397,19 @@
             </div>
 
             <!-- Mobile Legend -->
-            @if ($team->competition === 'E-sport')
-                <div style="margin-bottom:16px;">
-                    <label style="font-size:16px;opacity:1;">
-                        Mobile Legend
-                    </label><br>
-                    <input type="text" name="mobilelegend" class="form-input h35">
-                </div>
-            @endif
+            <div style="margin-bottom:16px;">
+                <label style="font-size:16px;opacity:1;">
+                    ID Mobile Legend
+                    @if ($team->competition !== 'E-sport')
+                        <span style="opacity:0.5;">(optional)</span>
+                    @endif
+                </label><br>
+
+                <input type="text"
+                    name="mobilelegend"
+                    class="form-input h35"
+                    @if ($team->competition === 'E-sport') required @endif>
+            </div>    
 
             <!-- BUTTONS -->
             <div style="
@@ -390,7 +418,7 @@
                 gap:8px;
             ">
 
-                <button type="button" id="closeAddNewPlayerModal" class="btn btn-cancel">
+                <button type="button" id="closeAddNewPlayerModal" class="btn btn-cancel hover:bg-gray-500">
                     Cancel
                 </button>
 
@@ -490,7 +518,7 @@
                 gap:8px;
             ">
 
-                <button type="button" id="closeAddCrewModal" class="btn btn-cancel">
+                <button type="button" id="closeAddCrewModal" class="btn btn-cancel hover:bg-gray-500">
                     Cancel
                 </button>
 
@@ -504,72 +532,102 @@
 </div>
 
 {{-- POP UP DETAIL PLAYER --}}
-<div id="playerDetailModal" class="modal-overlay">
+<div id="playerDetailModal" class="modal-overlay" style="display:none;">
+
     <div class="modal-card">
 
-        <h2 class="modal-title">Detail Player</h2><br>
+        <!-- TITLE -->
+        <h2 class="modal-title">Detail Player</h2>
 
-        <!-- Name -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">Name: </label>
-            <label style="font-size:16px;">
-                {{ $player->participant->name ?? '-' }}
-            </label>
-        </div>
+        <!-- FORM (readonly) -->
+        <form>
 
-        <!-- NRP -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">NRP: </label>
-            <label style="font-size:16px;">
-                {{ $player->participant->nrp ?? '-' }} 
-            </label>
-        </div>
+            <!-- Player Name -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    Player Name
+                </label><br>
 
-        <!-- MAJOR -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">Major: </label>
-            <label style="font-size:16px;">
-                {{ $player->participant->major ?? '-' }}
-            </label>
-        </div>
+                <input type="text" id="modalName" 
+                       class="form-input h35" 
+                       readonly>
+            </div>
 
-        <!-- KTM -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">KTM: </label><br>
-            <label style="font-size:16px;">
-                {{ $player->participant->ktm_photo ?? '-' }}
-            </label>
-        </div>
+            <!-- NRP -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    NRP
+                </label><br>
 
-        <!-- WHATSAPP -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">WhatsApp Number: </label>
-            <label style="font-size:16px;">
-                {{ $player->participant->whatsapp ?? '-' }}
-            </label>
-        </div>
+                <input type="text" id="modalNRP" 
+                       class="form-input h35" 
+                       readonly>
+            </div>
 
-        <!-- STATUS -->
-        <div style="margin-bottom:16px;">
-            <label style="font-size:16px;">Status: </label>
-            <label style="font-size:16px;">
-                {{ $player->participant->status ?? '-' }}
-            </label>
-        </div>
+            <!-- Major -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    Major
+                </label><br>
 
-        <!-- BUTTONS -->
-        <div style="
-            display:flex;
-            justify-content:flex-end;
-            gap:8px;
-        ">
+                <input type="text" id="modalMajor" 
+                       class="form-input h35" 
+                       readonly>
+            </div>
 
-            <div class="modal-actions">
-                <button type="button" id="closePlayerModal" class="btn btn-cancel">
+            <!-- KTM -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    KTM:  
+                    <a href="#" target="_blank" id="modalKTM"
+                        class="text-blue-400 underline">
+                        View KTM
+                    </a>
+                </label><br>               
+            </div>
+
+            <!-- WhatsApp -->
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    Whatsapp Number
+                </label><br>
+
+                <input type="text" id="modalWhatsapp" 
+                       class="form-input h35" 
+                       readonly>
+            </div>
+
+            <!-- Status -->
+            <div style="margin-bottom:16px;">
+                <label style="font-size:16px;opacity:1;">
+                    Status
+                </label><br>
+
+                <input type="text" id="modalStatus" 
+                       class="form-input h35" 
+                       readonly>
+            </div>
+            <!-- Mobile Legend -->
+            <div style="margin-bottom:16px;">
+                <label style="font-size:16px;opacity:1;">
+                    ID Mobile Legend
+                    @if ($team->competition !== 'E-sport')
+                        <span style="opacity:0.5;">(optional)</span>
+                    @endif
+                </label><br>
+                <input type="text" id="modalMobilelegend" 
+                        class="form-input h35"
+                        readonly>
+            </div>    
+            <!-- BUTTON -->
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" 
+                        id="closePlayerModal" 
+                        class="btn btn-cancel hover:bg-gray-500">
                     Close
                 </button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -629,7 +687,7 @@
         ">
 
             <div class="modal-actions">
-                <button type="button" id="closeCrewModal" class="btn btn-cancel">
+                <button type="button" id="closeCrewModal" class="btn btn-cancel hover:bg-gray-500">
                     Close
                 </button>
             </div>
@@ -638,7 +696,7 @@
 </div>
 
 {{-- POP UP EDIT PLAYER --}}
-<div id="playerEditModal" class="modal-overlay">
+<div id="playerEditModal" class="modal-overlay" style="display:none;">
 
     <div class="modal-card">
 
@@ -646,7 +704,9 @@
         <h2 class="modal-title">Edit Player</h2>
 
         <!-- FORM -->
-        <form>
+        <form id="editPlayerForm" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
             <!-- Player Name -->
             <div style="margin-bottom:10px;">
@@ -654,7 +714,8 @@
                     Player Name
                 </label><br>
 
-                <input class="form-input h35" type="text" value="Juan Melolo">
+                <input type="text" name="name" id="editName"
+                       class="form-input h35">
             </div>
 
             <!-- NRP -->
@@ -663,7 +724,8 @@
                     NRP
                 </label><br>
 
-                <input class="form-input h35" type="text" value="160424999">
+                <input type="text" name="nrp" id="editNRP"
+                       class="form-input h35">
             </div>
 
             <!-- Major -->
@@ -672,46 +734,60 @@
                     Major
                 </label><br>
 
-                <select class="form-input h40">
-                    <option style="color:black;">Teknik Informatika</option>
-                    <option style="color:black;">Teknik Industri</option>
-                    <option style="color:black;">Teknik Elektro</option>
+                <select name="major" id="editMajor" 
+                        class="form-input h40 text-black" required>
+                    @foreach($majorsForCurrentHouse as $major)
+                        <option style="color:black;" value="{{ $major }}">
+                            {{ $major }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
-            <!-- KTM -->
+            <!-- KTM Upload -->
             <div style="margin-bottom:10px;">
                 <label style="font-size:16px;opacity:1;">
-                    Upload KTM
+                    Upload KTM 
+                    <span style="opacity:0.5;">(optional)</span>
                 </label><br>
 
-               <input type="file" class="form-input h45">
+                <input type="file" name="ktm_photo"
+                       class="form-input h60">
             </div>
 
-            <!-- WhatsApp Number -->
-            <div style="margin-bottom:16px;">
+            <!-- WhatsApp -->
+            <div style="margin-bottom:10px;">
                 <label style="font-size:16px;opacity:1;">
                     Whatsapp Number
                 </label><br>
 
-                <input class="form-input h35" type="text" value="+6285888889999">
+                <input type="text" name="whatsapp" id="editWhatsapp"
+                       class="form-input h35">
             </div>
+            
+            <!-- Mobile Legend -->
+            <div style="margin-bottom:16px;">
+                <label style="font-size:16px;opacity:1;">
+                    ID Mobile Legend
+                    @if ($team->competition !== 'E-sport')
+                        <span style="opacity:0.5;">(optional)</span>
+                    @endif
+                </label><br>
+                <input type="text" name="mobilelegend" id="editMobilelegend" class="form-input h35">
+            </div>    
 
-            <!-- BUTTONS -->
-            <div style="
-                display:flex;
-                justify-content:flex-end;
-                gap:8px;
-            ">
-
-                <button type="button" id="cancelPlayerEditModal" class="btn btn-cancel">
+            <!-- BUTTON -->
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button"
+                        id="closeEditPlayerModal"
+                        class="btn btn-cancel hover:bg-gray-500">
                     Cancel
                 </button>
 
-                <button type="submit" class="btn btn-primary">
-                    Edit
+                <button type="submit"
+                        class="btn btn-primary hover:bg-blue-600">
+                    Update Player
                 </button>
-                
             </div>
         </form>
     </div>
@@ -819,7 +895,9 @@
     </div>
 </div>
 
+
 <script>
+document.addEventListener('DOMContentLoaded', function () {
     //Add Player
     // ===== EXISTING PLAYER MODAL =====
     const openExistingBtn = document.getElementById('openAddPlayer');
@@ -871,16 +949,36 @@
     cancelAddCrewBtn.onclick = () => addCrewModal.style.display = "none";
 
     //Detail Player
-    const playerDetailBtns = document.querySelectorAll('.openPlayerDetail');
-    const playerDetailModal = document.getElementById('playerDetailModal');
-    const closePlayerDetailBtn = document.getElementById('closePlayerModal');
-    playerDetailBtns.forEach(btn => {
-        btn.onclick = (e) => {
-            e.preventDefault();
-            playerDetailModal.style.display = "flex";
-        }
+    const detailButtons = document.querySelectorAll('.openPlayerDetail');
+    const modal = document.getElementById('playerDetailModal');
+    const closeBtn = document.getElementById('closePlayerModal');
+
+    detailButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+
+            document.getElementById('modalName').value = btn.dataset.name || '-';
+            document.getElementById('modalNRP').value = btn.dataset.nrp || '-';
+            document.getElementById('modalMajor').value = btn.dataset.major || '-';
+            document.getElementById('modalWhatsapp').value = btn.dataset.whatsapp || '-';
+            document.getElementById('modalStatus').value = btn.dataset.status || '-';
+            document.getElementById('modalMobilelegend').value = btn.dataset.mobilelegend || '-';
+
+            // KTM PATH (storage)
+            let ktmPath = btn.dataset.ktm;
+
+            if (ktmPath) {
+                let fullPath = `/storage/${ktmPath}`;
+
+                document.getElementById('modalKTM').href = fullPath;                
+            }
+
+            modal.style.display = 'flex';
+        });
     });
-    closePlayerDetailBtn.onclick = () => {playerDetailModal.style.display = "none";}
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
 
     //Detail Crew
     const crewDetailBtns = document.querySelectorAll('.openCrewDetail');
@@ -894,17 +992,40 @@
     });
     closeCrewDetailBtn.onclick = () => {crewDetailModal.style.display = "none";}
 
-    //Edit Player
-    const playerEditBtns = document.querySelectorAll('.openPlayerEdit');
-    const playerEditModal = document.getElementById('playerEditModal');
-    const cancelPlayerEditBtn = document.getElementById('cancelPlayerEditModal');
-    playerEditBtns.forEach(btn => {
-        btn.onclick = (e) => {
+    // ===== EDIT PLAYER MODAL =====
+    const editButtons = document.querySelectorAll('.editPlayerButton');
+    const editModal = document.getElementById('playerEditModal');
+    const closeEditBtn = document.getElementById('closeEditPlayerModal');
+    const editForm = document.getElementById('editPlayerForm');
+
+    editButtons.forEach(btn => {
+        btn.addEventListener('click', function (e) {
             e.preventDefault();
-            playerEditModal.style.display = "flex";
-        }
+
+            let playerId = this.dataset.id;
+
+            // Set form action 
+            editForm.action = `/teams/{{ $team->id }}/participant/${playerId}`;
+
+            // Isi data lama ke textbox
+            document.getElementById('editName').value = this.dataset.name || '';
+            document.getElementById('editNRP').value = this.dataset.nrp || '';
+            document.getElementById('editMajor').value = this.dataset.major || '';
+            document.getElementById('editWhatsapp').value = this.dataset.whatsapp || '';
+            document.getElementById('editMobilelegend').value = this.dataset.mobilelegend || '';
+
+            // Tampilkan modal
+            editModal.style.display = 'flex';
+        });
     });
-    cancelPlayerEditBtn.onclick = () => {playerEditModal.style.display = "none";}
+
+    // Close modal
+    if (closeEditBtn) {
+        closeEditBtn.addEventListener('click', function () {
+            editModal.style.display = 'none';
+        });
+    }
+    
 
     //Edit Crew
     const crewEditBtns = document.querySelectorAll('.openCrewEdit');
@@ -917,9 +1038,23 @@
         }
     });
     cancelCrewEditBtn.onclick = () => {crewEditModal.style.display = "none";}
+});    
 </script>
 <script src="https:unpkg.com/feather-icons"></script>
 <script>
     feather.replace()
 </script>
+{{-- Modal Add New Player --}}
+@if ($errors->addNewPlayer->any())
+<script>
+    document.getElementById('addNewPlayerModal').style.display = 'flex';
+</script>
+@endif
+
+{{-- Modal Add Existing Player --}}
+@if ($errors->addExistingPlayer->any())
+<script>
+    document.getElementById('addExistingPlayerModal').style.display = 'flex';
+</script>
+@endif
 @endsection

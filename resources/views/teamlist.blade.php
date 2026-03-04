@@ -91,11 +91,18 @@
                                     </a>
 
                                     <!-- Delete Button -->
-                                    <button 
-                                        class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20"
-                                    >
-                                        <i data-feather="trash-2"></i>
-                                    </button>
+                                    <form action="{{ route('teams.destroy', $team->id) }}" 
+                                        method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus team ini?')">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button 
+                                            type="submit"
+                                            class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20">
+                                            <i data-feather="trash-2"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -127,22 +134,41 @@
             <div style="margin-bottom:16px;">
                 <label style="font-size:18px;">Team Name</label><br>
                 <input type="text" name="name" class="form-input" required>
+                @error('name')
+                    <div style="color:red; margin-top:6px;">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <!-- Competition -->
             <div style="margin-bottom:20px;">
                 <label style="font-size:18px;">Competition</label><br>
                 <select name="competition" class="form-input h40" required>
-                    <option style="color:black;" value="Basket">Basket</option>
+                    <option style="color:black;" value="Basket Putra">Basket Putra</option>
+                    <option style="color:black;" value="Basket Putri">Basket Putri</option>
+
                     <option style="color:black;" value="Futsal">Futsal</option>
-                    <option style="color:black;" value="Voli">Voli</option>
+
+                    <option style="color:black;" value="Voli Putra">Voli Putra</option>
+                    <option style="color:black;" value="Voli Putri">Voli Putri</option>
+
+                    <option style="color:black;" value="Badminton Ganda Putra">Badminton Ganda Putra</option>
+                    <option style="color:black;" value="Badminton Ganda Putri">Badminton Ganda Putri</option>
+                    <option style="color:black;" value="Badminton Ganda Campuran">Badminton Ganda Campuran</option>
+
                     <option style="color:black;" value="E-sport">E-sport</option>
                     <option style="color:black;" value="Poster">Poster</option>
                     <option style="color:black;" value="Lukis">Lukis</option>
                     <option style="color:black;" value="Dance">Dance</option>
-                    <option style="color:black;" value="Fotografi">Fotografi</option>
-                    
+                    <option style="color:black;" value="Fotografi">Fotografi</option>                    
                 </select>
+
+                @error('competition')
+                    <div style="color:red; margin-top:6px;">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <div class="modal-actions">
@@ -173,6 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if(closeBtn && modal){
         closeBtn.onclick = () => modal.style.display = "none";
     }
+    
 
 });
 </script>
@@ -180,4 +207,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
     feather.replace()
 </script>
+@if ($errors->any())
+<script>
+    document.getElementById('teamModal').style.display = 'flex';
+</script>
+@endif
 @endsection

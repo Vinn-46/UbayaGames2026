@@ -17,7 +17,7 @@ return new class extends Migration
                   ->constrained('houses')
                   ->cascadeOnDelete();
             $table->string('name', 255);
-            $table->string('nrp',9);
+            $table->string('nrp',9)->unique();;
             $table->string('major',45);
             $table->text('ktm_photo');
             $table->string('whatsapp',20);
