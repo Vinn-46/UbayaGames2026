@@ -20,11 +20,12 @@
 
         /* Setting Khusus HP */
         .custom-bg-responsive {
+            background-color: #000000;
             background-image: url("{{ asset('assets/bgvertical.png') }}");
-            background-attachment: fixed; 
-            background-size: cover;
-            background-position: center; 
-            background-repeat: no-repeat;
+            background-attachment: fixed !important;
+            background-size: cover !important;
+            background-position: center !important; 
+            background-repeat: no-repeat !important;
         }
 
         /* Setting Khusus Laptop */
@@ -37,7 +38,7 @@
     </style>
 </head>
 
-<body class="text-[#CBDCC1] font-['Georgia'] min-h-screen custom-bg-responsive">
+<body class="bg-black text-[#CBDCC1] font-['Georgia'] min-h-screen custom-bg-responsive">
     
     {{-- NAVBAR --}}
     <nav class="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-md px-4 sm:px-6"> 
