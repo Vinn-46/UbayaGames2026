@@ -119,19 +119,32 @@ class ParticipantController extends Controller
     {
         $participant = Participant::findOrFail($id);
 
+        // Update status sesuai pilihan dropdown
         $participant->status = $request->status;
+
+        // Cek jika status yang dipilih adalah "Diterima"
+        if ($request->status === 'Diterima') {
+            $participant->revision = null; // Kosongkan notes revisi
+        }
+
         $participant->save();
 
-        return back();
+        return redirect()->back()->with('success', 'Status berhasil diupdate');
     }
 
     public function updateRevision(Request $request)
     {
-        $participant = Participant::findOrFail($request->id);
+        $validated = $request->validate([
+            'id' => 'required|exists:participants,id',
+            'revision' => 'nullable|string'
+        ]);
 
-        $participant->revision = $request->revision;
+        $participant = Participant::findOrFail($validated['id']);
+
+        $participant->revision = $validated['revision'];
         $participant->save();
 
-        return back();
+        // UBAH BAGIAN INI: Tambahkan with('success', 'pesan...')
+        return redirect()->back()->with('success', 'Revision notes berhasil disimpan');
     }
 }

@@ -88,7 +88,16 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+
             //sekret
+            [
+                'username' => 'Sekre',
+                'password' => Hash::make('sekre123'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
             //cablom
 
