@@ -104,6 +104,43 @@
             </section>
         </div>
 
+        {{-- CABANG LOMBA --}}
+        <section class="w-full px-4 sm:px-6 mb-32">
+            <h2 class="text-center text-sm sm:text-xl mb-10 font-bold text-white font-heading">Cabang Lomba</h2>
+        
+            <div class="relative w-full">
+            <div class="w-full overflow-x-auto scrollbar-hide"
+                style="scroll-padding-left: 50%;">
+                <div class="flex flex-nowrap gap-4 md:gap-6 w-max mx-auto justify-center pb-4">
+                    @php
+                    $cabangs = [
+                        ['name' => 'Basket',      'icon' => 'assets/icons/Basket.png'],
+                        ['name' => 'Futsal',      'icon' => 'assets/icons/Futsal.png'],
+                        ['name' => 'Voli',        'icon' => 'assets/icons/Volley.png'],
+                        ['name' => 'Badminton',   'icon' => 'assets/icons/Badminton.png'],
+                        ['name' => 'E-Sport',     'icon' => 'assets/icons/Esport.png'],
+                        ['name' => 'Dance',       'icon' => 'assets/icons/Dance.png'],
+                        ['name' => 'Fotografi',   'icon' => 'assets/icons/Fotografi.png'],
+                        ['name' => 'Lukis',       'icon' => 'assets/icons/Melukis.png'],
+                        ['name' => 'Poster',      'icon' => 'assets/icons/Poster.png'],
+                    ];
+                    @endphp          
+                    @foreach ($cabangs as $namacabang)
+                    <div class="w-[200px] sm:w-[240px] md:w-[280px]
+                                flex-shrink-0 
+                                bg-black/20 backdrop-blur-md border border-white/30 shadow-lg
+                                rounded-2xl p-2 flex items-center justify-center aspect-square"> 
+                                <img src="{{ asset($namacabang['icon']) }}"
+                                    class="w-full h-full object-contain drop-shadow-md"
+                                    style="width: 100% !important; height: 100% !important;" 
+                                    alt="{{ $namacabang['name'] }}">
+                    </div>
+                    @endforeach  
+                </div>
+            </div>
+            </div>
+        </section>
+
         {{-- 3. FOOTER (Pindahkan ke luar div konten) --}}
     <div class="w-full mt-auto">
         @include('layouts.footer')
