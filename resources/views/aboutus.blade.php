@@ -141,6 +141,16 @@
             </div>
         </section>
 
+        {{-- COLLABORATION --}}
+        <section class="w-full px-4 sm:px-6 mb-24">
+            <h2 class="text-center text-xs sm:text-sm tracking-widest mb-8 text-gray-300">
+                In collaboration with
+            </h2>
+            <img src="{{ asset('assets/Collaboration.png') }}"
+                alt="Collaboration Partners"
+                class="mx-auto h-10 sm:h-14 md:h-18 object-contain">
+        </section>
+
         {{-- 3. FOOTER (Pindahkan ke luar div konten) --}}
     <div class="w-full mt-auto">
         @include('layouts.footer')
