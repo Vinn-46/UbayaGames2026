@@ -534,6 +534,15 @@
 
         <!-- FORM -->
         <form action="{{ route('crew.addCrew', $team->id) }}" method="POST" enctype="multipart/form-data">
+            @if ($errors->any())
+                <div style="color:red; margin-bottom:10px;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         @csrf
 
             <!-- Crew Name -->

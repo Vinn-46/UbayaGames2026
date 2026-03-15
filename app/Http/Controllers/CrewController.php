@@ -12,21 +12,19 @@ class CrewController extends Controller
 {
     public function addCrew(Request $request, Team $team)
     {
-
         $request->validate([
             'name' => 'required',
             'whatsapp' => 'required',
             'nrp' => 'nullable',
             'major' => 'nullable',
             'ktm_photo' => 'nullable',
-            'team_id' => 'required',
         ]);
 
         $ktmPath = null;
 
         if ($request->hasFile('ktm_photo')) {
-        $ktmPath = $request->file('ktm_photo')->store('ktm_photos', 'public');
-}
+            $ktmPath = $request->file('ktm_photo')->store('ktm_photos', 'public');
+        }
 
         // create crew
         $crew = Crew::create([
@@ -44,6 +42,7 @@ class CrewController extends Controller
             ->with('success','Crew berhasil ditambahkan')
             ->with('openExistingCrewModal', true);
     }
+
 
     public function attachCrew(Request $request, Team $team)
 {
