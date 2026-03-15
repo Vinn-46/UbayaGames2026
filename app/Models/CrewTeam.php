@@ -11,6 +11,7 @@ class CrewTeam extends Model
     protected $fillable = [
         'team_id',
         'crew_id',
+        'role'
     ];
 
     public function team()

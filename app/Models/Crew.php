@@ -11,12 +11,12 @@ class Crew extends Model
     protected $fillable = [
         'name',
         'whatsapp',
-        'role',
         'nrp',
         'major',
         'ktm_photo',
         'status',
-        'revision'
+        'revision',
+        'house_id'
     ];
 
     public function crewTeams()

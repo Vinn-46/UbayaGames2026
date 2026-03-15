@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CrewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -108,3 +109,11 @@ Route::put('/crews/{id}/status',
 Route::put('/crews/{id}/revision',
     [CrewController::class,'updateRevision'])
     ->name('crews.updateRevision');
+
+Route::post('/crew/addCrew', 
+    [CrewController::class, 'addCrew'])
+    ->name('crew.addCrew');
+
+Route::post('/crew/attach/{team}', 
+    [CrewController::class, 'attachCrew'])
+    ->name('crew.attachCrew');

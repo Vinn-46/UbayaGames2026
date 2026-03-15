@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name',255);
             $table->string('whatsapp', 20);
-            $table->enum('role', ['Coach', 'Assistant Coach', 'Medic', 'Official']);
             $table->string('nrp',20)->nullable();
             $table->string('major',45)->nullable();
             $table->text('ktm_photo')->nullable();
             $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
             $table->text('revision')->nullable();
+            $table->foreignId('house_id')
+                  ->constrained('houses')
+                  ->cascadeOnDelete();
         });
     }
 

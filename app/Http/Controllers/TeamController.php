@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Crew;
 use App\Models\Participant;
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +79,8 @@ class TeamController extends Controller
         $majorsForCurrentHouse = getMajorsByHouse($team->house->name);
 
         $houseParticipants = Participant::where('house_id', Auth::user()->house_id)->get();
+
+        $houseCrews = Crew::where('house_id', Auth::user()->house_id)->get();
         
         $players = $team->participants;
         $crews = getCrewsByTeam($team);
@@ -87,7 +90,8 @@ class TeamController extends Controller
             'majorsForCurrentHouse',
             'players',
             'crews',
-            'houseParticipants'
+            'houseParticipants',
+            'houseCrews'
         ));
     }   
 

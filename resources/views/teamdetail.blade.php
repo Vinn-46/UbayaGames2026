@@ -206,7 +206,7 @@
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    {{ $crew->crew->role }}
+                                    {{ $crew->role }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
@@ -431,8 +431,101 @@
     </div>
 </div>
 
+<div id="addExistingCrewModal" class="modal-overlay">
 
-<div id="addCrewModal" class="modal-overlay">
+    <div class="modal-card">
+
+        <h2 class="modal-title">Add Crew</h2>
+
+        <form action="{{ route('crew.attachCrew', $team->id) }}" method="POST">
+            @csrf
+
+            <!-- Dropdown Crew -->
+            <div style="margin-bottom:20px;">
+                <label style="font-size:16px;opacity:1;">
+                    Select Crew
+                </label><br>
+
+                <select name="crew_id" class="form-input h40 text-black" required>
+                    @forelse($houseCrews as $crew)
+                        <option style="color:black;" value="{{ $crew->id }}">
+                            {{ $crew->name }} ({{ $crew->whatsapp }})
+                        </option>
+                    @empty
+                        <option value="" disabled selected>Belum ada crew</option>
+                    @endforelse
+                </select>
+
+                @error('crew', 'addExistingCrew')
+                <div style="color:red; margin-top:6px;">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+
+
+            <!-- Role Selector -->
+            <div style="margin-bottom:20px;">
+                <label style="font-size:16px;opacity:1;">
+                    Role
+                </label><br>
+
+                <select name="role" class="form-input h40 text-black" required>
+                    <option style="color:black;" value="Coach">Coach</option>
+                    <option style="color:black;" value="Assistant Coach">Assistant Coach</option>
+                    <option style="color:black;" value="Medic">Medic</option>
+                    <option style="color:black;" value="Koorcab">Koorcab</option>
+                </select>
+
+                @error('role', 'addExistingCrew')
+                <div style="color:red; margin-top:6px;">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+
+
+            <!-- BUTTONS -->
+            <div style="
+                display:flex;
+                flex-direction:column;
+                gap:12px;
+            ">
+
+                <!-- Row: Cancel + Add -->
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    gap:12px;
+                ">
+                    <button type="button"
+                            id="closeAddExistingCrewModal"
+                            class="btn btn-cancel hover:bg-gray-500">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary bg-blue-600 hover:bg-blue-500">
+                        Add Crew
+                    </button>
+                </div>
+
+                <!-- Row: Add New Crew -->
+                <button type="button"
+                        id="openAddCrewModal"
+                        class="btn btn-secondary hover:bg-blue-500"
+                        style="width:100%;">
+                    + Add New Crew
+                </button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<div id="addNewCrewModal" class="modal-overlay">
 
     <div class="modal-card">
 
@@ -440,7 +533,8 @@
         <h2 class="modal-title">Add Crew</h2>
 
         <!-- FORM -->
-        <form>
+        <form action="{{ route('crew.addCrew', $team->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
             <!-- Crew Name -->
             <div style="margin-bottom:5px;">
@@ -448,7 +542,7 @@
                     Crew Name
                 </label><br>
 
-                <input class="form-input h35">
+                <input name="name" class="form-input h35" required>
             </div>
 
             <!-- WhatsApp Number -->
@@ -457,21 +551,7 @@
                     Whatsapp Number
                 </label><br>
 
-                <input class="form-input h35">
-            </div>
-
-            <!-- Role -->
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">
-                    Role
-                </label><br>
-
-                <select class="form-input h40">
-                    <option style="color:black;">Official</option>
-                    <option style="color:black;">Coach</option>
-                    <option style="color:black;">Assistant Coach</option>
-                    <option style="color:black;">Role</option>
-                </select>
+                <input name="whatsapp" class="form-input h35" required>
             </div>
 
             <!-- NRP -->
@@ -481,7 +561,7 @@
                     <span style="opacity:0.5;">(optional)</span>
                 </label>
 
-                <input class="form-input h35">
+                <input name="nrp" class="form-input h35">
             </div>
 
             <!-- Major -->
@@ -507,7 +587,7 @@
                     <span style="opacity:0.5;">(optional)</span>
                 </label>
 
-               <input type="file" class="form-input h45">
+               <input type="file" name="ktm_photo"class="form-input h45">
             </div>
            
 
@@ -941,12 +1021,35 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     
 
-    //Add Crew
-    const addCrewBtn = document.getElementById('openAddCrew');
-    const addCrewModal = document.getElementById('addCrewModal');
-    const cancelAddCrewBtn = document.getElementById('closeAddCrewModal');
-    addCrewBtn.onclick = () => addCrewModal.style.display = "flex";
-    cancelAddCrewBtn.onclick = () => addCrewModal.style.display = "none";
+   // ===== EXISTING CREW MODAL =====
+const openCrewBtn = document.getElementById('openAddCrew');
+const existingCrewModal = document.getElementById('addExistingCrewModal');
+const closeExistingCrewBtn = document.getElementById('closeAddExistingCrewModal');
+
+if(openCrewBtn){
+    openCrewBtn.onclick = () => existingCrewModal.style.display = "flex";
+}
+
+if(closeExistingCrewBtn){
+    closeExistingCrewBtn.onclick = () => existingCrewModal.style.display = "none";
+}
+
+
+// ===== NEW CREW MODAL =====
+const openNewCrewBtn = document.getElementById('openAddCrewModal');
+const newCrewModal = document.getElementById('addNewCrewModal');
+const closeNewCrewBtn = document.getElementById('closeAddCrewModal');
+
+if(openNewCrewBtn){
+    openNewCrewBtn.onclick = () => {
+        existingCrewModal.style.display = "none";
+        newCrewModal.style.display = "flex";
+    };
+}
+
+if(closeNewCrewBtn){
+    closeNewCrewBtn.onclick = () => newCrewModal.style.display = "none";
+}
 
     //Detail Player
     const detailButtons = document.querySelectorAll('.openPlayerDetail');
@@ -1040,7 +1143,7 @@ document.addEventListener('DOMContentLoaded', function () {
     cancelCrewEditBtn.onclick = () => {crewEditModal.style.display = "none";}
 });    
 </script>
-<script src="https:unpkg.com/feather-icons"></script>
+<script src="https://unpkg.com/feather-icons"></script>
 <script>
     feather.replace()
 </script>
@@ -1058,3 +1161,10 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endif
 @endsection
+
+@if(session('openExistingCrewModal'))
+<script>
+document.getElementById('addExistingCrewModal').style.display = 'flex';
+</script>
+@endif
+
