@@ -17,72 +17,72 @@ class UserSeeder extends Seeder
         $users = [
             //kontingen
             [
-                'username' => 'Farmasi',
-                'password' => Hash::make('admin123'),
+                'username' => 'elixir',
+                'password' => Hash::make('stark@812'),
                 'role' => 'Kontingen',
                 'house_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'username' => 'Hukum',
-                'password' => Hash::make('admin123'),
+                'username' => 'justicia',
+                'password' => Hash::make('snow@459'),
                 'role' => 'Kontingen',
                 'house_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'username' => 'Fbe',
-                'password' => Hash::make('admin123'),
+                'username' => 'mercator',
+                'password' => Hash::make('raven@371'),
                 'role' => 'Kontingen',
                 'house_id' => 3,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'username' => 'Politeknik',
-                'password' => Hash::make('admin123'),
+                'username' => 'praxis',
+                'password' => Hash::make('iron@624'),
                 'role' => 'Kontingen',
                 'house_id' => 4,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'username' => 'Psikologi',
-                'password' => Hash::make('admin123'),
+                'username' => 'arcana',
+                'password' => Hash::make('wolf@193'),
                 'role' => 'Kontingen',
                 'house_id' => 5,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'username' => 'Teknik',
-                'password' => Hash::make('admin123'),
+                'username' => 'fortis',
+                'password' => Hash::make('weareone@404'),
                 'role' => 'Kontingen',
                 'house_id' => 6,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'username' => 'Teknobiologi',
-                'password' => Hash::make('admin123'),
+                'username' => 'vivens',
+                'password' => Hash::make('hodor@508'),
                 'role' => 'Kontingen',
                 'house_id' => 7,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'username' => 'Fik',
-                'password' => Hash::make('admin123'),
+                'username' => 'creatio',
+                'password' => Hash::make('wall@742'),
                 'role' => 'Kontingen',
                 'house_id' => 8,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'username' => 'Kedokteran',
-                'password' => Hash::make('admin123'),
+                'username' => 'vitalis',
+                'password' => Hash::make('king@285'),
                 'role' => 'Kontingen',
                 'house_id' => 9,
                 'created_at' => now(),
@@ -91,8 +91,44 @@ class UserSeeder extends Seeder
 
             //sekret
             [
-                'username' => 'Sekre',
-                'password' => Hash::make('sekre123'),
+                'username' => 'debrina',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'edwin',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'celine',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'felicia',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'gisyele',
+                'password' => Hash::make('sekret@!1234'),
                 'role' => 'Sekretariat',
                 'house_id' => NULL,
                 'created_at' => now(),
@@ -102,6 +138,14 @@ class UserSeeder extends Seeder
             //cablom
 
             //admin
+            [
+                'username' => 'sigacor',
+                'password' => Hash::make('juanjeL3K@123'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ];
         DB::table('users')->insert($users);
     }
