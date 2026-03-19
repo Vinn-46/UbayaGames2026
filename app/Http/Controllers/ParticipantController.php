@@ -29,6 +29,7 @@ class ParticipantController extends Controller
             'major' => 'required',
             'ktm_photo' => 'required|image',
             'whatsapp' => 'required',
+            'back_number' => 'nullable',
             'mobilelegend' => 'nullable'
         ]);
 
@@ -41,6 +42,7 @@ class ParticipantController extends Controller
             'major' => $validated['major'],
             'ktm_photo' => $path,
             'whatsapp' => $validated['whatsapp'],
+            'back_number' => $validated['back_number'] ?? null,
             'mobilelegend' => $team->competition == 'E-sport'
                 ? $validated['mobilelegend']
                 : null,
@@ -87,6 +89,7 @@ class ParticipantController extends Controller
             'major' => 'required',
             'ktm_photo' => 'nullable|image',
             'whatsapp' => 'required',
+            'back_number' => 'nullable',
             'mobilelegend' => 'nullable'
         ]);
 
@@ -108,6 +111,7 @@ class ParticipantController extends Controller
         $participant->nrp = $request->nrp;
         $participant->major = $request->major;
         $participant->whatsapp = $request->whatsapp;
+        $participant->back_number = $request->back_number;
         $participant->mobilelegend = $request->mobilelegend;
 
         $participant->save();

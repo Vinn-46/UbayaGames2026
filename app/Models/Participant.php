@@ -15,6 +15,7 @@ class Participant extends Model
         'major',
         'ktm_photo',
         'whatsapp',
+        'back_number',
         'mobilelegend',
         'status',
         'revision'

@@ -396,6 +396,29 @@
                 <input type="text" name="whatsapp" class="form-input h35" required>
             </div>
 
+            <div style="margin-bottom:16px;">
+                <label style ="font-size:16px;opacity:1;">
+                    Back Number
+                    <span style="opacity:0.5;">(optional)</span>
+                    @if ($team->competition !== 'Futsal' || 
+                        $team->competition !== 'Basket Putra' || 
+                        $team->competition !== 'Basket Putri' || 
+                        $team->competition !== 'Voli Putra' || 
+                        $team->competition !== 'Voli Putri')
+                        <span style="opacity:0.5;">(optional)</span>
+                    @endif
+                </label><br>
+
+                <input type="text" name="back_number" class="form-input h35"
+                    @if($team->competition === 'Futsal' || 
+                        $team->competition === 'Basket Putra' || 
+                        $team->competition === 'Basket Putri' || 
+                        $team->competition === 'Voli Putra' || 
+                        $team->competition === 'Voli Putri') 
+                        required 
+                    @endif>
+            </div>
+
             <!-- Mobile Legend -->
             <div style="margin-bottom:16px;">
                 <label style="font-size:16px;opacity:1;">
@@ -942,14 +965,13 @@
                     <span style="opacity:0.5;">(optional)</span>
                 </label>
 
-                <select class="form-input h40">
-
-                    <!-- NULL OPTION -->
-                    <option style="color:black;" value="">Tidak ada</option>
-                    <option style="color:black;" value="Teknik Informatika">Teknik Informatika</option>
-                    <option style="color:black;" value="Teknik Industri">Teknik Industri</option>
-                    <option style="color:black;" value="Teknik Elektro">Teknik Elektro</option>
-                
+                <select name="major" id="editMajor" 
+                        class="form-input h40 text-black" required>
+                    @foreach($majorsForCurrentHouse as $major)
+                        <option style="color:black;" value="{{ $major }}">
+                            {{ $major }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
