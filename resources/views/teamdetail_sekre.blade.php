@@ -196,10 +196,16 @@
                                         {{ $crew->crew->name }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        {{ $crew->crew->role }}
+                                        {{ $crew->role }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        <button class="openCrewDetail bg-white/10 px-3 py-1 rounded">
+                                        <button class="openCrewDetail bg-white/10 px-3 py-1 rounded"
+                                            data-name="{{ $crew->crew->name }}"
+                                            data-nrp="{{ $crew->crew->nrp }}"
+                                            data-major="{{ $crew->crew->major }}"
+                                            data-whatsapp="{{ $crew->crew->whatsapp }}"
+                                            data-status="{{ $crew->crew->status }}"
+                                            data-ktm="{{ $crew->crew->ktm_photo }}">
                                             Detail
                                         </button>
                                     </td>
@@ -266,83 +272,37 @@
     </div>
 </div>
 
-{{-- POP UP DETAIL PLAYER --}}
+{{-- ================= POP UP DETAIL PLAYER ================= --}}
 <div id="playerDetailModal" class="modal-overlay" style="display:none;">
-
     <div class="modal-card">
-
-        <!-- TITLE -->
         <h2 class="modal-title">Detail Player</h2>
-
-        <!-- FORM (readonly) -->
         <form>
-
-            <!-- Player Name -->
             <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Player Name
-                </label><br>
-
-                <input type="text" id="modalName" 
-                       class="form-input h35" 
-                       readonly>
+                <label style="font-size:16px;opacity:1;">Player Name</label><br>
+                <input type="text" id="modalName" class="form-input h35" readonly>
             </div>
-
-            <!-- NRP -->
             <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    NRP
-                </label><br>
-
-                <input type="text" id="modalNRP" 
-                       class="form-input h35" 
-                       readonly>
+                <label style="font-size:16px;opacity:1;">NRP</label><br>
+                <input type="text" id="modalNRP" class="form-input h35" readonly>
             </div>
-
-            <!-- Major -->
             <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Major
-                </label><br>
-
-                <input type="text" id="modalMajor" 
-                       class="form-input h35" 
-                       readonly>
+                <label style="font-size:16px;opacity:1;">Major</label><br>
+                <input type="text" id="modalMajor" class="form-input h35" readonly>
             </div>
-
-            <!-- KTM -->
             <div style="margin-bottom:10px;">
                 <label style="font-size:16px;opacity:1;">
                     KTM:  
-                    <a href="#" target="_blank" id="modalKTM"
-                        class="text-blue-400 underline">
-                        View KTM
-                    </a>
+                    <a href="#" target="_blank" id="modalKTM" class="text-blue-400 underline">View KTM</a>
                 </label><br>               
             </div>
-
-            <!-- WhatsApp -->
             <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Whatsapp Number
-                </label><br>
-
-                <input type="text" id="modalWhatsapp" 
-                       class="form-input h35" 
-                       readonly>
+                <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
+                <input type="text" id="modalWhatsapp" class="form-input h35" readonly>
             </div>
-
-            <!-- Status -->
             <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">
-                    Status
-                </label><br>
-
-                <input type="text" id="modalStatus" 
-                       class="form-input h35" 
-                       readonly>
+                <label style="font-size:16px;opacity:1;">Status</label><br>
+                <input type="text" id="modalStatus" class="form-input h35" readonly>
             </div>
-            <!-- Mobile Legend -->
             <div style="margin-bottom:16px;">
                 <label style="font-size:16px;opacity:1;">
                     ID Mobile Legend
@@ -350,17 +310,48 @@
                         <span style="opacity:0.5;">(optional)</span>
                     @endif
                 </label><br>
-                <input type="text" id="modalMobilelegend" 
-                        class="form-input h35"
-                        readonly>
+                <input type="text" id="modalMobilelegend" class="form-input h35" readonly>
             </div>    
-            <!-- BUTTON -->
             <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button" 
-                        id="closePlayerModal" 
-                        class="btn btn-cancel hover:bg-gray-500">
-                    Close
-                </button>
+                <button type="button" id="closePlayerModal" class="btn btn-cancel hover:bg-gray-500">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- ================= POP UP DETAIL CREW (BARU) ================= --}}
+<div id="crewDetailModal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+        <h2 class="modal-title">Detail Crew</h2>
+        <form>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">Crew Name</label><br>
+                <input type="text" id="modalCrewName" class="form-input h35" readonly>
+            </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">NRP</label><br>
+                <input type="text" id="modalCrewNRP" class="form-input h35" readonly>
+            </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">Major</label><br>
+                <input type="text" id="modalCrewMajor" class="form-input h35" readonly>
+            </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    KTM:  
+                    <a href="#" target="_blank" id="modalCrewKTM" class="text-blue-400 underline">View KTM</a>
+                </label><br>               
+            </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
+                <input type="text" id="modalCrewWhatsapp" class="form-input h35" readonly>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="font-size:16px;opacity:1;">Status</label><br>
+                <input type="text" id="modalCrewStatus" class="form-input h35" readonly>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" id="closeCrewModal" class="btn btn-cancel hover:bg-gray-500">Close</button>
             </div>
         </form>
     </div>
@@ -376,20 +367,17 @@
         
         document.getElementById('revision_text').value = revision ?? '';
         
-        // BARIS INI DIHAPUS agar tidak error:
-        // document.getElementById('revision_type').value = type;
-
         const form = document.getElementById('revisionForm');
 
         if(type === 'team')
         {
             form.action = "{{ route('teams.updateRevision') }}";
-            idInput.name = 'team_id'; // Untuk TeamController
+            idInput.name = 'team_id'; 
         }
         else if(type === 'player')
         {
             form.action = "{{ route('participants.updateRevision') }}";
-            idInput.name = 'id'; // Untuk ParticipantController
+            idInput.name = 'id'; 
         }
         else if(type === 'crew')
         {
@@ -403,14 +391,13 @@
         document.getElementById('revisionModal').style.display = "none";
     }
 
-    //Detail Player
-    const detailButtons = document.querySelectorAll('.openPlayerDetail');
-    const modal = document.getElementById('playerDetailModal');
-    const closeBtn = document.getElementById('closePlayerModal');
+    //================= LOGIC DETAIL PLAYER =================
+    const playerDetailButtons = document.querySelectorAll('.openPlayerDetail');
+    const playerModal = document.getElementById('playerDetailModal');
+    const closePlayerBtn = document.getElementById('closePlayerModal');
 
-    detailButtons.forEach(btn => {
+    playerDetailButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-
             document.getElementById('modalName').value = btn.dataset.name || '-';
             document.getElementById('modalNRP').value = btn.dataset.nrp || '-';
             document.getElementById('modalMajor').value = btn.dataset.major || '-';
@@ -418,20 +405,45 @@
             document.getElementById('modalStatus').value = btn.dataset.status || '-';
             document.getElementById('modalMobilelegend').value = btn.dataset.mobilelegend || '-';
 
-            // KTM PATH (storage)
             let ktmPath = btn.dataset.ktm;
-
             if (ktmPath) {
                 let fullPath = `/storage/${ktmPath}`;
                 document.getElementById('modalKTM').href = fullPath;                
             }
 
-            modal.style.display = 'flex';
+            playerModal.style.display = 'flex';
         });
     });
 
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
+    closePlayerBtn.addEventListener('click', () => {
+        playerModal.style.display = 'none';
+    });
+
+    //================= LOGIC DETAIL CREW (BARU) =================
+    const crewDetailButtons = document.querySelectorAll('.openCrewDetail');
+    const crewModal = document.getElementById('crewDetailModal');
+    const closeCrewBtn = document.getElementById('closeCrewModal');
+
+    crewDetailButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('modalCrewName').value = btn.dataset.name || '-';
+            document.getElementById('modalCrewNRP').value = btn.dataset.nrp || '-';
+            document.getElementById('modalCrewMajor').value = btn.dataset.major || '-';
+            document.getElementById('modalCrewWhatsapp').value = btn.dataset.whatsapp || '-';
+            document.getElementById('modalCrewStatus').value = btn.dataset.status || '-';
+
+            let ktmPath = btn.dataset.ktm;
+            if (ktmPath) {
+                let fullPath = `/storage/${ktmPath}`;
+                document.getElementById('modalCrewKTM').href = fullPath;                
+            }
+
+            crewModal.style.display = 'flex';
+        });
+    });
+
+    closeCrewBtn.addEventListener('click', () => {
+        crewModal.style.display = 'none';
     });
 </script>
 
