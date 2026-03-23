@@ -4,6 +4,7 @@ use App\Http\Controllers\CrewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ParticipantController;
 
@@ -31,7 +32,7 @@ Route::get('/leaderboard', function () {
 Route::get('/login', function () {
     return view('login');
 })->name('login');
-use App\Http\Controllers\LoginController;
+
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.action');
 
 // Route untuk Logout
@@ -73,6 +74,10 @@ Route::delete('/teams/{team}/participant/{participant}',
 Route::put('/teams/{team}/participant/{participant}', 
     [ParticipantController::class, 'update']
 )->name('participant.update');
+
+Route::delete('/teams/{team}/crew/{crew}', 
+    [CrewController::class, 'destroyCrew'])
+->name('crew.destroyCrew');
 
 //delete team
 Route::delete('/teams/{id}', [TeamController::class, 'deleteTeam'])
@@ -117,3 +122,7 @@ Route::post('/crew/addCrew',
 Route::post('/crew/attach/{team}', 
     [CrewController::class, 'attachCrew'])
     ->name('crew.attachCrew');
+
+Route::put('/teams/{team}/crew/{crew}', 
+    [CrewController::class, 'updateCrew'])
+    ->name('crew.updateCrew');

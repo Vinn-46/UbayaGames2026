@@ -208,33 +208,48 @@
                                 <td class="px-6 py-4 text-center">
                                     {{ $crew->role }}
                                 </td>
-
+                                
                                 <td class="px-6 py-4 text-center">
-                                    <a href="#"
+                                <a href="#"
                                     class="openCrewDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                             bg-cyan-500/20 text-cyan-300 border border-cyan-500/20
-                                            hover:bg-cyan-500/30 transition">
-                                        Details
-                                    </a>
+                                            hover:bg-cyan-500/30 transition"
+                                    data-id="{{ $crew->id }}"
+                                    data-name="{{ $crew->crew->name }}"
+                                    data-whatsapp="{{ $crew->crew->whatsapp }}"
+                                    data-role="{{ $crew->role }}"
+                                    data-nrp="{{ $crew->crew->nrp }}"
+                                    data-major="{{ $crew->crew->major }}"
+                                    data-ktm="{{ $crew->crew->ktm_photo }}"
+                                    data-status="{{ $crew->crew->status ?? '-' }}">
+                                    Details
+                                </a>
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    <a href="#"
-                                    class="openCrewEdit inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                            bg-yellow-500/20 text-yellow-300 border border-yellow-500/20
-                                            hover:bg-yellow-500/30 transition">
+                                    <button type="button"
+                                        class="openCrewEdit inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                                bg-yellow-500/20 text-yellow-300 border border-yellow-500/20
+                                                hover:bg-yellow-500/30 transition"
+                                        data-id="{{ $crew->id }}"
+                                        data-name="{{ $crew->crew->name }}"
+                                        data-whatsapp="{{ $crew->crew->whatsapp }}"
+                                        data-role="{{ $crew->role }}"
+                                        data-nrp="{{ $crew->crew->nrp }}"
+                                        data-major="{{ $crew->crew->major }}">
                                         Edit
-                                    </a>
+                                    </button>
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    <form action="#" method="POST" class="inline">
+                                    <form action="{{ route('crew.destroyCrew', [$team->id, $crew->id]) }}"
+                                        method="POST" class="inline"
+                                        onsubmit="return confirm('Yakin ingin menghapus crew ini?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
                                             class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                                bg-red-500/20 text-red-300 border border-red-500/20
-                                                hover:bg-red-500/30 transition">
+                                                bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30 transition">
                                             Delete
                                         </button>
                                     </form>
@@ -274,6 +289,7 @@
                 </label><br>
 
                 <select name="participant_id" class="form-input h40 text-black" required>
+                    <option value="" disabled selected>-- Select Participant --</option>
                     @forelse($houseParticipants as $participant)
                         <option style="color:black;" value="{{ $participant->id }}">
                             {{ $participant->name }} ({{ $participant->nrp }})
@@ -370,6 +386,7 @@
                 </label><br>
 
                 <select name="major" class="form-input h40 text-black" required>
+                    <option value="" disabled selected>-- Select Major --</option>
                     @foreach($majorsForCurrentHouse as $major)
                         <option style="color:black;" value="{{ $major }}">
                             {{ $major }} 
@@ -470,6 +487,7 @@
                 </label><br>
 
                 <select name="crew_id" class="form-input h40 text-black" required>
+                    <option value="" disabled selected>-- Select Crew --</option>
                     @forelse($houseCrews as $crew)
                         <option style="color:black;" value="{{ $crew->id }}">
                             {{ $crew->name }} ({{ $crew->whatsapp }})
@@ -494,6 +512,7 @@
                 </label><br>
 
                 <select name="role" class="form-input h40 text-black" required>
+                    <option value="" disabled selected>-- Select Role --</option>
                     <option style="color:black;" value="Coach">Coach</option>
                     <option style="color:black;" value="Assistant Coach">Assistant Coach</option>
                     <option style="color:black;" value="Medic">Medic</option>
@@ -604,6 +623,7 @@
                 </label>
 
                 <select name="major" class="form-input h40 text-black" >
+                    <option value="" disabled selected>-- Select Major --</option>
                     @foreach($majorsForCurrentHouse as $major)
                         <option style="color:black;" value="{{ $major }}">
                             {{ $major }} 
@@ -744,66 +764,56 @@
 </div>
 
 {{-- POP UP DETAIL CREW --}}
-<div id="crewDetailModal" class="modal-overlay">
+<div id="crewDetailModal" class="modal-overlay" style="display:none;">
     <div class="modal-card">
+        <h2 class="modal-title">Detail Crew</h2>
 
-        <h2 class="modal-title">Detail Crew</h2><br>
+        <form>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">Crew Name</label><br>
+                <input type="text" id="modalCrewName" class="form-input h35" readonly>
+            </div>
 
-        <!-- Name -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">Name: </label>
-            <label style="font-size:16px;">Juan Melolo</label>
-        </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
+                <input type="text" id="modalCrewWhatsapp" class="form-input h35" readonly>
+            </div>
 
-        <!-- WHATSAPP -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">WhatsApp Number: </label>
-            <label style="font-size:16px;">+6285888889999 </label>
-        </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">Role</label><br>
+                <input type="text" id="modalCrewRole" class="form-input h35" readonly>
+            </div>
 
-        <!-- ROLE -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">Role: </label>
-            <label style="font-size:16px;">Coach </label>
-        </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">NRP</label><br>
+                <input type="text" id="modalCrewNRP" class="form-input h35" readonly>
+            </div>
 
-        <!-- NRP -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">NRP: </label>
-            <label style="font-size:16px;">160424999 </label>
-        </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">Major</label><br>
+                <input type="text" id="modalCrewMajor" class="form-input h35" readonly>
+            </div>
 
-        <!-- MAJOR -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">Major: </label>
-            <label style="font-size:16px;">Teknik Informatika </label>
-        </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:16px;opacity:1;">
+                    KTM:
+                    <a href="#" target="_blank" id="modalCrewKTM" class="text-blue-400 underline">
+                        View KTM
+                    </a>
+                </label>
+            </div>
 
-        <!-- KTM -->
-        <div style="margin-bottom:10px;">
-            <label style="font-size:16px;">KTM: </label><br>
-            <label style="font-size:16px;">juanGanteng.jpg </label>
-        </div>
+            <div style="margin-bottom:16px;">
+                <label style="font-size:16px;opacity:1;">Status</label><br>
+                <input type="text" id="modalCrewStatus" class="form-input h35" readonly>
+            </div>
 
-        <!-- STATUS -->
-        <div style="margin-bottom:16px;">
-            <label style="font-size:16px;">Status: </label>
-            <label style="font-size:16px;">Hidup </label>
-        </div>
-
-        <!-- BUTTONS -->
-        <div style="
-            display:flex;
-            justify-content:flex-end;
-            gap:8px;
-        ">
-
-            <div class="modal-actions">
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
                 <button type="button" id="closeCrewModal" class="btn btn-cancel hover:bg-gray-500">
                     Close
                 </button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -848,6 +858,7 @@
 
                 <select name="major" id="editMajor" 
                         class="form-input h40 text-black" required>
+                    <option value="" disabled selected>-- Select Major --</option>
                     @foreach($majorsForCurrentHouse as $major)
                         <option style="color:black;" value="{{ $major }}">
                             {{ $major }}
@@ -906,101 +917,68 @@
 </div>
 
 {{-- POP UP EDIT CREW --}}
-<div id="crewEditModal" class="modal-overlay">
-
+<div id="crewEditModal" class="modal-overlay" style="display:none;">
     <div class="modal-card">
-
-        <!-- TITLE -->
         <h2 class="modal-title">Edit Crew</h2>
 
-        <!-- FORM -->
-        <form>
+        <form id="editCrewForm" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-            <!-- Crew Name -->
             <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">
-                    Crew Name
-                </label><br>
-
-                <input class="form-input h35" type="text" value="Juan Melolo">
+                <label style="font-size:16px;opacity:1;">Crew Name</label><br>
+                <input name="name" id="editCrewName" class="form-input h35" type="text" required>
             </div>
 
-            <!-- WhatsApp Number -->
             <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">
-                    Whatsapp Number
-                </label><br>
-
-                <input class="form-input h35" type="text" value="+6285888889999">
+                <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
+                <input name="whatsapp" id="editCrewWhatsapp" class="form-input h35" type="text" required>
             </div>
 
-            <!-- Role -->
             <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">
-                    Role
-                </label><br>
-
-                <select class="form-input h40">
-                    <option style="color:black;">Official</option>
-                    <option style="color:black;">Coach</option>
-                    <option style="color:black;">Assistant Coach</option>
-                    <option style="color:black;">Role</option>
+                <label style="font-size:16px;opacity:1;">Role</label><br>
+                <select name="role" id="editCrewRole" class="form-input h40 text-black" required>
+                    <option value="" disabled selected>-- Select Role --</option>
+                    <option style="color:black;" value="Coach">Coach</option>
+                    <option style="color:black;" value="Assistant Coach">Assistant Coach</option>
+                    <option style="color:black;" value="Medic">Medic</option>
+                    <option style="color:black;" value="Koorcab">Koorcab</option>
                 </select>
             </div>
 
-            <!-- NRP -->
             <div style="margin-bottom:5px;">
                 <label style="font-size:16px;opacity:1;">
-                    NRP
-                    <span style="opacity:0.5;">(optional)</span>
-                </label>
-
-                <input class="form-input h35" type="text" value="160424999">
+                    NRP <span style="opacity:0.5;">(optional)</span>
+                </label><br>
+                <input name="nrp" id="editCrewNRP" class="form-input h35" type="text">
             </div>
 
-            <!-- Major -->
             <div style="margin-bottom:5px;">
                 <label style="font-size:16px;">
-                    Major 
-                    <span style="opacity:0.5;">(optional)</span>
-                </label>
-
-                <select name="major" id="editMajor" 
-                        class="form-input h40 text-black" required>
+                    Major <span style="opacity:0.5;">(optional)</span>
+                </label><br>
+                <select name="major" id="editCrewMajor" class="form-input h40 text-black">
+                    <option value="" disabled selected>-- Select Major --</option>
                     @foreach($majorsForCurrentHouse as $major)
-                        <option style="color:black;" value="{{ $major }}">
-                            {{ $major }}
-                        </option>
+                        <option style="color:black;" value="{{ $major }}">{{ $major }}</option>
                     @endforeach
                 </select>
             </div>
 
-            <!-- KTM -->
             <div style="margin-bottom:10px;">
                 <label style="font-size:16px;opacity:1;">
-                    Upload KTM
-                    <span style="opacity:0.5;">(optional)</span>
-                </label>
-
-               <input class="form-input h35" type="file" class="form-input h45">
+                    Upload KTM <span style="opacity:0.5;">(optional)</span>
+                </label><br>
+                <input type="file" name="ktm_photo" class="form-input h45">
             </div>
-           
 
-            <!-- BUTTONS -->
-            <div style="
-                display:flex;
-                justify-content:flex-end;
-                gap:8px;
-            ">
-
-                <button type="button" id="cancelCrewEditModal" class="btn btn-cancel">
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" id="cancelCrewEditModal" class="btn btn-cancel hover:bg-gray-500">
                     Cancel
                 </button>
-
                 <button type="submit" class="btn btn-primary">
-                    Edit
+                    Update Crew
                 </button>
-                
             </div>
         </form>
     </div>
@@ -1114,18 +1092,6 @@ if(closeNewCrewBtn){
         modal.style.display = 'none';
     });
 
-    //Detail Crew
-    const crewDetailBtns = document.querySelectorAll('.openCrewDetail');
-    const crewDetailModal = document.getElementById('crewDetailModal');
-    const closeCrewDetailBtn = document.getElementById('closeCrewModal');
-    crewDetailBtns.forEach(btn => {
-        btn.onclick = (e) => {
-            e.preventDefault();
-            crewDetailModal.style.display = "flex";
-        }
-    });
-    closeCrewDetailBtn.onclick = () => {crewDetailModal.style.display = "none";}
-
     // ===== EDIT PLAYER MODAL =====
     const editButtons = document.querySelectorAll('.editPlayerButton');
     const editModal = document.getElementById('playerEditModal');
@@ -1159,19 +1125,72 @@ if(closeNewCrewBtn){
             editModal.style.display = 'none';
         });
     }
-    
 
-    //Edit Crew
-    const crewEditBtns = document.querySelectorAll('.openCrewEdit');
-    const crewEditModal = document.getElementById('crewEditModal');
-    const cancelCrewEditBtn = document.getElementById('cancelCrewEditModal');
-    crewEditBtns.forEach(btn => {
-        btn.onclick = (e) => {
-            e.preventDefault();
-            crewEditModal.style.display = "flex";
+    // ===== DETAIL CREW MODAL =====
+const crewDetailBtns = document.querySelectorAll('.openCrewDetail');
+const crewDetailModal = document.getElementById('crewDetailModal');
+const closeCrewDetailBtn = document.getElementById('closeCrewModal');
+
+crewDetailBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        document.getElementById('modalCrewName').value     = btn.dataset.name     || '-';
+        document.getElementById('modalCrewWhatsapp').value = btn.dataset.whatsapp || '-';
+        document.getElementById('modalCrewRole').value     = btn.dataset.role     || '-';
+        document.getElementById('modalCrewNRP').value      = btn.dataset.nrp      || '-';
+        document.getElementById('modalCrewMajor').value    = btn.dataset.major    || '-';
+        document.getElementById('modalCrewStatus').value   = btn.dataset.status   || '-';
+
+        let ktmPath = btn.dataset.ktm;
+        if (ktmPath) {
+            document.getElementById('modalCrewKTM').href = `/storage/${ktmPath}`;
         }
+
+        crewDetailModal.style.display = 'flex';
     });
-    cancelCrewEditBtn.onclick = () => {crewEditModal.style.display = "none";}
+});
+
+if (closeCrewDetailBtn) {
+    closeCrewDetailBtn.addEventListener('click', () => {
+        crewDetailModal.style.display = 'none';
+    });
+}
+
+// ===== EDIT CREW MODAL =====
+const crewEditBtns = document.querySelectorAll('.openCrewEdit');
+const crewEditModal = document.getElementById('crewEditModal');
+const cancelCrewEditBtn = document.getElementById('cancelCrewEditModal');
+const editCrewForm = document.getElementById('editCrewForm');
+
+crewEditBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let crewId = btn.dataset.id;
+        editCrewForm.action = `/teams/{{ $team->id }}/crew/${crewId}`;
+
+        // Ensure _method hidden input says PUT
+        const methodInput = editCrewForm.querySelector('input[name="_method"]');
+        if (methodInput) methodInput.value = 'PUT';
+
+        document.getElementById('editCrewName').value     = btn.dataset.name     || '';
+        document.getElementById('editCrewWhatsapp').value = btn.dataset.whatsapp || '';
+        document.getElementById('editCrewRole').value     = btn.dataset.role     || '';
+        document.getElementById('editCrewNRP').value      = btn.dataset.nrp      || '';
+        document.getElementById('editCrewMajor').value    = btn.dataset.major    || '';
+
+        crewEditModal.style.display = 'flex';
+    });
+});
+
+if (cancelCrewEditBtn) {
+    cancelCrewEditBtn.addEventListener('click', () => {
+        crewEditModal.style.display = 'none';
+    });
+}
+    
 });    
 </script>
 <script src="https://unpkg.com/feather-icons"></script>
