@@ -15,7 +15,6 @@ class Participant extends Model
         'major',
         'ktm_photo',
         'whatsapp',
-        'back_number',
         'mobilelegend',
         'status',
         'revision'
@@ -32,5 +31,13 @@ class Participant extends Model
         return $this->hasMany(ParticipantTeam::class);
     }
 
-
+    public function teams()
+    {
+        return $this->belongsToMany(
+            Team::class,
+            'participant_team',   // nama pivot table
+            'participant_id',     // foreign key di pivot
+            'team_id'             // related key di pivot
+        )->withPivot('back_number');
+    }
 }

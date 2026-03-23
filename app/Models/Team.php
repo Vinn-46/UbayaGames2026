@@ -38,6 +38,6 @@ class Team extends Model
             'participant_team',
             'team_id',
             'participant_id'
-        );
+        )->withPivot('back_number');
     }
 }

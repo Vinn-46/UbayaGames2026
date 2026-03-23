@@ -82,7 +82,7 @@ class TeamController extends Controller
 
         $houseCrews = Crew::where('house_id', Auth::user()->house_id)->get();
         
-        $players = $team->participants;
+        $players = $team->participants()->with('teams')->get();
         $crews = getCrewsByTeam($team);
 
         return view('teamdetail', compact(

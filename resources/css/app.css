@@ -61,6 +61,14 @@ html {
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     padding: 24px;
     color: white;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    overflow-y: auto;
+    padding-right: 5px; /* biar ga ketutup scrollbar */
 }
 
 .modal-card.small {

@@ -100,8 +100,8 @@
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    <!-- Detail Button -->
-                                    <a 
+                                    <!-- Detail Button -->                                    
+                                    <button type="button" 
                                         class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                               bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
                                               data-name="{{ $player->name }}"
@@ -110,9 +110,11 @@
                                               data-ktm="{{ $player->ktm_photo }}"
                                               data-whatsapp="{{ $player->whatsapp }}"
                                               data-status="{{ $player->status }}"
-                                              data-mobilelegend="{{ $player->mobilelegend }}">                                        
+                                              data-mobilelegend="{{ $player->mobilelegend }}"
+                                              data-revision="{{ $player->revision }}"   
+                                              data-backnumber="{{ $player->pivot->back_number ?? '-' }}">                   
                                         <i data-feather="info"></i>
-                                    </a>
+                                    </button>
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
@@ -125,8 +127,9 @@
                                         data-major="{{ $player->major }}"
                                         data-whatsapp="{{ $player->whatsapp }}"
                                         data-status="{{ $player->status }}"
-                                        data-mobilelegend="{{ $player->mobilelegend }}">                                         
-                                        <i data-feather="edit"></i>
+                                        data-mobilelegend="{{ $player->mobilelegend }}"
+                                        data-backnumber="{{ $player->pivot->back_number ?? '-' }}">   
+                                    <i data-feather="edit"></i>
                                     </button>
                                 </td>
 
@@ -305,6 +308,20 @@
                 @enderror          
             </div>
 
+            <!-- Back Number -->
+            @if ($team->competition === 'Futsal' || 
+                $team->competition === 'Basket Putra' || 
+                $team->competition === 'Basket Putri' || 
+                $team->competition === 'Voli Putra' || 
+                $team->competition === 'Voli Putri') 
+                <div style="margin-bottom:16px;">
+                    <label style ="font-size:16px;opacity:1;">
+                        Back Number                    
+                    </label><br>
+                    <input type="number" name="backnumber" min="1" max="100" step="1"  class="form-input h35" required>
+                </div>
+            @endif
+
             <!-- BUTTONS -->
             <div style="
                 display:flex;
@@ -324,8 +341,11 @@
                         Cancel
                     </button>
 
-                    <button type="submit" 
-                            class="btn btn-primary bg-blue-600 hover:bg-blue-500">
+                    <button type="submit"
+                        class="btn btn-primary bg-blue-600 hover:bg-blue-500 
+                            disabled:bg-gray-400 disabled:hover:bg-gray-400 
+                            disabled:cursor-not-allowed disabled:opacity-70"
+                        {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}>
                         Add Player
                     </button>
                 </div>
@@ -413,43 +433,33 @@
                 <input type="text" name="whatsapp" class="form-input h35" required>
             </div>
 
-            <div style="margin-bottom:16px;">
-                <label style ="font-size:16px;opacity:1;">
-                    Back Number
-                    <span style="opacity:0.5;">(optional)</span>
-                    @if ($team->competition !== 'Futsal' || 
-                        $team->competition !== 'Basket Putra' || 
-                        $team->competition !== 'Basket Putri' || 
-                        $team->competition !== 'Voli Putra' || 
-                        $team->competition !== 'Voli Putri')
-                        <span style="opacity:0.5;">(optional)</span>
-                    @endif
-                </label><br>
-
-                <input type="text" name="back_number" class="form-input h35"
-                    @if($team->competition === 'Futsal' || 
-                        $team->competition === 'Basket Putra' || 
-                        $team->competition === 'Basket Putri' || 
-                        $team->competition === 'Voli Putra' || 
-                        $team->competition === 'Voli Putri') 
-                        required 
-                    @endif>
-            </div>
-
+            <!-- Back Number -->
+            @if ($team->competition === 'Futsal' || 
+                $team->competition === 'Basket Putra' || 
+                $team->competition === 'Basket Putri' || 
+                $team->competition === 'Voli Putra' || 
+                $team->competition === 'Voli Putri') 
+                <div style="margin-bottom:16px;">
+                    <label style ="font-size:16px;opacity:1;">
+                        Back Number                    
+                    </label><br>
+                    <input type="number" name="backnumber" min="1" max="100" step="1"  class="form-input h35" required>
+                </div>
+            @endif
+            
             <!-- Mobile Legend -->
-            <div style="margin-bottom:16px;">
+            @if ($team->competition === 'E-sport')
+                <div style="margin-bottom:16px;">
                 <label style="font-size:16px;opacity:1;">
-                    ID Mobile Legend
-                    @if ($team->competition !== 'E-sport')
-                        <span style="opacity:0.5;">(optional)</span>
-                    @endif
+                    ID Mobile Legend                    
                 </label><br>
 
                 <input type="text"
                     name="mobilelegend"
                     class="form-input h35"
-                    @if ($team->competition === 'E-sport') required @endif>
-            </div>    
+                    required>
+                </div> 
+            @endif               
 
             <!-- BUTTONS -->
             <div style="
@@ -671,95 +681,128 @@
         <!-- TITLE -->
         <h2 class="modal-title">Detail Player</h2>
 
-        <!-- FORM (readonly) -->
-        <form>
+        <div class="modal-body">
+            <!-- FORM (readonly) -->
+            <form>
 
-            <!-- Player Name -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Player Name
-                </label><br>
+                <!-- Player Name -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Player Name
+                    </label><br>
 
-                <input type="text" id="modalName" 
-                       class="form-input h35" 
-                       readonly>
-            </div>
-
-            <!-- NRP -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    NRP
-                </label><br>
-
-                <input type="text" id="modalNRP" 
-                       class="form-input h35" 
-                       readonly>
-            </div>
-
-            <!-- Major -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Major
-                </label><br>
-
-                <input type="text" id="modalMajor" 
-                       class="form-input h35" 
-                       readonly>
-            </div>
-
-            <!-- KTM -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    KTM:  
-                    <a href="#" target="_blank" id="modalKTM"
-                        class="text-blue-400 underline">
-                        View KTM
-                    </a>
-                </label><br>               
-            </div>
-
-            <!-- WhatsApp -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Whatsapp Number
-                </label><br>
-
-                <input type="text" id="modalWhatsapp" 
-                       class="form-input h35" 
-                       readonly>
-            </div>
-
-            <!-- Status -->
-            <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">
-                    Status
-                </label><br>
-
-                <input type="text" id="modalStatus" 
-                       class="form-input h35" 
-                       readonly>
-            </div>
-            <!-- Mobile Legend -->
-            <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">
-                    ID Mobile Legend
-                    @if ($team->competition !== 'E-sport')
-                        <span style="opacity:0.5;">(optional)</span>
-                    @endif
-                </label><br>
-                <input type="text" id="modalMobilelegend" 
-                        class="form-input h35"
+                    <input type="text" id="modalName" 
+                        class="form-input h35" 
                         readonly>
-            </div>    
-            <!-- BUTTON -->
-            <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button" 
-                        id="closePlayerModal" 
-                        class="btn btn-cancel hover:bg-gray-500">
-                    Close
-                </button>
-            </div>
-        </form>
+                </div>
+
+                <!-- NRP -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        NRP
+                    </label><br>
+
+                    <input type="text" id="modalNRP" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- Major -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Major
+                    </label><br>
+
+                    <input type="text" id="modalMajor" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- KTM -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        KTM:  
+                        <a href="#" target="_blank" id="modalKTM"
+                            class="text-blue-400 underline">
+                            View KTM
+                        </a>
+                    </label><br>               
+                </div>
+
+                <!-- WhatsApp -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Whatsapp Number
+                    </label><br>
+
+                    <input type="text" id="modalWhatsapp" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- Status -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Status
+                    </label><br>
+
+                    <input type="text" id="modalStatus" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- Back Number -->
+                @if ($team->competition === 'Futsal' || 
+                    $team->competition === 'Basket Putra' || 
+                    $team->competition === 'Basket Putri' || 
+                    $team->competition === 'Voli Putra' || 
+                    $team->competition === 'Voli Putri') 
+                    <div style="margin-bottom:10px;">
+                        <label style="font-size:16px;opacity:1;">
+                            Back Number
+                        </label><br>
+
+                        <input type="text" id="modalBackNumber" 
+                            class="form-input h35" 
+                            readonly>
+                    </div>
+                @endif
+                
+                <!-- Mobile Legend -->
+                @if ($team->competition === 'E-sport')
+                    <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        ID Mobile Legend
+                        @if ($team->competition !== 'E-sport')
+                            <span style="opacity:0.5;">(optional)</span>
+                        @endif
+                    </label><br>
+                    <input type="text" id="modalMobilelegend" 
+                            class="form-input h35"
+                            readonly>
+                </div>    
+                @endif    
+                
+                <!-- Revision -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Revision                    
+                    </label><br>
+                    <textarea name="revision" id="modalRevision" 
+                            class="form-input" style="height:80px;"
+                            readonly>
+                    </textarea>
+                </div>  
+                <!-- BUTTON -->
+                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                    <button type="button" 
+                            id="closePlayerModal" 
+                            class="btn btn-cancel hover:bg-gray-500">
+                        Close
+                    </button>
+                </div>
+            </form>
+        </div>        
     </div>
 </div>
 
@@ -824,95 +867,108 @@
 
         <!-- TITLE -->
         <h2 class="modal-title">Edit Player</h2>
+        <div class="modal-body">
+            <!-- FORM -->
+            <form id="editPlayerForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-        <!-- FORM -->
-        <form id="editPlayerForm" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+                <!-- Player Name -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Player Name
+                    </label><br>
 
-            <!-- Player Name -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Player Name
-                </label><br>
+                    <input type="text" name="name" id="editName"
+                        class="form-input h35">
+                </div>
 
-                <input type="text" name="name" id="editName"
-                       class="form-input h35">
-            </div>
+                <!-- NRP -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        NRP
+                    </label><br>
 
-            <!-- NRP -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    NRP
-                </label><br>
+                    <input type="text" name="nrp" id="editNRP"
+                        class="form-input h35">
+                </div>
 
-                <input type="text" name="nrp" id="editNRP"
-                       class="form-input h35">
-            </div>
+                <!-- Major -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Major
+                    </label><br>
 
-            <!-- Major -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Major
-                </label><br>
+                    <select name="major" id="editMajor" 
+                            class="form-input h40 text-black" required>
+                        <option value="" disabled selected>-- Select Major --</option>
+                        @foreach($majorsForCurrentHouse as $major)
+                            <option style="color:black;" value="{{ $major }}">
+                                {{ $major }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-                <select name="major" id="editMajor" 
-                        class="form-input h40 text-black" required>
-                    <option value="" disabled selected>-- Select Major --</option>
-                    @foreach($majorsForCurrentHouse as $major)
-                        <option style="color:black;" value="{{ $major }}">
-                            {{ $major }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- KTM Upload -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Upload KTM 
-                    <span style="opacity:0.5;">(optional)</span>
-                </label><br>
-
-                <input type="file" name="ktm_photo"
-                       class="form-input h60">
-            </div>
-
-            <!-- WhatsApp -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Whatsapp Number
-                </label><br>
-
-                <input type="text" name="whatsapp" id="editWhatsapp"
-                       class="form-input h35">
-            </div>
-            
-            <!-- Mobile Legend -->
-            <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">
-                    ID Mobile Legend
-                    @if ($team->competition !== 'E-sport')
+                <!-- KTM Upload -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Upload KTM 
                         <span style="opacity:0.5;">(optional)</span>
-                    @endif
-                </label><br>
-                <input type="text" name="mobilelegend" id="editMobilelegend" class="form-input h35">
-            </div>    
+                    </label><br>
 
-            <!-- BUTTON -->
-            <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button"
-                        id="closeEditPlayerModal"
-                        class="btn btn-cancel hover:bg-gray-500">
-                    Cancel
-                </button>
+                    <input type="file" name="ktm_photo"
+                        class="form-input h60">
+                </div>
 
-                <button type="submit"
-                        class="btn btn-primary hover:bg-blue-600">
-                    Update Player
-                </button>
-            </div>
-        </form>
+                <!-- WhatsApp -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Whatsapp Number
+                    </label><br>
+
+                    <input type="text" name="whatsapp" id="editWhatsapp"
+                        class="form-input h35">
+                </div>
+                <!-- Back Number -->
+                @if ($team->competition === 'Futsal' || 
+                    $team->competition === 'Basket Putra' || 
+                    $team->competition === 'Basket Putri' || 
+                    $team->competition === 'Voli Putra' || 
+                    $team->competition === 'Voli Putri') 
+                    <div style="margin-bottom:16px;">
+                        <label style="font-size:16px;opacity:1;">
+                            Back Number
+                        </label><br>
+                        <input type="number" name="backnumber" min="1" max="100" step="1"  id="editBackNumber" class="form-input h35">
+                    </div>
+                @endif
+                
+                <!-- Mobile Legend -->
+                @if ($team->competition === 'E-sport')
+                    <div style="margin-bottom:16px;">
+                        <label style="font-size:16px;opacity:1;">
+                            ID Mobile Legend
+                        </label><br>
+                        <input type="text" name="mobilelegend" id="editMobilelegend" class="form-input h35">
+                    </div>    
+                @endif                
+
+                <!-- BUTTON -->
+                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                    <button type="button"
+                            id="closeEditPlayerModal"
+                            class="btn btn-cancel hover:bg-gray-500">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary hover:bg-blue-600">
+                        Update Player
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -1031,50 +1087,58 @@ document.addEventListener('DOMContentLoaded', function () {
     
 
    // ===== EXISTING CREW MODAL =====
-const openCrewBtn = document.getElementById('openAddCrew');
-const existingCrewModal = document.getElementById('addExistingCrewModal');
-const closeExistingCrewBtn = document.getElementById('closeAddExistingCrewModal');
+    const openCrewBtn = document.getElementById('openAddCrew');
+    const existingCrewModal = document.getElementById('addExistingCrewModal');
+    const closeExistingCrewBtn = document.getElementById('closeAddExistingCrewModal');
 
-if(openCrewBtn){
-    openCrewBtn.onclick = () => existingCrewModal.style.display = "flex";
-}
+    if(openCrewBtn){
+        openCrewBtn.onclick = () => existingCrewModal.style.display = "flex";
+    }
 
-if(closeExistingCrewBtn){
-    closeExistingCrewBtn.onclick = () => existingCrewModal.style.display = "none";
-}
+    if(closeExistingCrewBtn){
+        closeExistingCrewBtn.onclick = () => existingCrewModal.style.display = "none";
+    }
 
 
-// ===== NEW CREW MODAL =====
-const openNewCrewBtn = document.getElementById('openAddCrewModal');
-const newCrewModal = document.getElementById('addNewCrewModal');
-const closeNewCrewBtn = document.getElementById('closeAddCrewModal');
+    // ===== NEW CREW MODAL =====
+    const openNewCrewBtn = document.getElementById('openAddCrewModal');
+    const newCrewModal = document.getElementById('addNewCrewModal');
+    const closeNewCrewBtn = document.getElementById('closeAddCrewModal');
 
-if(openNewCrewBtn){
-    openNewCrewBtn.onclick = () => {
-        existingCrewModal.style.display = "none";
-        newCrewModal.style.display = "flex";
-    };
-}
+    if(openNewCrewBtn){
+        openNewCrewBtn.onclick = () => {
+            existingCrewModal.style.display = "none";
+            newCrewModal.style.display = "flex";
+        };
+    }
 
-if(closeNewCrewBtn){
-    closeNewCrewBtn.onclick = () => newCrewModal.style.display = "none";
-}
+    if(closeNewCrewBtn){
+        closeNewCrewBtn.onclick = () => newCrewModal.style.display = "none";
+    }
 
     //Detail Player
     const detailButtons = document.querySelectorAll('.openPlayerDetail');
     const modal = document.getElementById('playerDetailModal');
     const closeBtn = document.getElementById('closePlayerModal');
-
+       
     detailButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
 
             document.getElementById('modalName').value = btn.dataset.name || '-';
             document.getElementById('modalNRP').value = btn.dataset.nrp || '-';
             document.getElementById('modalMajor').value = btn.dataset.major || '-';
             document.getElementById('modalWhatsapp').value = btn.dataset.whatsapp || '-';
-            document.getElementById('modalStatus').value = btn.dataset.status || '-';
-            document.getElementById('modalMobilelegend').value = btn.dataset.mobilelegend || '-';
-
+            document.getElementById('modalStatus').value = btn.dataset.status || '-';            
+            document.getElementById('modalRevision').value = btn.dataset.revision || '-';
+            const mobileLegendInput = document.getElementById('modalMobilelegend');
+            if (mobileLegendInput) {
+                mobileLegendInput.value = btn.dataset.mobilelegend || '-';
+            }
+            const backNumberInput = document.getElementById('modalBackNumber');
+            if (backNumberInput) {
+                backNumberInput.value = btn.dataset.backnumber || '-';
+            }
             // KTM PATH (storage)
             let ktmPath = btn.dataset.ktm;
 
@@ -1088,9 +1152,11 @@ if(closeNewCrewBtn){
         });
     });
 
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
 
     // ===== EDIT PLAYER MODAL =====
     const editButtons = document.querySelectorAll('.editPlayerButton');
@@ -1112,7 +1178,15 @@ if(closeNewCrewBtn){
             document.getElementById('editNRP').value = this.dataset.nrp || '';
             document.getElementById('editMajor').value = this.dataset.major || '';
             document.getElementById('editWhatsapp').value = this.dataset.whatsapp || '';
-            document.getElementById('editMobilelegend').value = this.dataset.mobilelegend || '';
+            const editML = document.getElementById('editMobilelegend');
+            if (editML) {
+                editML.value = this.dataset.mobilelegend || '';
+            }
+
+            const editBack = document.getElementById('editBackNumber');
+            if (editBack) {
+                editBack.value = this.dataset.backnumber || '';
+            }
 
             // Tampilkan modal
             editModal.style.display = 'flex';
@@ -1127,43 +1201,43 @@ if(closeNewCrewBtn){
     }
 
     // ===== DETAIL CREW MODAL =====
-const crewDetailBtns = document.querySelectorAll('.openCrewDetail');
-const crewDetailModal = document.getElementById('crewDetailModal');
-const closeCrewDetailBtn = document.getElementById('closeCrewModal');
+    const crewDetailBtns = document.querySelectorAll('.openCrewDetail');
+    const crewDetailModal = document.getElementById('crewDetailModal');
+    const closeCrewDetailBtn = document.getElementById('closeCrewModal');
 
-crewDetailBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
+    crewDetailBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
 
-        document.getElementById('modalCrewName').value     = btn.dataset.name     || '-';
-        document.getElementById('modalCrewWhatsapp').value = btn.dataset.whatsapp || '-';
-        document.getElementById('modalCrewRole').value     = btn.dataset.role     || '-';
-        document.getElementById('modalCrewNRP').value      = btn.dataset.nrp      || '-';
-        document.getElementById('modalCrewMajor').value    = btn.dataset.major    || '-';
-        document.getElementById('modalCrewStatus').value   = btn.dataset.status   || '-';
+            document.getElementById('modalCrewName').value     = btn.dataset.name     || '-';
+            document.getElementById('modalCrewWhatsapp').value = btn.dataset.whatsapp || '-';
+            document.getElementById('modalCrewRole').value     = btn.dataset.role     || '-';
+            document.getElementById('modalCrewNRP').value      = btn.dataset.nrp      || '-';
+            document.getElementById('modalCrewMajor').value    = btn.dataset.major    || '-';
+            document.getElementById('modalCrewStatus').value   = btn.dataset.status   || '-';
 
-        let ktmPath = btn.dataset.ktm;
-        if (ktmPath) {
-            document.getElementById('modalCrewKTM').href = `/storage/${ktmPath}`;
-        }
+            let ktmPath = btn.dataset.ktm;
+            if (ktmPath) {
+                document.getElementById('modalCrewKTM').href = `/storage/${ktmPath}`;
+            }
 
-        crewDetailModal.style.display = 'flex';
+            crewDetailModal.style.display = 'flex';
+        });
     });
-});
 
-if (closeCrewDetailBtn) {
-    closeCrewDetailBtn.addEventListener('click', () => {
-        crewDetailModal.style.display = 'none';
-    });
-}
+    if (closeCrewDetailBtn) {
+        closeCrewDetailBtn.addEventListener('click', () => {
+            crewDetailModal.style.display = 'none';
+        });
+    }
 
-// ===== EDIT CREW MODAL =====
-const crewEditBtns = document.querySelectorAll('.openCrewEdit');
-const crewEditModal = document.getElementById('crewEditModal');
-const cancelCrewEditBtn = document.getElementById('cancelCrewEditModal');
-const editCrewForm = document.getElementById('editCrewForm');
+    // ===== EDIT CREW MODAL =====
+    const crewEditBtns = document.querySelectorAll('.openCrewEdit');
+    const crewEditModal = document.getElementById('crewEditModal');
+    const cancelCrewEditBtn = document.getElementById('cancelCrewEditModal');
+    const editCrewForm = document.getElementById('editCrewForm');
 
-crewEditBtns.forEach(btn => {
+    crewEditBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -1195,7 +1269,9 @@ if (cancelCrewEditBtn) {
 </script>
 <script src="https://unpkg.com/feather-icons"></script>
 <script>
-    feather.replace()
+    document.addEventListener('DOMContentLoaded', function () {
+        feather.replace();
+    });
 </script>
 {{-- Modal Add New Player --}}
 @if ($errors->addNewPlayer->any())

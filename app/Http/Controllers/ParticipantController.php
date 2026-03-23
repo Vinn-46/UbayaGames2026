@@ -29,12 +29,18 @@ class ParticipantController extends Controller
             'major' => 'required',
             'ktm_photo' => 'required|image',
             'whatsapp' => 'required',
-            'back_number' => 'nullable',
-            'mobilelegend' => 'nullable'
+            'mobilelegend' => 'nullable',
+            'backnumber' => 'nullable|integer|min:1|max:100'
         ]);
-
-        $path = $request->file('ktm_photo')->store('ktm_photos', 'public');
-
+        
+        $extension = $request->file('ktm_photo')->getClientOriginalExtension();
+        $time = date('His_dmy');
+        $filename = $validated['nrp'] . '_' . $time . '.' . $extension;
+        $path = $request->file('ktm_photo')->storeAs(
+            'ktm_photos',
+            $filename,
+            'public'
+        );       
         $participant = Participant::create([
             'house_id' => Auth::user()->house_id,
             'name' => $validated['name'],
@@ -42,7 +48,6 @@ class ParticipantController extends Controller
             'major' => $validated['major'],
             'ktm_photo' => $path,
             'whatsapp' => $validated['whatsapp'],
-            'back_number' => $validated['back_number'] ?? null,
             'mobilelegend' => $team->competition == 'E-sport'
                 ? $validated['mobilelegend']
                 : null,
@@ -50,8 +55,8 @@ class ParticipantController extends Controller
             'revision' => null
         ]);
 
-        $team->participantTeams()->create([
-            'participant_id' => $participant->id,
+        $participant->teams()->attach($team->id, [
+            'back_number' => $validated['backnumber'] ?? null,
         ]);
 
         return redirect()->back()->with('success','Player berhasil ditambahkan');
@@ -72,15 +77,19 @@ class ParticipantController extends Controller
         } 
 
         $request->validate([
-            'participant_id' => 'required|exists:participants,id'
+            'participant_id' => 'required|exists:participants,id',
+            'backnumber' => 'nullable|integer|min:1|max:100'
         ]);
 
         $team->participants()->syncWithoutDetaching([
-            $request->participant_id
+            $request->participant_id => [
+                'back_number' => $request->backnumber
+            ]
         ]);
 
         return redirect()->back()->with('success', 'Player berhasil ditambahkan ke team');
     }
+
     public function update(Request $request, $teamId, $playerId)
     {
         $validated = $request->validate([
@@ -89,10 +98,11 @@ class ParticipantController extends Controller
             'major' => 'required',
             'ktm_photo' => 'nullable|image',
             'whatsapp' => 'required',
-            'back_number' => 'nullable',
+            'backnumber' => 'nullable',
             'mobilelegend' => 'nullable'
         ]);
 
+        $team = Team::findOrFail($teamId);
         $participant = Participant::findOrFail($playerId);
 
         // Jika upload foto baru
@@ -102,7 +112,15 @@ class ParticipantController extends Controller
             if ($participant->ktm_photo) {
                 Storage::disk('public')->delete($participant->ktm_photo);
             }
-            $path = $request->file('ktm_photo')->store('ktm_photos', 'public');
+            $extension = $request->file('ktm_photo')->getClientOriginalExtension();
+            $time = date('His_dmy');
+            $filename = $validated['nrp'] . '_' . $time . '.' . $extension;
+
+            $path = $request->file('ktm_photo')->storeAs(
+                'ktm_photos',
+                $filename,
+                'public'
+            );                
             $participant->ktm_photo = $path;
         }        
 
@@ -111,9 +129,10 @@ class ParticipantController extends Controller
         $participant->nrp = $request->nrp;
         $participant->major = $request->major;
         $participant->whatsapp = $request->whatsapp;
-        $participant->back_number = $request->back_number;
         $participant->mobilelegend = $request->mobilelegend;
-
+        $team->participants()->updateExistingPivot($playerId, [
+            'back_number' => $request->backnumber
+        ]);
         $participant->save();
 
         return redirect()->back()->with('success', 'Player berhasil diupdate');

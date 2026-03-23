@@ -18,7 +18,8 @@ return new class extends Migration
                   ->cascadeOnDelete();
             $table->foreignId('team_id')
                   ->constrained('teams')
-                  ->cascadeOnDelete();
+                  ->cascadeOnDelete();                  
+            $table->string('back_number', 20)->nullable();
         });
     }
 
