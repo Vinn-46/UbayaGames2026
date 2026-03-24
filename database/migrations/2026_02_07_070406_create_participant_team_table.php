@@ -19,7 +19,9 @@ return new class extends Migration
             $table->foreignId('team_id')
                   ->constrained('teams')
                   ->cascadeOnDelete();                  
-            $table->string('back_number', 20)->nullable();
+            $table->string('back_number', 20)->nullable();            
+            $table->text('revision')->nullable();            
+            $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
         });
     }
 

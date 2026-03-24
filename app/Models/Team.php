@@ -38,6 +38,15 @@ class Team extends Model
             'participant_team',
             'team_id',
             'participant_id'
-        )->withPivot('back_number');
+        )->withPivot('back_number', 'status', 'revision');
+    }
+    public function crews()
+    {
+        return $this->belongsToMany(
+            Crew::class,
+            'crew_team', 
+            'team_id',           
+            'crew_id'          
+        )->withPivot('role', 'status', 'revision');
     }
 }

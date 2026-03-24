@@ -145,6 +145,7 @@
             <div style="margin-bottom:20px;">
                 <label style="font-size:18px;">Competition</label><br>
                 <select name="competition" class="form-input h40" required>
+                    <option value="" disabled selected>-- Pilih cabang lomba --</option>
                     <option style="color:black;" value="Basket Putra">Basket Putra</option>
                     <option style="color:black;" value="Basket Putri">Basket Putri</option>
 

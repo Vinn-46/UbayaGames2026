@@ -15,9 +15,7 @@ class Participant extends Model
         'major',
         'ktm_photo',
         'whatsapp',
-        'mobilelegend',
-        'status',
-        'revision'
+        'mobilelegend'
     ];
 
     public function index()
@@ -38,6 +36,6 @@ class Participant extends Model
             'participant_team',   // nama pivot table
             'participant_id',     // foreign key di pivot
             'team_id'             // related key di pivot
-        )->withPivot('back_number');
+        )->withPivot('back_number', 'status', 'revision');
     }
 }

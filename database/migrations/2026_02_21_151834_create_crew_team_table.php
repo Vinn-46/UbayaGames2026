@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreignId('team_id')
                   ->constrained('teams')
                   ->cascadeOnDelete();
-            $table->enum('role', ['Coach', 'Assistant Coach', 'Medic', 'Koorcab']);
-            
+            $table->enum('role', ['Coach', 'Assistant Coach', 'Medic', 'Koorcab']);            
+            $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
+            $table->text('revision')->nullable();
         });
     }
 

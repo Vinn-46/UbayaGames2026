@@ -70,7 +70,8 @@
                                     <div class="flex justify-center">
                                         <button
                                             onclick="openRevisionModal('team', {{ $team->id }}, `{{ $team->revision }}`)"
-                                            class="px-3 py-1.5 rounded-lg bg-yellow-500/20 hover:bg-yellow-500/40 text-yellow-200 hover:text-white transition text-sm border border-yellow-500/20">
+                                            class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                                 bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">
                                             <i data-feather="edit"></i>
                                         </button>
                                     </div>
@@ -80,7 +81,16 @@
                     </table>
                 </div>
             </div>
-
+            @if ($team->revision!==null)
+                <h2 class="text-xl sm:text-l font-heading font-bold text-white uppercase tracking-widest"
+                    style="margin-top:20px;">
+                    Revision Note
+                </h2> 
+                <textarea 
+                    class="bg-black/60 hover:bg-white/5 border-none text-white p-2 rounded-lg transition resize-none"  
+                    style="height:120px; margin-top:20px; width: 100%; padding: 15px; border-radius: 8px;" 
+                    readonly>{{ $team->revision }}</textarea>
+            @endif
         </section>
 
         <div class="my-24 border-t border-white/10"></div>
@@ -114,33 +124,36 @@
                                     </td>
 
                                     <td class="px-6 py-4 text-center">
-                                        <button
-                                            class="openPlayerDetail bg-white/10 px-3 py-1 rounded"
-                                            data-name="{{ $player->name }}"
-                                            data-nrp="{{ $player->nrp }}"
-                                            data-major="{{ $player->major }}"
-                                            data-whatsapp="{{ $player->whatsapp }}"
-                                            data-mobilelegend="{{ $player->mobilelegend }}"
-                                            data-status="{{ $player->status }}"
-                                            data-ktm="{{ $player->ktm_photo }}">
+                                        <button type="button" 
+                                            class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                                bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
+                                                data-name="{{ $player->name }}"
+                                                data-nrp="{{ $player->nrp }}"
+                                                data-major="{{ $player->major }}"
+                                                data-ktm="{{ $player->ktm_photo }}"
+                                                data-whatsapp="{{ $player->whatsapp }}"
+                                                data-status="{{ $player->pivot->status ?? '-' }}"
+                                                data-mobilelegend="{{ $player->mobilelegend }}"
+                                                data-revision="{{ $player->pivot->revision }}"   
+                                                data-backnumber="{{ $player->pivot->back_number ?? '-' }}">                   
                                             <i data-feather="info"></i>
                                         </button>
                                     </td>
 
                                     <td class="px-6 py-4 text-center">
-                                        <form action="{{ route('participants.updateStatus',$player->id) }}" method="POST">
+                                        <form action="{{ route('participants.updateStatus', [$player->id, $team->id]) }}" method="POST">
                                             @csrf
                                             @method('PUT')
                                             <select name="status"
                                                     onchange="this.form.submit()"
                                                     class="bg-white text-black px-2 py-1 rounded">
-                                                <option value="Menunggu" {{ $player->status=='Menunggu'?'selected':'' }}>
+                                                <option value="Menunggu" {{ $player->pivot->status=='Menunggu'?'selected':'' }}>
                                                     Menunggu
                                                 </option>
-                                                <option value="Ditolak" {{ $player->status=='Ditolak'?'selected':'' }}>
+                                                <option value="Ditolak" {{ $player->pivot->status=='Ditolak'?'selected':'' }}>
                                                     Ditolak
                                                 </option>
-                                                <option value="Diterima" {{ $player->status=='Diterima'?'selected':'' }}>
+                                                <option value="Diterima" {{ $player->pivot->status=='Diterima'?'selected':'' }}>
                                                     Diterima
                                                 </option>
                                             </select>
@@ -151,7 +164,8 @@
                                         <div class="flex justify-center">
                                             <button
                                                 onclick="openRevisionModal('player', {{ $player->id }}, '{{ $player->revision }}')"
-                                                class="px-3 py-1.5 rounded-lg bg-yellow-500/20 hover:bg-yellow-500/40 text-yellow-200 hover:text-white transition text-sm border border-yellow-500/20">
+                                                class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">
                                                 <i data-feather="edit"></i>
                                             </button>
                                         </div>
@@ -199,30 +213,35 @@
                                         {{ $crew->role }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        <button class="openCrewDetail bg-white/10 px-3 py-1 rounded"
-                                            data-name="{{ $crew->crew->name }}"
-                                            data-nrp="{{ $crew->crew->nrp }}"
-                                            data-major="{{ $crew->crew->major }}"
-                                            data-whatsapp="{{ $crew->crew->whatsapp }}"
-                                            data-status="{{ $crew->crew->status }}"
-                                            data-ktm="{{ $crew->crew->ktm_photo }}">
-                                            Detail
+                                        <button type="button" 
+                                                class="openCrewDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                                    bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
+                                                    data-id="{{ $crew->crew_id }}"
+                                                    data-name="{{ $crew->crew->name }}"
+                                                    data-whatsapp="{{ $crew->crew->whatsapp }}"
+                                                    data-role="{{ $crew->role }}"
+                                                    data-nrp="{{ $crew->crew->nrp ?? '-' }}"
+                                                    data-major="{{ $crew->crew->major ?? '-' }}"
+                                                    data-ktm="{{ $crew->crew->ktm_photo }}"
+                                                    data-status="{{ $crew->status }}"
+                                                    data-revision="{{ $crew->pivot->revision ?? '-' }}">    
+                                                <i data-feather="info"></i>
                                         </button>
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        <form action="{{ route('crews.updateStatus',$crew->crew->id) }}" method="POST">
+                                        <form action="{{ route('crew.updateStatus', [$crew->crew->id, $team->id]) }}" method="POST">
                                             @csrf
                                             @method('PUT')
                                             <select name="status"
                                                     onchange="this.form.submit()"
                                                     class="bg-white text-black px-2 py-1 rounded">
-                                                <option value="Menunggu" {{ $crew->crew->status=='Menunggu'?'selected':'' }}>
+                                                <option value="Menunggu" {{ $crew->status=='Menunggu'?'selected':'' }}>
                                                     Menunggu
                                                 </option>
-                                                <option value="Ditolak" {{ $crew->crew->status=='Ditolak'?'selected':'' }}>
+                                                <option value="Ditolak" {{ $crew->status=='Ditolak'?'selected':'' }}>
                                                     Ditolak
                                                 </option>
-                                                <option value="Diterima" {{ $crew->crew->status=='Diterima'?'selected':'' }}>
+                                                <option value="Diterima" {{ $crew->status=='Diterima'?'selected':'' }}>
                                                     Diterima
                                                 </option>
                                             </select>
@@ -232,7 +251,8 @@
                                         <div class="flex justify-center">
                                             <button
                                                 onclick="openRevisionModal('crew', {{ $crew->crew->id }}, `{{ $crew->crew->revision }}`)"
-                                                class="px-3 py-1.5 rounded-lg bg-yellow-500/20 hover:bg-yellow-500/40 text-yellow-200 hover:text-white transition text-sm border border-yellow-500/20">
+                                                class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                                    bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">
                                                 <i data-feather="edit"></i>
                                             </button>
                                         </div>
@@ -254,7 +274,7 @@
     <div class="modal-card">
         <h2 class="modal-title">Revision Notes</h2>
 
-        <form method="POST" action="{{ route('teams.updateRevision') }}" id="revisionForm">
+        <form method="POST" action="" id="revisionForm">
             @csrf
             <input type="hidden" name="id" id="revision_id">
 
@@ -274,48 +294,129 @@
 
 {{-- ================= POP UP DETAIL PLAYER ================= --}}
 <div id="playerDetailModal" class="modal-overlay" style="display:none;">
+
     <div class="modal-card">
+
+        <!-- TITLE -->
         <h2 class="modal-title">Detail Player</h2>
-        <form>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Player Name</label><br>
-                <input type="text" id="modalName" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">NRP</label><br>
-                <input type="text" id="modalNRP" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Major</label><br>
-                <input type="text" id="modalMajor" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    KTM:  
-                    <a href="#" target="_blank" id="modalKTM" class="text-blue-400 underline">View KTM</a>
-                </label><br>               
-            </div>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
-                <input type="text" id="modalWhatsapp" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">Status</label><br>
-                <input type="text" id="modalStatus" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">
-                    ID Mobile Legend
-                    @if ($team->competition !== 'E-sport')
-                        <span style="opacity:0.5;">(optional)</span>
-                    @endif
-                </label><br>
-                <input type="text" id="modalMobilelegend" class="form-input h35" readonly>
-            </div>    
-            <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button" id="closePlayerModal" class="btn btn-cancel hover:bg-gray-500">Close</button>
-            </div>
-        </form>
+
+        <div class="modal-body">
+            <!-- FORM (readonly) -->
+            <form>
+                <!-- Player Name -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Player Name
+                    </label><br>
+
+                    <input type="text" id="modalName" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- NRP -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        NRP
+                    </label><br>
+
+                    <input type="text" id="modalNRP" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- Major -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Major
+                    </label><br>
+
+                    <input type="text" id="modalMajor" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- KTM -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        KTM:  
+                        <a href="#" target="_blank" id="modalKTM"
+                            class="text-blue-400 underline">
+                            View KTM
+                        </a>
+                    </label><br>               
+                </div>
+
+                <!-- WhatsApp -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Whatsapp Number
+                    </label><br>
+
+                    <input type="text" id="modalWhatsapp" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- Status -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Status
+                    </label><br>
+
+                    <input type="text" id="modalStatus" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- Back Number -->
+                @if (in_array($team->competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri']))
+                    <div style="margin-bottom:10px;">
+                        <label style="font-size:16px;opacity:1;">
+                            Back Number
+                        </label><br>
+
+                        <input type="text" id="modalBackNumber" 
+                            class="form-input h35" 
+                            readonly>
+                    </div>
+                @endif
+                
+                <!-- Mobile Legend -->
+                @if ($team->competition === 'E-sport')
+                    <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        ID Mobile Legend
+                        @if ($team->competition !== 'E-sport')
+                            <span style="opacity:0.5;">(optional)</span>
+                        @endif
+                    </label><br>
+                    <input type="text" id="modalMobilelegend" 
+                            class="form-input h35"
+                            readonly>
+                </div>    
+                @endif    
+                
+                <!-- Revision -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Revision                    
+                    </label><br>
+                    <textarea name="revision" id="modalRevision" 
+                            class="form-input" style="height:80px;"
+                            readonly>
+                    </textarea>
+                </div>  
+                <!-- BUTTON -->
+                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                    <button type="button" 
+                            id="closePlayerModal" 
+                            class="btn btn-cancel hover:bg-gray-500">
+                        Close
+                    </button>
+                </div>
+            </form>
+        </div>        
     </div>
 </div>
 
@@ -323,37 +424,63 @@
 <div id="crewDetailModal" class="modal-overlay" style="display:none;">
     <div class="modal-card">
         <h2 class="modal-title">Detail Crew</h2>
-        <form>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Crew Name</label><br>
-                <input type="text" id="modalCrewName" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">NRP</label><br>
-                <input type="text" id="modalCrewNRP" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Major</label><br>
-                <input type="text" id="modalCrewMajor" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    KTM:  
-                    <a href="#" target="_blank" id="modalCrewKTM" class="text-blue-400 underline">View KTM</a>
-                </label><br>               
-            </div>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
-                <input type="text" id="modalCrewWhatsapp" class="form-input h35" readonly>
-            </div>
-            <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">Status</label><br>
-                <input type="text" id="modalCrewStatus" class="form-input h35" readonly>
-            </div>
-            <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button" id="closeCrewModal" class="btn btn-cancel hover:bg-gray-500">Close</button>
-            </div>
-        </form>
+        <div class="modal-body">
+            <form>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Crew Name</label><br>
+                    <input type="text" id="modalCrewName" class="form-input h35" readonly>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
+                    <input type="text" id="modalCrewWhatsapp" class="form-input h35" readonly>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Role</label><br>
+                    <input type="text" id="modalCrewRole" class="form-input h35" readonly>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">NRP</label><br>
+                    <input type="text" id="modalCrewNRP" class="form-input h35" readonly>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Major</label><br>
+                    <input type="text" id="modalCrewMajor" class="form-input h35" readonly>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        KTM:
+                        <a href="#" target="_blank" id="modalCrewKTM" class="text-blue-400 underline">
+                            View KTM
+                        </a>
+                    </label>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:16px;opacity:1;">Status</label><br>
+                    <input type="text" id="modalCrewStatus" class="form-input h35" readonly>
+                </div>
+                <!-- Revision -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Revision                    
+                    </label><br>
+                    <textarea name="revision" id="modalCrewRevision" 
+                            class="form-input" style="height:80px;"
+                            readonly>
+                    </textarea>
+                </div>  
+                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                    <button type="button" id="closeCrewModal" class="btn btn-cancel hover:bg-gray-500">
+                        Close
+                    </button>
+                </div>
+            </form>
+        </div>        
     </div>
 </div>
 
@@ -369,19 +496,19 @@
         
         const form = document.getElementById('revisionForm');
 
-        if(type === 'team')
+        if (type === 'team')
         {
             form.action = "{{ route('teams.updateRevision') }}";
             idInput.name = 'team_id'; 
         }
         else if(type === 'player')
         {
-            form.action = "{{ route('participants.updateRevision') }}";
+            form.action= `/participants/${id}/teams/{{ $team->id }}/status`;
             idInput.name = 'id'; 
         }
         else if(type === 'crew')
         {
-            form.action = "{{ route('crews.updateRevision', 0) }}".replace('/0', '/' + id);
+            form.action = `/crew/${id}/teams/{{ $team->id }}/status`;
             idInput.name = 'id';
         }
     }
@@ -392,59 +519,88 @@
     }
 
     //================= LOGIC DETAIL PLAYER =================
-    const playerDetailButtons = document.querySelectorAll('.openPlayerDetail');
-    const playerModal = document.getElementById('playerDetailModal');
-    const closePlayerBtn = document.getElementById('closePlayerModal');
+    const detailButtons = document.querySelectorAll('.openPlayerDetail');
+    const modal = document.getElementById('playerDetailModal');
+    const closeBtn = document.getElementById('closePlayerModal');
+       
+    detailButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
 
-    playerDetailButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
             document.getElementById('modalName').value = btn.dataset.name || '-';
             document.getElementById('modalNRP').value = btn.dataset.nrp || '-';
             document.getElementById('modalMajor').value = btn.dataset.major || '-';
             document.getElementById('modalWhatsapp').value = btn.dataset.whatsapp || '-';
-            document.getElementById('modalStatus').value = btn.dataset.status || '-';
-            document.getElementById('modalMobilelegend').value = btn.dataset.mobilelegend || '-';
-
+            document.getElementById('modalStatus').value = btn.dataset.status || '-';            
+            document.getElementById('modalRevision').value = btn.dataset.revision || '-';
+            const mobileLegendInput = document.getElementById('modalMobilelegend');
+            if (mobileLegendInput) {
+                mobileLegendInput.value = btn.dataset.mobilelegend || '-';
+            }
+            const backNumberInput = document.getElementById('modalBackNumber');
+            if (backNumberInput) {
+                backNumberInput.value = btn.dataset.backnumber || '-';
+            }
+            // KTM PATH (storage)
             let ktmPath = btn.dataset.ktm;
+
             if (ktmPath) {
                 let fullPath = `/storage/${ktmPath}`;
+
                 document.getElementById('modalKTM').href = fullPath;                
             }
 
-            playerModal.style.display = 'flex';
+            modal.style.display = 'flex';
         });
     });
 
-    closePlayerBtn.addEventListener('click', () => {
-        playerModal.style.display = 'none';
-    });
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
 
     //================= LOGIC DETAIL CREW (BARU) =================
-    const crewDetailButtons = document.querySelectorAll('.openCrewDetail');
-    const crewModal = document.getElementById('crewDetailModal');
-    const closeCrewBtn = document.getElementById('closeCrewModal');
+    const crewDetailBtns = document.querySelectorAll('.openCrewDetail');
+    const crewDetailModal = document.getElementById('crewDetailModal');
+    const closeCrewDetailBtn = document.getElementById('closeCrewModal');
 
-    crewDetailButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.getElementById('modalCrewName').value = btn.dataset.name || '-';
-            document.getElementById('modalCrewNRP').value = btn.dataset.nrp || '-';
-            document.getElementById('modalCrewMajor').value = btn.dataset.major || '-';
+    crewDetailBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            document.getElementById('modalCrewName').value     = btn.dataset.name     || '-';
             document.getElementById('modalCrewWhatsapp').value = btn.dataset.whatsapp || '-';
-            document.getElementById('modalCrewStatus').value = btn.dataset.status || '-';
-
+            document.getElementById('modalCrewRole').value     = btn.dataset.role     || '-';
+            document.getElementById('modalCrewNRP').value      = btn.dataset.nrp      || '-';
+            document.getElementById('modalCrewMajor').value    = btn.dataset.major    || '-';
+            document.getElementById('modalCrewStatus').value   = btn.dataset.status   || '-';
+            document.getElementById('modalCrewRevision').value = btn.dataset.revision || '-';
+            
             let ktmPath = btn.dataset.ktm;
+            let modalLink = document.getElementById('modalCrewKTM');
             if (ktmPath) {
-                let fullPath = `/storage/${ktmPath}`;
-                document.getElementById('modalCrewKTM').href = fullPath;                
+                modalLink.href = `/storage/${ktmPath}`;
+                modalLink.textContent = "View KTM"; // optional, reset text if needed
+                modalLink.style.pointerEvents = "auto";  // ensure link is clickable
+                modalLink.style.color = ""; // reset any styling
             }
+            else{
+                modalLink.href = "#"; // prevent navigation
+                modalLink.textContent = "Tidak ada KTM"; 
+                modalLink.style.pointerEvents = "none"; 
+                modalLink.style.color = "gray"; 
+            }                
 
-            crewModal.style.display = 'flex';
+            crewDetailModal.style.display = 'flex';
         });
     });
 
-    closeCrewBtn.addEventListener('click', () => {
-        crewModal.style.display = 'none';
-    });
+    if (closeCrewDetailBtn) {
+        closeCrewDetailBtn.addEventListener('click', () => {
+            crewDetailModal.style.display = 'none';
+        });
+    }
 </script>
 
 <script src="https://unpkg.com/feather-icons"></script>

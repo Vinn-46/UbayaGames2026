@@ -52,8 +52,7 @@
                 </button>
             </div>
 
-            <nav class="flex-1 px-4 py-8 space-y-3 overflow-y-auto">
-                <p class="px-4 text-[10px] font-bold text-[#CBDCC1]/50 uppercase tracking-widest mb-4">Main Menu</p>
+            <nav class="flex-1 px-4 py-8 space-y-2 overflow-y-auto">                
                 @if(Auth::check() && Auth::user()->role === 'Sekretariat')
                     {{-- POV SEKRETARIAT --}}
                     <a href="{{ route('teamlist.sekre') }}" 
@@ -61,7 +60,6 @@
                         <i data-feather="users" class="w-5 h-5"></i>
                         <span class="font-heading font-semibold tracking-wide">Team List</span>
                     </a>
-
                 @elseif(Auth::check() && Auth::user()->role === 'Kontingen')
 
                     {{-- POV KONTINGEN --}}
@@ -70,14 +68,22 @@
                         <i data-feather="users" class="w-5 h-5"></i>
                         <span class="font-heading font-semibold tracking-wide">Team List</span>
                     </a>
-
                     <a href="#" 
                        class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
                         <i data-feather="user" class="w-5 h-5"></i>
-                        <span class="font-heading font-semibold tracking-wide">All Player</span>
+                        <span class="font-heading font-semibold tracking-wide">All Players</span>
                     </a>
-
+                    <a href="#" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
+                        <i data-feather="user" class="w-5 h-5"></i>
+                        <span class="font-heading font-semibold tracking-wide">All Crews</span>
+                    </a>                   
                 @endif
+                <a href="{{ route('schedule') }}" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
+                        <i data-feather="calendar" class="w-5 h-5"></i>
+                        <span class="font-heading font-semibold tracking-wide">Schedule</span>
+                    </a>
             </nav>
 
             <div class="p-6 border-t border-white/10 shrink-0">

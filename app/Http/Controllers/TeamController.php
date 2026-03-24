@@ -137,6 +137,8 @@ class TeamController extends Controller
             'status' => 'required|in:Menunggu,Ditolak,Diterima']);
         $team = Team::findOrFail($id);
         $team->status = $request->status;
+        $oldrevision = $team->revision;
+        $team->revision = ($request->status === 'Diterima' ? null : $oldrevision);
         $team->save();
         return back()->with('success','Status berhasil diupdate');
     }

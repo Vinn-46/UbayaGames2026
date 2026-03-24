@@ -5,22 +5,40 @@ if (!function_exists('getMajorsByHouse')) {
     {
         $major = [
             //farmasi
-            'House of Elixir' => [''], 
+            'House of Elixir' => [
+                'Farmasi'
+            ], 
 
             //hukum
-            'House of Justicia' => [''], 
+            'House of Justicia' => [
+                'Hukum'
+            ], 
 
             //bisnis dan ekonomika
             'House of Mercator' => [
-                'Akuntasi', 
-                'Manajemen'
-                ], 
+                'Ilmu Ekonomi',
+                'Manajemen',
+                'Akuntansi',
+                'Professional Accounting',
+                'IBN'
+            ], 
 
             //politeknik
-            'House of Praxis' => [''],
+            'House of Praxis' => [
+                'Digital Business Accounting',
+                'Digital Business & Marketing',
+                'Digital Office Administration',
+                'English for Business & PR',
+                'Digital Taxation',
+                'Computerized Accounting',
+                'Business Administration',
+                'Digital Professional Taxation'
+            ],
 
             //psikologi
-            'House of Arcana' => [''],
+            'House of Arcana' => [
+                'Psikologi'
+            ],
 
             //teknik
             'House of Fortis' => [
@@ -33,13 +51,21 @@ if (!function_exists('getMajorsByHouse')) {
             ],
 
             //teknobiologi
-            'House of Vivens' => [''],
+            'House of Vivens' => [
+                'Biologi (Bioteknologi)',
+                'Bionutrisi dan Inovasi Pangan'
+            ],
 
             //industri kreatif
-            'House of Creatio' => [''],
+            'House of Creatio' => [
+                'Desain Produk',
+                'Desain Komunikasi Visual'
+            ],
 
             //kedokteran
-            'House of Vitalis' => ['']
+            'House of Vitalis' => [
+                'Kedokteran'
+            ]
             
         ];
 

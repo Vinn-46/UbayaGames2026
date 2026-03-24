@@ -22,8 +22,6 @@ return new class extends Migration
             $table->text('ktm_photo');
             $table->string('whatsapp',20);
             $table->string('mobilelegend', 20)->nullable();
-            $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
-            $table->text('revision')->nullable();
         });
     }
 

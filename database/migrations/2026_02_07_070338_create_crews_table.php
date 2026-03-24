@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('nrp',20)->nullable();
             $table->string('major',45)->nullable();
             $table->text('ktm_photo')->nullable();
-            $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
-            $table->text('revision')->nullable();
             $table->foreignId('house_id')
                   ->constrained('houses')
                   ->cascadeOnDelete();

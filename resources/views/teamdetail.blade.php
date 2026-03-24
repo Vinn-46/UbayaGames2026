@@ -13,7 +13,7 @@
                 <a href="{{ route('teamlist')}}" 
                    class="inline-block mt-2 text-lg text-white/75 hover:text-white transition">
                     ← Back
-                </a>
+                </a>                
             </header>
 
             <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl overflow-hidden w-full">
@@ -52,9 +52,19 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
-                </div>
+                    </table>                    
+                </div>                
             </div>
+            @if ($team->revision!==null)
+                <h2 class="text-xl sm:text-l font-heading font-bold text-white uppercase tracking-widest"
+                    style="margin-top:20px;">
+                    Revision Note
+                </h2> 
+                <textarea 
+                    class="bg-black/60 hover:bg-white/5 border-none text-white p-2 rounded-lg transition resize-none"  
+                    style="height:120px; margin-top:20px; width: 100%; padding: 15px; border-radius: 8px;" 
+                    readonly>{{ $team->revision }}</textarea>
+            @endif
         </section>
 
         {{-- DIVIDER --}}
@@ -86,6 +96,7 @@
                         <thead class="bg-white/5 text-sm uppercase tracking-widest">
                             <tr>
                                 <th class="px-6 py-4 text-left font-semibold">Player Name</th>
+                                <th class="px-6 py-4 text-center font-semibold">Status</th>
                                 <th class="px-6 py-4 text-center font-semibold">Details</th>
                                 <th class="px-6 py-4 text-center font-semibold">Edit</th>
                                 <th class="px-6 py-4 text-center font-semibold">Delete</th>
@@ -98,7 +109,9 @@
                                 <td class="px-6 py-4">
                                     {{ $player->name }}
                                 </td>
-
+                                <td class="px-6 py-4 text-center">
+                                    {{ $player->pivot->status }}
+                                </td>
                                 <td class="px-6 py-4 text-center">
                                     <!-- Detail Button -->                                    
                                     <button type="button" 
@@ -109,9 +122,9 @@
                                               data-major="{{ $player->major }}"
                                               data-ktm="{{ $player->ktm_photo }}"
                                               data-whatsapp="{{ $player->whatsapp }}"
-                                              data-status="{{ $player->status }}"
+                                              data-status="{{ $player->pivot->status ?? '-' }}"
                                               data-mobilelegend="{{ $player->mobilelegend }}"
-                                              data-revision="{{ $player->revision }}"   
+                                              data-revision="{{ $player->pivot->revision }}"   
                                               data-backnumber="{{ $player->pivot->back_number ?? '-' }}">                   
                                         <i data-feather="info"></i>
                                     </button>
@@ -126,7 +139,6 @@
                                         data-nrp="{{ $player->nrp }}"
                                         data-major="{{ $player->major }}"
                                         data-whatsapp="{{ $player->whatsapp }}"
-                                        data-status="{{ $player->status }}"
                                         data-mobilelegend="{{ $player->mobilelegend }}"
                                         data-backnumber="{{ $player->pivot->back_number ?? '-' }}">   
                                     <i data-feather="edit"></i>
@@ -145,8 +157,7 @@
                                         <button type="submit"
                                             class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                                 bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30">                                        
-                                            <i data-feather="trash-2"></i>
-                                            
+                                            <i data-feather="trash-2"></i>                                            
                                         </button>
                                     </form>
                                 </td>
@@ -194,6 +205,7 @@
                             <tr>
                                 <th class="px-6 py-4 text-left font-semibold">Crew Name</th>
                                 <th class="px-6 py-4 text-center font-semibold">Role</th>
+                                <th class="px-6 py-4 text-center font-semibold">Status</th>
                                 <th class="px-6 py-4 text-center font-semibold">Details</th>
                                 <th class="px-6 py-4 text-center font-semibold">Edit</th>
                                 <th class="px-6 py-4 text-center font-semibold">Delete</th>
@@ -207,40 +219,41 @@
                                 <td class="px-6 py-4">
                                     {{ $crew->crew->name }}
                                 </td>
-
                                 <td class="px-6 py-4 text-center">
                                     {{ $crew->role }}
                                 </td>
-                                
                                 <td class="px-6 py-4 text-center">
-                                <a href="#"
-                                    class="openCrewDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                            bg-cyan-500/20 text-cyan-300 border border-cyan-500/20
-                                            hover:bg-cyan-500/30 transition"
-                                    data-id="{{ $crew->id }}"
-                                    data-name="{{ $crew->crew->name }}"
-                                    data-whatsapp="{{ $crew->crew->whatsapp }}"
-                                    data-role="{{ $crew->role }}"
-                                    data-nrp="{{ $crew->crew->nrp }}"
-                                    data-major="{{ $crew->crew->major }}"
-                                    data-ktm="{{ $crew->crew->ktm_photo }}"
-                                    data-status="{{ $crew->crew->status ?? '-' }}">
-                                    Details
-                                </a>
+                                    {{ $crew->status }}
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                
+                                <button type="button" 
+                                        class="openCrewDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
+                                            data-id="{{ $crew->crew_id }}"
+                                            data-name="{{ $crew->crew->name }}"
+                                            data-whatsapp="{{ $crew->crew->whatsapp }}"
+                                            data-role="{{ $crew->role }}"
+                                            data-nrp="{{ $crew->crew->nrp ?? '-' }}"
+                                            data-major="{{ $crew->crew->major ?? '-' }}"
+                                            data-ktm="{{ $crew->crew->ktm_photo }}"
+                                            data-status="{{ $crew->status }}"
+                                            data-revision="{{ $crew->pivot->revision ?? '-' }}">    
+                                        <i data-feather="info"></i>
+                                </button>
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
                                     <button type="button"
                                         class="openCrewEdit inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                                bg-yellow-500/20 text-yellow-300 border border-yellow-500/20
-                                                hover:bg-yellow-500/30 transition"
-                                        data-id="{{ $crew->id }}"
+                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
+                                        data-id="{{ $crew->crew_id }}"
                                         data-name="{{ $crew->crew->name }}"
                                         data-whatsapp="{{ $crew->crew->whatsapp }}"
                                         data-role="{{ $crew->role }}"
                                         data-nrp="{{ $crew->crew->nrp }}"
-                                        data-major="{{ $crew->crew->major }}">
-                                        Edit
+                                        data-major="{{ $crew->crew->major ?? '-' }}">
+                                        <i data-feather="edit"></i>
                                     </button>
                                 </td>
 
@@ -253,7 +266,7 @@
                                         <button type="submit"
                                             class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                                 bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30 transition">
-                                            Delete
+                                            <i data-feather="trash-2"></i>
                                         </button>
                                     </form>
                                 </td>
@@ -279,9 +292,9 @@
 <div id="addExistingPlayerModal" class="modal-overlay">
 
     <div class="modal-card">
-
+            
         <h2 class="modal-title">Add Player</h2>
-
+        
         <form action="{{ route('participant.attachPlayer', $team->id) }}" method="POST">
             @csrf
 
@@ -309,16 +322,23 @@
             </div>
 
             <!-- Back Number -->
-            @if ($team->competition === 'Futsal' || 
-                $team->competition === 'Basket Putra' || 
-                $team->competition === 'Basket Putri' || 
-                $team->competition === 'Voli Putra' || 
-                $team->competition === 'Voli Putri') 
+           @if (in_array($team->competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri']))
                 <div style="margin-bottom:16px;">
                     <label style ="font-size:16px;opacity:1;">
                         Back Number                    
                     </label><br>
-                    <input type="number" name="backnumber" min="1" max="100" step="1"  class="form-input h35" required>
+                    <input 
+                    type="number" 
+                    class="form-input h35
+                            disabled:bg-gray-400 disabled:hover:bg-gray-400 
+                            disabled:cursor-not-allowed disabled:opacity-70"    
+                            name="backnumber" min="1" max="100" step="1" required
+                            {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}>
+                    @error('backnumber', 'addExistingPlayer')
+                    <div style="color:red; margin-top:6px;">
+                        {{ $message }}
+                    </div>
+                @enderror 
                 </div>
             @endif
 
@@ -370,114 +390,117 @@
 
         <!-- TITLE -->
         <h2 class="modal-title">Add Player</h2>
+        <div class="modal-body">
+            <!-- FORM -->
+            <form action="{{ route('participant.addPlayer', $team->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-        <!-- FORM -->
-        <form action="{{ route('participant.addPlayer', $team->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-
-            <!-- Player Name -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Player Name
-                </label><br>
-
-                <input type="text" name="name" class="form-input h35" required>
-            </div>
-
-            <!-- NRP -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    NRP
-                </label><br>
-
-                <input type="text" name="nrp" class="form-input h35" required>
-
-                @error('nrp', 'addNewPlayer')
-                    <div style="color:red; margin-top:6px;">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-
-            <!-- Major -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Major
-                </label><br>
-
-                <select name="major" class="form-input h40 text-black" required>
-                    <option value="" disabled selected>-- Select Major --</option>
-                    @foreach($majorsForCurrentHouse as $major)
-                        <option style="color:black;" value="{{ $major }}">
-                            {{ $major }} 
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- KTM -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Upload KTM
-                </label><br>
-
-               <input type="file" name="ktm_photo" class="form-input h45" required>
-            </div>
-
-            <!-- WhatsApp Number -->
-            <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">
-                    Whatsapp Number
-                </label><br>
-
-                <input type="text" name="whatsapp" class="form-input h35" required>
-            </div>
-
-            <!-- Back Number -->
-            @if ($team->competition === 'Futsal' || 
-                $team->competition === 'Basket Putra' || 
-                $team->competition === 'Basket Putri' || 
-                $team->competition === 'Voli Putra' || 
-                $team->competition === 'Voli Putri') 
-                <div style="margin-bottom:16px;">
-                    <label style ="font-size:16px;opacity:1;">
-                        Back Number                    
+                <!-- Player Name -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Player Name
                     </label><br>
-                    <input type="number" name="backnumber" min="1" max="100" step="1"  class="form-input h35" required>
+                    <input type="text" name="name" class="form-input h35" required>
+                    @error('crewExist', 'addNewPlayer')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-            @endif
-            
-            <!-- Mobile Legend -->
-            @if ($team->competition === 'E-sport')
+
+                <!-- NRP -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        NRP
+                    </label><br>
+
+                    <input type="text" name="nrp" class="form-input h35" required>
+                    @error('nrp', 'addNewPlayer')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <!-- Major -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Major
+                    </label><br>
+
+                    <select name="major" class="form-input h40 text-black" required>
+                        <option value="" disabled selected>-- Select Major --</option>
+                        @foreach($majorsForCurrentHouse as $major)
+                            <option style="color:black;" value="{{ $major }}">
+                                {{ $major }} 
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- KTM -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Upload KTM
+                    </label><br>
+                <input type="file" name="ktm_photo" class="form-input h45" required>
+                </div>
+
+                <!-- WhatsApp Number -->
                 <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">
-                    ID Mobile Legend                    
-                </label><br>
+                    <label style="font-size:16px;opacity:1;">
+                        Whatsapp Number
+                    </label><br>
+                    <input type="text" name="whatsapp" class="form-input h35" required>
+                </div>
 
-                <input type="text"
-                    name="mobilelegend"
-                    class="form-input h35"
-                    required>
-                </div> 
-            @endif               
-
-            <!-- BUTTONS -->
-            <div style="
-                display:flex;
-                justify-content:flex-end;
-                gap:8px;
-            ">
-
-                <button type="button" id="closeAddNewPlayerModal" class="btn btn-cancel hover:bg-gray-500">
-                    Cancel
-                </button>
-
-                <button type="submit" class="btn btn-primary">
-                    Add Participant
-                </button>
+                <!-- Back Number -->
+                @if (in_array($team->competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri']))
+                    <div style="margin-bottom:16px;">
+                        <label style ="font-size:16px;opacity:1;">
+                            Back Number                    
+                        </label><br>
+                        <input type="number" name="backnumber" min="1" max="100" step="1"  class="form-input h35" required>
+                        @error('participant', 'addNewPlayer')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                @endif
                 
-            </div>
-        </form>
+                <!-- Mobile Legend -->
+                @if ($team->competition === 'E-sport')
+                    <div style="margin-bottom:16px;">
+                    <label style="font-size:16px;opacity:1;">
+                        ID Mobile Legend                    
+                    </label><br>
+
+                    <input type="text"
+                        name="mobilelegend"
+                        class="form-input h35"
+                        required>
+                    </div> 
+                @endif               
+
+                <!-- BUTTONS -->
+                <div style="
+                    display:flex;
+                    justify-content:flex-end;
+                    gap:8px;
+                ">
+
+                    <button type="button" id="closeAddNewPlayerModal" class="btn btn-cancel hover:bg-gray-500">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Add Participant
+                    </button>
+                    
+                </div>
+            </form>
+        </div>        
     </div>
 </div>
 
@@ -500,7 +523,7 @@
                     <option value="" disabled selected>-- Select Crew --</option>
                     @forelse($houseCrews as $crew)
                         <option style="color:black;" value="{{ $crew->id }}">
-                            {{ $crew->name }} ({{ $crew->whatsapp }})
+                            {{ $crew->name }} 
                         </option>
                     @empty
                         <option value="" disabled selected>Belum ada crew</option>
@@ -585,7 +608,8 @@
         <h2 class="modal-title">Add Crew</h2>
 
         <!-- FORM -->
-        <form action="{{ route('crew.addCrew', $team->id) }}" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+            <form action="{{ route('crew.addCrew', $team->id) }}" method="POST" enctype="multipart/form-data">
             @if ($errors->any())
                 <div style="color:red; margin-bottom:10px;">
                     <ul>
@@ -595,81 +619,103 @@
                     </ul>
                 </div>
             @endif
-        @csrf
+            @csrf
+                <!-- Crew Name -->
+                <div style="margin-bottom:5px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Crew Name
+                    </label><br>
+                    <input name="name" class="form-input h35" required>
+                    @error('playerExist', 'addNewCrew')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <!-- Crew Name -->
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">
-                    Crew Name
-                </label><br>
+                <!-- WhatsApp Number -->
+                <div style="margin-bottom:5px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Whatsapp Number
+                    </label><br>
+                    <input name="whatsapp" class="form-input h35" required>                    
+                </div>
+                <!-- Role -->
+                <div style="margin-bottom:5px;">
+                    <label style="font-size:16px;opacity:1;">Role</label><br>
+                    <select name="role" class="form-input h40 text-black" required>
+                        <option value="" disabled selected>-- Select Role --</option>
+                        <option style="color:black;" value="Coach">Coach</option>
+                        <option style="color:black;" value="Assistant Coach">Assistant Coach</option>
+                        <option style="color:black;" value="Medic">Medic</option>
+                        <option style="color:black;" value="Koorcab">Koorcab</option>
+                    </select>
+                    @error('role', 'addNewCrew')
+                    <div style="color:red; margin-top:6px;">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+                <!-- NRP -->
+                <div style="margin-bottom:5px;">
+                    <label style="font-size:16px;opacity:1;">
+                        NRP
+                        <span style="opacity:0.5;">(optional)</span>
+                    </label>
+                    <input name="nrp" class="form-input h35">
+                    @error('nrp', 'addNewCrew')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-                <input name="name" class="form-input h35" required>
-            </div>
+                <!-- Major -->
+                <div style="margin-bottom:5px;">
+                    <label style="font-size:16px;">
+                        Major 
+                        <span style="opacity:0.5;">(optional)</span>
+                    </label>
 
-            <!-- WhatsApp Number -->
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">
-                    Whatsapp Number
-                </label><br>
+                    <select name="major" class="form-input h40 text-black" >
+                        <option value="" disabled selected>-- Select Major --</option>
+                        @foreach($majorsForCurrentHouse as $major)
+                            <option style="color:black;" value="{{ $major }}">
+                                {{ $major }} 
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-                <input name="whatsapp" class="form-input h35" required>
-            </div>
+                <!-- KTM -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Upload KTM
+                        <span style="opacity:0.5;">(optional)</span>
+                    </label>
 
-            <!-- NRP -->
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">
-                    NRP
-                    <span style="opacity:0.5;">(optional)</span>
-                </label>
+                <input type="file" name="ktm_photo"class="form-input h45">
+                </div>
+            
 
-                <input name="nrp" class="form-input h35">
-            </div>
+                <!-- BUTTONS -->
+                <div style="
+                    display:flex;
+                    justify-content:flex-end;
+                    gap:8px;
+                ">
 
-            <!-- Major -->
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;">
-                    Major 
-                    <span style="opacity:0.5;">(optional)</span>
-                </label>
+                    <button type="button" id="closeAddCrewModal" class="btn btn-cancel hover:bg-gray-500">
+                        Cancel
+                    </button>
 
-                <select name="major" class="form-input h40 text-black" >
-                    <option value="" disabled selected>-- Select Major --</option>
-                    @foreach($majorsForCurrentHouse as $major)
-                        <option style="color:black;" value="{{ $major }}">
-                            {{ $major }} 
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- KTM -->
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Upload KTM
-                    <span style="opacity:0.5;">(optional)</span>
-                </label>
-
-               <input type="file" name="ktm_photo"class="form-input h45">
-            </div>
-           
-
-            <!-- BUTTONS -->
-            <div style="
-                display:flex;
-                justify-content:flex-end;
-                gap:8px;
-            ">
-
-                <button type="button" id="closeAddCrewModal" class="btn btn-cancel hover:bg-gray-500">
-                    Cancel
-                </button>
-
-                <button type="submit" class="btn btn-primary">
-                    Add Crew
-                </button>
-                
-            </div>
-        </form>
+                    <button type="submit" class="btn btn-primary">
+                        Add Crew
+                    </button>
+                    
+                </div>
+            </form>
+        </div>        
     </div>
 </div>
 
@@ -752,11 +798,7 @@
                 </div>
 
                 <!-- Back Number -->
-                @if ($team->competition === 'Futsal' || 
-                    $team->competition === 'Basket Putra' || 
-                    $team->competition === 'Basket Putri' || 
-                    $team->competition === 'Voli Putra' || 
-                    $team->competition === 'Voli Putri') 
+                @if (in_array($team->competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri']))
                     <div style="margin-bottom:10px;">
                         <label style="font-size:16px;opacity:1;">
                             Back Number
@@ -810,53 +852,63 @@
 <div id="crewDetailModal" class="modal-overlay" style="display:none;">
     <div class="modal-card">
         <h2 class="modal-title">Detail Crew</h2>
+        <div class="modal-body">
+            <form>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Crew Name</label><br>
+                    <input type="text" id="modalCrewName" class="form-input h35" readonly>
+                </div>
 
-        <form>
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Crew Name</label><br>
-                <input type="text" id="modalCrewName" class="form-input h35" readonly>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
+                    <input type="text" id="modalCrewWhatsapp" class="form-input h35" readonly>
+                </div>
 
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
-                <input type="text" id="modalCrewWhatsapp" class="form-input h35" readonly>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Role</label><br>
+                    <input type="text" id="modalCrewRole" class="form-input h35" readonly>
+                </div>
 
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Role</label><br>
-                <input type="text" id="modalCrewRole" class="form-input h35" readonly>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">NRP</label><br>
+                    <input type="text" id="modalCrewNRP" class="form-input h35" readonly>
+                </div>
 
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">NRP</label><br>
-                <input type="text" id="modalCrewNRP" class="form-input h35" readonly>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Major</label><br>
+                    <input type="text" id="modalCrewMajor" class="form-input h35" readonly>
+                </div>
 
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">Major</label><br>
-                <input type="text" id="modalCrewMajor" class="form-input h35" readonly>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        KTM:
+                        <a href="#" target="_blank" id="modalCrewKTM" class="text-blue-400 underline">
+                            View KTM
+                        </a>
+                    </label>
+                </div>
 
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    KTM:
-                    <a href="#" target="_blank" id="modalCrewKTM" class="text-blue-400 underline">
-                        View KTM
-                    </a>
-                </label>
-            </div>
-
-            <div style="margin-bottom:16px;">
-                <label style="font-size:16px;opacity:1;">Status</label><br>
-                <input type="text" id="modalCrewStatus" class="form-input h35" readonly>
-            </div>
-
-            <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button" id="closeCrewModal" class="btn btn-cancel hover:bg-gray-500">
-                    Close
-                </button>
-            </div>
-        </form>
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:16px;opacity:1;">Status</label><br>
+                    <input type="text" id="modalCrewStatus" class="form-input h35" readonly>
+                </div>
+                <!-- Revision -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Revision                    
+                    </label><br>
+                    <textarea name="revision" id="modalCrewRevision" 
+                            class="form-input" style="height:80px;"
+                            readonly>
+                    </textarea>
+                </div>  
+                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                    <button type="button" id="closeCrewModal" class="btn btn-cancel hover:bg-gray-500">
+                        Close
+                    </button>
+                </div>
+            </form>
+        </div>        
     </div>
 </div>
 
@@ -931,16 +983,17 @@
                         class="form-input h35">
                 </div>
                 <!-- Back Number -->
-                @if ($team->competition === 'Futsal' || 
-                    $team->competition === 'Basket Putra' || 
-                    $team->competition === 'Basket Putri' || 
-                    $team->competition === 'Voli Putra' || 
-                    $team->competition === 'Voli Putri') 
+                @if (in_array($team->competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri']))
                     <div style="margin-bottom:16px;">
                         <label style="font-size:16px;opacity:1;">
                             Back Number
                         </label><br>
                         <input type="number" name="backnumber" min="1" max="100" step="1"  id="editBackNumber" class="form-input h35">
+                        @error('backnumber', 'playerEdit')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
                 @endif
                 
@@ -976,67 +1029,68 @@
 <div id="crewEditModal" class="modal-overlay" style="display:none;">
     <div class="modal-card">
         <h2 class="modal-title">Edit Crew</h2>
+        <div class="modal-body">
+            <form id="editCrewForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-        <form id="editCrewForm" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Crew Name</label><br>
+                    <input name="name" id="editCrewName" class="form-input h35" type="text" required>
+                </div>
 
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">Crew Name</label><br>
-                <input name="name" id="editCrewName" class="form-input h35" type="text" required>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
+                    <input name="whatsapp" id="editCrewWhatsapp" class="form-input h35" type="text" required>
+                </div>
 
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
-                <input name="whatsapp" id="editCrewWhatsapp" class="form-input h35" type="text" required>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Role</label><br>
+                    <select name="role" id="editCrewRole" class="form-input h40 text-black" required>
+                        <option value="" disabled selected>-- Select Role --</option>
+                        <option style="color:black;" value="Coach">Coach</option>
+                        <option style="color:black;" value="Assistant Coach">Assistant Coach</option>
+                        <option style="color:black;" value="Medic">Medic</option>
+                        <option style="color:black;" value="Koorcab">Koorcab</option>
+                    </select>
+                </div>
 
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">Role</label><br>
-                <select name="role" id="editCrewRole" class="form-input h40 text-black" required>
-                    <option value="" disabled selected>-- Select Role --</option>
-                    <option style="color:black;" value="Coach">Coach</option>
-                    <option style="color:black;" value="Assistant Coach">Assistant Coach</option>
-                    <option style="color:black;" value="Medic">Medic</option>
-                    <option style="color:black;" value="Koorcab">Koorcab</option>
-                </select>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        NRP <span style="opacity:0.5;">(optional)</span>
+                    </label><br>
+                    <input name="nrp" id="editCrewNRP" class="form-input h35" type="text">
+                </div>
 
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;opacity:1;">
-                    NRP <span style="opacity:0.5;">(optional)</span>
-                </label><br>
-                <input name="nrp" id="editCrewNRP" class="form-input h35" type="text">
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;">
+                        Major <span style="opacity:0.5;">(optional)</span>
+                    </label><br>
+                    <select name="major" id="editCrewMajor" class="form-input h40 text-black">
+                        <option value="" disabled selected>-- Select Major --</option>
+                        @foreach($majorsForCurrentHouse as $major)
+                            <option style="color:black;" value="{{ $major }}">{{ $major }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <div style="margin-bottom:5px;">
-                <label style="font-size:16px;">
-                    Major <span style="opacity:0.5;">(optional)</span>
-                </label><br>
-                <select name="major" id="editCrewMajor" class="form-input h40 text-black">
-                    <option value="" disabled selected>-- Select Major --</option>
-                    @foreach($majorsForCurrentHouse as $major)
-                        <option style="color:black;" value="{{ $major }}">{{ $major }}</option>
-                    @endforeach
-                </select>
-            </div>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Upload KTM <span style="opacity:0.5;">(optional)</span>
+                    </label><br>
+                    <input type="file" name="ktm_photo" class="form-input h45">
+                </div>
 
-            <div style="margin-bottom:10px;">
-                <label style="font-size:16px;opacity:1;">
-                    Upload KTM <span style="opacity:0.5;">(optional)</span>
-                </label><br>
-                <input type="file" name="ktm_photo" class="form-input h45">
-            </div>
-
-            <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button" id="cancelCrewEditModal" class="btn btn-cancel hover:bg-gray-500">
-                    Cancel
-                </button>
-                <button type="submit" class="btn btn-primary">
-                    Update Crew
-                </button>
-            </div>
-        </form>
+                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                    <button type="button" id="cancelCrewEditModal" class="btn btn-cancel hover:bg-gray-500">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Update Crew
+                    </button>
+                </div>
+            </form>
+        </div>        
     </div>
 </div>
 
@@ -1215,11 +1269,22 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalCrewNRP').value      = btn.dataset.nrp      || '-';
             document.getElementById('modalCrewMajor').value    = btn.dataset.major    || '-';
             document.getElementById('modalCrewStatus').value   = btn.dataset.status   || '-';
-
+            document.getElementById('modalCrewRevision').value = btn.dataset.revision || '-';
+            
             let ktmPath = btn.dataset.ktm;
+            let modalLink = document.getElementById('modalCrewKTM');
             if (ktmPath) {
-                document.getElementById('modalCrewKTM').href = `/storage/${ktmPath}`;
+                modalLink.href = `/storage/${ktmPath}`;
+                modalLink.textContent = "View KTM"; // optional, reset text if needed
+                modalLink.style.pointerEvents = "auto";  // ensure link is clickable
+                modalLink.style.color = ""; // reset any styling
             }
+            else{
+                modalLink.href = "#"; // prevent navigation
+                modalLink.textContent = "Tidak ada KTM"; 
+                modalLink.style.pointerEvents = "none"; 
+                modalLink.style.color = "gray"; 
+            }                
 
             crewDetailModal.style.display = 'flex';
         });
@@ -1237,23 +1302,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const cancelCrewEditBtn = document.getElementById('cancelCrewEditModal');
     const editCrewForm = document.getElementById('editCrewForm');
 
-    crewEditBtns.forEach(btn => {
+    crewEditBtns.forEach(btn => { 
     btn.addEventListener('click', (e) => {
         e.preventDefault();
-        e.stopPropagation();
-
+        
         let crewId = btn.dataset.id;
         editCrewForm.action = `/teams/{{ $team->id }}/crew/${crewId}`;
 
-        // Ensure _method hidden input says PUT
-        const methodInput = editCrewForm.querySelector('input[name="_method"]');
-        if (methodInput) methodInput.value = 'PUT';
-
-        document.getElementById('editCrewName').value     = btn.dataset.name     || '';
-        document.getElementById('editCrewWhatsapp').value = btn.dataset.whatsapp || '';
-        document.getElementById('editCrewRole').value     = btn.dataset.role     || '';
+        document.getElementById('editCrewName').value     = btn.dataset.name     || '-';
+        document.getElementById('editCrewWhatsapp').value = btn.dataset.whatsapp || '-';
+        document.getElementById('editCrewRole').value     = btn.dataset.role     || '-';
         document.getElementById('editCrewNRP').value      = btn.dataset.nrp      || '';
-        document.getElementById('editCrewMajor').value    = btn.dataset.major    || '';
+        document.getElementById('editCrewMajor').value    = btn.dataset.major    || '-';        
 
         crewEditModal.style.display = 'flex';
     });
@@ -1280,12 +1340,39 @@ if (cancelCrewEditBtn) {
 </script>
 @endif
 
+{{-- Modal Add New Crew --}}
+@if ($errors->addNewCrew->any())
+<script>
+    document.getElementById('addNewCrewModal').style.display = 'flex';
+</script>
+@endif
+
 {{-- Modal Add Existing Player --}}
 @if ($errors->addExistingPlayer->any())
 <script>
     document.getElementById('addExistingPlayerModal').style.display = 'flex';
 </script>
 @endif
+
+{{-- Modal Add Existing Crew --}}
+@if ($errors->addExistingCrew->any())
+<script>
+    document.getElementById('addExistingCrewModal').style.display = 'flex';
+</script>
+@endif
+
+{{-- Modal Edit Player --}}
+@if ($errors->playerEdit->any() && session('player_id'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.querySelector(`.editPlayerButton[data-id="{{ session('player_id') }}"]`);
+        if (btn) {
+            btn.click(); // Trigger klik tombol edit supaya JS tetap isi data dan buka modal
+        }
+    });
+</script>
+@endif
+
 @endsection
 
 @if(session('openExistingCrewModal'))
@@ -1293,4 +1380,3 @@ if (cancelCrewEditBtn) {
 document.getElementById('addExistingCrewModal').style.display = 'flex';
 </script>
 @endif
-

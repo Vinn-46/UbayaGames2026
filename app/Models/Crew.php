@@ -14,13 +14,20 @@ class Crew extends Model
         'nrp',
         'major',
         'ktm_photo',
-        'status',
-        'revision',
         'house_id'
     ];
 
     public function crewTeams()
     {
         return $this->hasMany(CrewTeam::class);
+    }
+    public function teams()
+    {
+        return $this->belongsToMany(
+            Team::class,
+            'crew_team',            
+            'crew_id',
+            'team_id',
+        )->withPivot('role', 'status', 'revision');
     }
 }

@@ -46,7 +46,6 @@
                         </tr>
                     </thead>
 
-
                     {{-- BODY --}}
                     <tbody class="divide-y divide-white/10 text-base">
 
@@ -59,62 +58,25 @@
                                     {{ $team->id }}
                                 </td>
 
-
                                 {{-- TEAM NAME --}}
                                 <td class="px-6 py-4">
                                     {{ $team->name }}
                                 </td>
-
 
                                 {{-- HOUSE --}}
                                 <td class="px-6 py-4 text-center">
                                     {{ $team->house->name ?? '-' }}
                                 </td>
 
-
                                 {{-- COMPETITION --}}
                                 <td class="px-6 py-4 text-center">
                                     {{ $team->competition }}
                                 </td>
 
-
-                                {{-- STATUS DROPDOWN --}}
-                                <td class="px-6 py-4 text-center">
-
-                                    <form
-                                        action="{{ route('teams.updateStatus', $team->id) }}"
-                                        method="POST"
-                                    >
-                                        @csrf
-                                        @method('PUT')
-
-                                        <select
-                                            name="status"
-                                            onchange="this.form.submit()"
-                                            class="bg-white text-black border border-white/20 rounded px-2 py-1">
-                                        >
-
-                                            <option value="Menunggu"
-                                                {{ $team->status == 'Menunggu' ? 'selected' : '' }}>
-                                                Menunggu
-                                            </option>
-
-                                            <option value="Ditolak"
-                                                {{ $team->status == 'Ditolak' ? 'selected' : '' }}>
-                                                Ditolak
-                                            </option>
-
-                                            <option value="Diterima"
-                                                {{ $team->status == 'Diterima' ? 'selected' : '' }}>
-                                                Diterima
-                                            </option>
-
-                                        </select>
-
-                                    </form>
-
+                                {{-- STATUS --}}
+                                <td class="px-6 py-4 text-center">                                   
+                                    {{ $team->status }}
                                 </td>
-
 
                                 {{-- ACTION --}}
                                 <td class="px-6 py-4">
@@ -133,8 +95,8 @@
                                         {{-- NOTES --}}
                                         <button
                                             onclick="openRevisionModal({{ $team->id }}, `{{ $team->revision }}`)"
-                                            class="shrink-0 px-3 py-1.5 rounded-lg bg-yellow-500/20 hover:bg-yellow-500/40 text-yellow-200 hover:text-white transition text-sm border border-yellow-500/20"
-                                        >
+                                            class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">
                                             <i data-feather="edit"></i>
                                         </button>
 

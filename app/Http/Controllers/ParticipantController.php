@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Participant;
 use App\Models\Team;
+use App\Models\CrewTeam;
+use App\Models\Crew;
 use App\Models\ParticipantTeam;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -13,16 +15,6 @@ class ParticipantController extends Controller
 {
     public function addPlayer(Request $request, Team $team)
     {
-        //dd($request->all());
-        $nrp = $request->nrp;
-        $nrpCount = Participant::where('nrp', $nrp)->count();
-
-        if ($nrpCount > 0){
-            return redirect()->back()
-                    ->withErrors(['nrp' => 'NRP sudah didaftarkan sebelumnya'], 'addNewPlayer')
-                    ->withInput();
-        }        
-
         $validated = $request->validate([
             'name' => 'required',
             'nrp' => 'required|max:9|unique:participants,nrp',
@@ -32,12 +24,39 @@ class ParticipantController extends Controller
             'mobilelegend' => 'nullable',
             'backnumber' => 'nullable|integer|min:1|max:100'
         ]);
-        
+        $nrp = $request->nrp;
+        $crew = Crew::where('nrp', $nrp)->first(); 
+        $crewCount = CrewTeam::where('crew_id', $crew->id ?? 0)
+                             ->where('team_id', $team->id)
+                             ->count();              
+        if ($crewCount > 0){
+            return redirect()->back()
+                    ->withErrors(['crewExist' => 'Orang ini telah didaftarkan sebagai Crew di tim ini'], 'addNewPlayer')
+                    ->withInput();
+        }    
+        $nrpCount = Participant::where('nrp', $nrp)->count();          
+        if ($nrpCount > 0){
+            return redirect()->back()
+                    ->withErrors(['nrp' => 'NRP sudah didaftarkan sebelumnya'], 'addNewPlayer')
+                    ->withInput();
+        }   
+        $competition=$team->competition;
+        if (in_array($competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri'])) 
+            {
+                $backNumberCount = ParticipantTeam::where('team_id', $team->id)
+                                    ->where('back_number', $request->backnumber)
+                                    ->count();
+                if ($backNumberCount > 0) {
+                    return redirect()->back()
+                    ->withErrors(['participant' => 'Nomor punggung telah didaftarkan di tim ini'], 'addNewPlayer')
+                    ->withInput();
+                } 
+            }   
         $extension = $request->file('ktm_photo')->getClientOriginalExtension();
         $time = date('His_dmy');
         $filename = $validated['nrp'] . '_' . $time . '.' . $extension;
         $path = $request->file('ktm_photo')->storeAs(
-            'ktm_photos',
+            'ktm_photos_participants',
             $filename,
             'public'
         );       
@@ -51,14 +70,15 @@ class ParticipantController extends Controller
             'mobilelegend' => $team->competition == 'E-sport'
                 ? $validated['mobilelegend']
                 : null,
+        ]);
+                
+        $participant->teams()->attach($team->id, [
+            'back_number' => $validated['backnumber'] ?? null  ,       
             'status' => 'Menunggu',
             'revision' => null
         ]);
-
-        $participant->teams()->attach($team->id, [
-            'back_number' => $validated['backnumber'] ?? null,
-        ]);
-
+        $team->status = 'Menunggu';        
+        $team->save();
         return redirect()->back()->with('success','Player berhasil ditambahkan');
     }
 
@@ -75,18 +95,31 @@ class ParticipantController extends Controller
                     ->withErrors(['participant' => 'Pemain telah didaftarkan di tim ini'], 'addExistingPlayer')
                     ->withInput();
         } 
-
+        $competition=$team->competition;
+        if (in_array($competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri'])) 
+            {
+                $backNumberCount = ParticipantTeam::where('team_id', $teamId)
+                                    ->where('back_number', $request->backnumber)
+                                    ->count();
+                if ($backNumberCount > 0) {
+                    return redirect()->back()
+                            ->withErrors(['backnumber' => 'Nomor punggung telah didaftarkan di tim ini'], 'addExistingPlayer')
+                            ->withInput();
+                }  
+            }         
         $request->validate([
             'participant_id' => 'required|exists:participants,id',
             'backnumber' => 'nullable|integer|min:1|max:100'
-        ]);
-
+        ]);                                   
         $team->participants()->syncWithoutDetaching([
             $request->participant_id => [
-                'back_number' => $request->backnumber
+                'back_number' => $request->backnumber,               
+                'status' => 'Menunggu',
+                'revision' => null
             ]
         ]);
-
+        $team->status = 'Menunggu';
+        $team->save();
         return redirect()->back()->with('success', 'Player berhasil ditambahkan ke team');
     }
 
@@ -103,8 +136,8 @@ class ParticipantController extends Controller
         ]);
 
         $team = Team::findOrFail($teamId);
-        $participant = Participant::findOrFail($playerId);
-
+        $participant = Participant::findOrFail($playerId);        
+        $competition = $team->competition;
         // Jika upload foto baru
         if ($request->hasFile('ktm_photo')) {
 
@@ -117,57 +150,68 @@ class ParticipantController extends Controller
             $filename = $validated['nrp'] . '_' . $time . '.' . $extension;
 
             $path = $request->file('ktm_photo')->storeAs(
-                'ktm_photos',
+                'ktm_photos_participants',
                 $filename,
                 'public'
             );                
             $participant->ktm_photo = $path;
         }        
+        if (in_array($competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri']))  
+            {
+                $backNumberCount = ParticipantTeam::where('team_id', $teamId)
+                                    ->where('back_number', $validated['backnumber'])
+                                    ->where('participant_id', '!=', $playerId)
+                                    ->count();
 
+                if ($backNumberCount > 0) {
+                return redirect()->back()
+                        ->withErrors(['backnumber' => 'Nomor punggung telah didaftarkan di tim ini'], 'playerEdit')
+                        ->withInput()
+                        ->with('player_id', $playerId);
+                }  
+                $team->participants()->updateExistingPivot($playerId, [
+                    'back_number' => $request->backnumber
+                ]);
+            }               
+        
         // Update field biasa
         $participant->name = $request->name;
         $participant->nrp = $request->nrp;
         $participant->major = $request->major;
         $participant->whatsapp = $request->whatsapp;
-        $participant->mobilelegend = $request->mobilelegend;
-        $team->participants()->updateExistingPivot($playerId, [
-            'back_number' => $request->backnumber
-        ]);
+        $participant->mobilelegend = $request->mobilelegend;       
+        
         $participant->save();
-
         return redirect()->back()->with('success', 'Player berhasil diupdate');
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, $participantId, $teamId)
     {
-        $participant = Participant::findOrFail($id);
-
-        // Update status sesuai pilihan dropdown
-        $participant->status = $request->status;
-
-        // Cek jika status yang dipilih adalah "Diterima"
-        if ($request->status === 'Diterima') {
-            $participant->revision = null; // Kosongkan notes revisi
-        }
-
-        $participant->save();
-
-        return redirect()->back()->with('success', 'Status berhasil diupdate');
-    }
-
-    public function updateRevision(Request $request)
-    {
-        $validated = $request->validate([
-            'id' => 'required|exists:participants,id',
-            'revision' => 'nullable|string'
+        $participant = Participant::findOrFail($participantId);
+        
+        // Ambil nilai baru
+        $status = $request->status;
+        $revision = ($status === 'Diterima') ? null : ($participant->pivot?->revision);
+        // Update pivot
+        $participant->teams()->updateExistingPivot($teamId, [
+            'status' => $status,
+            'revision' => $revision,
         ]);
 
-        $participant = Participant::findOrFail($validated['id']);
+        return redirect()->back()->with('success', 'Status player berhasil diupdate');
+    }
 
-        $participant->revision = $validated['revision'];
-        $participant->save();
+    public function updateRevision(Request $request, $participantId, $teamId)
+    {     
+        $participant = Participant::findOrFail($participantId);
+        $revision = $request->revision;
+
+        // Update pivot
+        $participant->teams()->updateExistingPivot($teamId, [            
+            'revision' => $revision,
+        ]);
 
         // UBAH BAGIAN INI: Tambahkan with('success', 'pesan...')
-        return redirect()->back()->with('success', 'Revision notes berhasil disimpan');
+        return redirect()->back()->with('success', 'Revision notes player berhasil disimpan');
     }
 }

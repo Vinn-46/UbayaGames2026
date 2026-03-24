@@ -103,23 +103,23 @@ Route::post('/teams/revision', [TeamController::class, 'updateRevision'])
     ->middleware('auth')
     ->name('teams.updateRevision');
 
-Route::put('/participants/{id}/status', 
+Route::put('/participants/{participant}/teams/{team}/status', 
     [ParticipantController::class, 'updateStatus'])
     ->name('participants.updateStatus');
 
-Route::post('/participants/revision',
+Route::post('/participants/{participant}/teams/{team}/status',
     [ParticipantController::class, 'updateRevision'])
     ->name('participants.updateRevision');
 
-Route::put('/crews/{id}/status',
+Route::put('/crew/{crew}/teams/{team}/status',
     [CrewController::class,'updateStatus'])
-    ->name('crews.updateStatus');
+    ->name('crew.updateStatus');
 
-Route::put('/crews/{id}/revision',
+Route::post('/crew/{crew}/teams/{team}/status',
     [CrewController::class,'updateRevision'])
-    ->name('crews.updateRevision');
+    ->name('crew.updateRevision');
 
-Route::post('/crew/addCrew', 
+Route::post('/crew/{team}/addCrew', 
     [CrewController::class, 'addCrew'])
     ->name('crew.addCrew');
 
