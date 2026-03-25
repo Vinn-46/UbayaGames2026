@@ -214,4 +214,14 @@ class ParticipantController extends Controller
         // UBAH BAGIAN INI: Tambahkan with('success', 'pesan...')
         return redirect()->back()->with('success', 'Revision notes player berhasil disimpan');
     }
+
+    public function allplayer()
+    {
+        $user = Auth::user();
+        $players = \App\Models\Participant::with('teams')
+                        ->where('house_id', $user->house_id)
+                        ->get();
+                        
+        return view('allplayer', compact('players'));
+    }
 }

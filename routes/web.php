@@ -43,9 +43,10 @@ Route::post('/logout', function (Illuminate\Http\Request $request) {
     return redirect('/login');
 })->name('logout');
 
-// Route::get('/allplayer',[TeamController::class,''])
-//     ->middleware('auth')
-//     ->name('allplayer');
+//Route untuk allplayer
+Route::get('/allplayer',[ParticipantController::class,'allplayer'])
+    ->middleware('auth')
+    ->name('allplayer');
 
 //teamlist
 Route::get('/teamlist',[TeamController::class,'index'])
