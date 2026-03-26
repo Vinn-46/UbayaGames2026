@@ -207,4 +207,28 @@ class CrewController extends Controller
 
         return redirect()->back()->with('success', 'Revision notes crew berhasil disimpan');
     }
+
+    public function allCrews()
+    {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $crews = \App\Models\Crew::with('teams')
+                    ->where('house_id', $user->house_id)
+                    ->get();
+                    
+        return view('allcrew', compact('crews'));
+    }
+
+    public function destroy($id)
+    {
+        $crew = \App\Models\Crew::find($id);
+        if ($crew) {
+            $crew->teams()->detach();
+            if ($crew->ktm_photo && \Illuminate\Support\Facades\Storage::exists('public/' . $crew->ktm_photo)) {
+                \Illuminate\Support\Facades\Storage::delete('public/' . $crew->ktm_photo);
+            }
+            $crew->delete();
+            return redirect()->back()->with('success', 'Data crew berhasil dihapus.');
+        }
+        return redirect()->back()->with('error', 'Crew tidak ditemukan.');
+    }
 }

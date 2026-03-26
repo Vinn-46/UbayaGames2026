@@ -4,6 +4,8 @@
 
 <section class="w-full px-4 sm:px-6 mb-36 relative">
     <div class="w-full max-w-6xl mx-auto">
+
+        {{-- HEADER --}}
         <header class="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             
             <h2 class="text-xl sm:text-2xl font-bold text-white font-heading uppercase tracking-widest">
@@ -47,6 +49,7 @@
                             <th class="px-6 py-4 text-center font-bold">NRP</th>
                             <th class="px-6 py-4 text-center font-bold">MAJOR</th>
                             <th class="px-6 py-4 text-center font-bold">DETAILS</th>
+                            <th class="px-6 py-4 text-center font-bold">ACTION</th> 
                         </tr>
                     </thead>
 
@@ -85,6 +88,19 @@
                                         </button>
                                     </div>
                                 </td>
+
+                                <td class="px-6 py-4">
+                                    <div class="flex justify-center gap-2">
+                                        {{-- Tombol Delete --}}
+                                        <form action="{{ route('participant.destroy', $player->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20 flex items-center justify-center">
+                                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -113,17 +129,25 @@
 
                 <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-5 text-sm">
                     <h3 class="text-lg font-heading font-bold text-white uppercase tracking-widest mb-4">Competitions Joined</h3>
+
+                    {{-- Looping Tiap Lomba yang Diikuti Pemain --}}
                     <div class="space-y-6">
                         @forelse($player->teams as $team)
                             <div class="bg-white/5 border border-white/10 p-4 rounded-xl space-y-4">
                                 
-                                {{-- 1. Cabang Lomba --}}
+                                {{-- 1. Nama Tim (Baru ditambahkan) --}}
+                                <div>
+                                    <label class="block text-white/70 mb-1 font-semibold">Team Name</label>
+                                    <input type="text" value="{{ $team->name }}" disabled class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none cursor-not-allowed">
+                                </div>
+
+                                {{-- 2. Cabang Lomba --}}
                                 <div>
                                     <label class="block text-white/70 mb-1 font-semibold">Competition</label>
                                     <input type="text" value="{{ $team->competition }}" disabled class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white font-bold outline-none cursor-not-allowed">
                                 </div>
                                 
-                                {{-- 2. Logika Cerdas untuk Back Number & ID ML --}}
+                                {{-- 3. Logika Cerdas untuk Back Number & ID ML --}}
                                 @if(in_array($team->competition, ['Futsal', 'Basket Putra', 'Basket Putri', 'Voli Putra', 'Voli Putri']))
                                     <div>
                                         <label class="block text-white/70 mb-1 font-semibold">Back Number</label>
@@ -136,17 +160,18 @@
                                     </div>
                                 @endif
 
-                                {{-- 3. Status --}}
+                                {{-- 4. Status --}}
                                 <div>
                                     <label class="block text-white/70 mb-1 font-semibold">Status</label>
                                     <input type="text" value="{{ $team->pivot->status ?? 'Menunggu' }}" disabled class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none cursor-not-allowed">
                                 </div>
 
-                                {{-- 4. Revision --}}
+                                {{-- 5. Revision --}}
                                 <div>
                                     <label class="block text-white/70 mb-1 font-semibold">Revision</label>
                                     <textarea disabled rows="2" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none cursor-not-allowed resize-none">{{ $team->pivot->revision ?? '-' }}</textarea>
                                 </div>
+
                             </div>
                         @empty
                             <p class="text-white/50 italic text-center">Belum masuk tim apapun.</p>
@@ -157,7 +182,6 @@
             </div>
         </div>
     @endforeach
-
 </section>
 
 {{-- SCRIPT IKON & FILTER & MODAL --}}
@@ -205,4 +229,5 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 </style>
+
 @endsection

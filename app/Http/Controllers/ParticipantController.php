@@ -224,4 +224,18 @@ class ParticipantController extends Controller
                         
         return view('allplayer', compact('players'));
     }
+
+    public function destroy($id)
+    {
+        $player = \App\Models\Participant::find($id);
+        if ($player) {
+            $player->teams()->detach();
+            if ($player->ktm_photo && \Illuminate\Support\Facades\Storage::exists('public/' . $player->ktm_photo)) {
+                \Illuminate\Support\Facades\Storage::delete('public/' . $player->ktm_photo);
+            }
+            $player->delete();
+            return redirect()->back()->with('success', 'Data pemain berhasil dihapus.');
+        }
+        return redirect()->back()->with('error', 'Pemain tidak ditemukan.');
+    }
 }

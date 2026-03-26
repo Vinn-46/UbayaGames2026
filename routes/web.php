@@ -131,3 +131,16 @@ Route::post('/crew/attach/{team}',
 Route::put('/teams/{team}/crew/{crew}', 
     [CrewController::class, 'updateCrew'])
     ->name('crew.updateCrew');
+
+//delete player dari all player
+Route::delete('/allplayer/{id}', 
+    [\App\Http\Controllers\ParticipantController::class, 'destroy'])
+    ->name('participant.destroy');
+
+Route::get('/allcrews', 
+    [\App\Http\Controllers\CrewController::class, 'allCrews'])
+    ->name('allcrews');
+
+Route::delete('/allcrews/{id}', 
+    [\App\Http\Controllers\CrewController::class, 'destroy'])
+    ->name('crew.destroy');
