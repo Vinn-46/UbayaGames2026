@@ -27,6 +27,40 @@
         </header>
 
 
+        {{-- FILTER --}}
+        <form method="GET" action="{{ route('teamlist.sekre') }}" class="mb-6 flex flex-col sm:flex-row gap-3">
+
+            {{-- COMBO BOX 1: Filter By --}}
+            <select id="filter_by" name="filter_by"
+                    class="bg-black/60 border border-white/10 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-white/30">
+                <option value="" disabled {{ !request('filter_by') ? 'selected' : '' }}>-- Filter By --</option>
+                <option value="status"      {{ request('filter_by') === 'status'      ? 'selected' : '' }}>Status</option>
+                <option value="competition" {{ request('filter_by') === 'competition' ? 'selected' : '' }}>Cabang Lomba</option>
+                <option value="house"       {{ request('filter_by') === 'house'       ? 'selected' : '' }}>House</option>
+            </select>
+
+            {{-- COMBO BOX 2: Search Value --}}
+            <select id="search" name="search"
+                    class="flex-1 bg-black/60 border border-white/10 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-white/30">
+            </select>
+
+            {{-- BUTTON SEARCH --}}
+            <button type="submit"
+                    class="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-semibold transition">
+                Search
+            </button>
+
+            {{-- BUTTON RESET --}}
+            @if(request('search'))
+                <a href="{{ route('teamlist.sekre') }}"
+                class="px-5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 text-sm font-semibold transition">
+                    Clear
+                </a>
+            @endif
+
+        </form>
+
+
         {{-- TABLE --}}
         <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl overflow-hidden w-full">
 
@@ -91,15 +125,6 @@
                                             <i data-feather="alert-circle"></i>
                                         </a>
 
-
-                                        {{-- NOTES --}}
-                                        <button
-                                            onclick="openRevisionModal({{ $team->id }}, `{{ $team->revision }}`)"
-                                            class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">
-                                            <i data-feather="edit"></i>
-                                        </button>
-
                                     </div>
 
                                 </td>
@@ -127,82 +152,75 @@
 </section>
 
 
-
-{{-- MODAL REVISION --}}
-<div id="revisionModal" class="modal-overlay">
-
-    <div class="modal-card">
-
-        <h2 class="modal-title">
-            Revision Notes
-        </h2>
-
-        <form method="POST" action="{{ route('teams.updateRevision') }}">
-
-            @csrf
-
-            <input
-                type="hidden"
-                name="team_id"
-                id="team_id"
-            >
-
-            <div style="margin-bottom:20px;">
-
-                <label style="font-size:18px;">
-                    Notes
-                </label>
-                <br>
-
-                <textarea
-                    name="revision"
-                    id="revision_text"
-                    class="form-input"
-                    style="height:120px;"
-                ></textarea>
-
-            </div>
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    onclick="closeRevisionModal()"
-                    class="btn btn-cancel"
-                >
-                    Cancel
-                </button>
-
-                <button
-                    type="submit"
-                    class="btn btn-primary"
-                >
-                    Save Notes
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-
 <script>
 
-function openRevisionModal(id, revision)
-{
-    document.getElementById('revisionModal').style.display = "flex";
-    document.getElementById('team_id').value = id;
-    document.getElementById('revision_text').value = revision ?? '';
-}
+const options = {
+        status: [
+            'Menunggu',
+            'Ditolak',
+            'Diterima'
+        ],
+        competition: [
+            'Basket Putra',
+            'Basket Putri',
+            'Futsal',
+            'Voli Putra',
+            'Voli Putri',
+            'Badminton Ganda Putra',
+            'Badminton Ganda Putri',
+            'Badminton Ganda Campuran',
+            'E-sport',
+            'Poster',
+            'Lukis',
+            'Dance',
+            'Fotografi'
+        ],
+        house: [
+            'House of Elixir',
+            'House of Justicia',
+            'House of Mercator',
+            'House of Praxis',
+            'House of Arcana',
+            'House of Fortis',
+            'House of Vivens',
+            'House of Creatio',
+            'House of Vitalis'
+        ]
+    };
 
-function closeRevisionModal()
-{
-    document.getElementById('revisionModal').style.display = "none";
-}
+    const filterBy  = document.getElementById('filter_by');
+    const searchBox = document.getElementById('search');
+    const currentSearch = "{{ request('search') }}";
+
+    function updateOptions(selectedFilter, selectedValue = null) {
+        searchBox.innerHTML = '';
+
+        // Tambah placeholder dulu
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = '-- Pilih --';
+        placeholder.disabled = true;
+        placeholder.selected = !selectedValue;
+        searchBox.appendChild(placeholder);
+
+        (options[selectedFilter] || []).forEach(opt => {
+            const el = document.createElement('option');
+            el.value = opt;
+            el.textContent = opt;
+            if (selectedValue && opt === selectedValue) {
+                el.selected = true;
+            }
+            searchBox.appendChild(el);
+        });
+    }
+
+    // Inisialisasi saat halaman load
+    updateOptions(filterBy.value, currentSearch || null);
+
+    // Update saat combo box 1 berubah
+    filterBy.addEventListener('change', function () {
+        updateOptions(this.value);
+    });
 
 </script>
 

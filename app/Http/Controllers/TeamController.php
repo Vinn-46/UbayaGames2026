@@ -83,7 +83,7 @@ class TeamController extends Controller
         $houseCrews = Crew::where('house_id', Auth::user()->house_id)->get();
         
         $players = $team->participants()->with('teams')->get();
-        $crews = getCrewsByTeam($team);
+        $crews = $team->crews()->with('teams')->get();
 
         return view('teamdetail', compact(
             'team',
@@ -115,9 +115,26 @@ class TeamController extends Controller
     }
 
     # POV Sekretaris
-    public function indexSekre()
+    public function indexSekre(Request $request)
     {
-        $teams = Team::with('house')->get();
+        $query = Team::with('house');
+
+        if ($request->filled('filter_by') && $request->filled('search')) {
+            $filterBy = $request->filter_by;
+            $search   = $request->search;
+
+            if ($filterBy === 'status') {
+                $query->where('status', $search);
+            } elseif ($filterBy === 'competition') {
+                $query->where('competition', $search);
+            } elseif ($filterBy === 'house') {
+                $query->whereHas('house', function ($q) use ($search) {
+                    $q->where('name', $search);
+                });
+            }
+        }
+
+        $teams = $query->get();
         return view('teamlist_sekre', compact('teams'));
     }
     public function updateRevision(Request $request)
@@ -152,7 +169,8 @@ class TeamController extends Controller
             'house'
         ])->findOrFail($id);
         $players = $team->participants;
-        $crews = getCrewsByTeam($team);
+        $crews = $team->crews;
+        // Bisa langsung pakai property karena sudah di-eager load via crewTeams.crew
         return view('teamdetail_sekre', compact(
             'team',
             'players',
@@ -162,4 +180,3 @@ class TeamController extends Controller
 
     
 }
-    
