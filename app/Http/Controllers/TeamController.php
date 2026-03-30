@@ -82,8 +82,14 @@ class TeamController extends Controller
 
         $houseCrews = Crew::where('house_id', Auth::user()->house_id)->get();
         
-        $players = $team->participants()->with('teams')->get();
-        $crews = $team->crews()->with('teams')->get();
+        $players = $team->participants()
+            ->with('teams')
+            ->orderBy('role', 'asc')
+            ->get();
+        $crews = $team->crews()
+            ->with('teams')
+            ->orderByRaw("FIELD(role, 'Koorcab', 'Coach', 'Assistant Coach', 'Medic')")
+            ->get();
 
         return view('teamdetail', compact(
             'team',
@@ -94,12 +100,32 @@ class TeamController extends Controller
             'houseCrews'
         ));
     }   
-
+    public function changeName(Request $request, Team $team)
+    {
+        $currentName = $team->name;
+        $newName = $request->newTeamName;
+        //jika nama sama sebelumnya
+        if ($currentName === $newName) {
+            return redirect()->back()
+                    ->withErrors(['sameName' => 'Nama tim tidak boleh sama dengan sebelumnya'], 'changeTeamName')
+                    ->withInput();
+        } 
+        //aturan nama unik
+        if (Team::where('name', $newName)->exists()) {
+            return redirect()->back()
+                    ->withErrors(['nameExist' => 'Nama tim sudah ada'], 'changeTeamName')
+                    ->withInput();
+        } 
+        $team->update([
+            'name' => $newName
+        ]);
+        return redirect()->back()->with('success', 'Nama tim berhasil diganti');
+    }
     public function destroyPlayer(Team $team, Participant $participant)
     {
         $team->participants()->detach($participant->id);
 
-        return redirect()->back()->with('success', 'Player berhasil dihapus');
+        return redirect()->back()->with('success', 'Player berhasil dihapus dari tim');
     }
     public function deleteTeam($id)
     {
@@ -107,6 +133,7 @@ class TeamController extends Controller
 
         // Hapus semua relasi di pivot table
         $team->participants()->detach();
+        $team->crews()->detach();
 
         // Hapus team
         $team->delete();

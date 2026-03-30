@@ -11,7 +11,10 @@ class ParticipantTeam extends Model
     protected $fillable = [
         'participant_id',
         'team_id',
-        'back_number'
+        'back_number',     
+        'status',
+        'revision',
+        'role'
     ];
 
     public function team()

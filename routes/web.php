@@ -62,6 +62,10 @@ Route::get('/teamdetail', [TeamController::class, 'show'])
     ->middleware('auth')
     ->name('teamdetail');
 
+//change team name
+Route::put('/teams/{team}', [TeamController::class, 'changeName'])
+    ->name('teams.changeName');     
+
 //add player
 Route::post('/teams/{team}/attach-player', 
     [ParticipantController::class, 'attachExistingPlayer']
@@ -79,6 +83,11 @@ Route::delete('/teams/{team}/participant/{participant}',
 Route::put('/teams/{team}/participant/{participant}', 
     [ParticipantController::class, 'update']
 )->name('participant.update');
+
+//edit player (general)
+Route::put('/participant/{participant}', 
+    [ParticipantController::class, 'updateGeneral']
+)->name('participant.updateGeneral');
 
 Route::delete('/teams/{team}/crew/{crew}', 
     [CrewController::class, 'destroyCrew'])
@@ -131,6 +140,10 @@ Route::post('/crew/attach/{team}',
 Route::put('/teams/{team}/crew/{crew}', 
     [CrewController::class, 'updateCrew'])
     ->name('crew.updateCrew');
+
+Route::put('/crew/{crew}', 
+    [CrewController::class, 'updateGeneralCrew'])
+    ->name('crew.updateGeneralCrew');    
 
 //delete player dari all player
 Route::delete('/allplayer/{id}', 

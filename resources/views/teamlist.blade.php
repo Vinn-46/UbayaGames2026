@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <section class="w-full px-4 sm:px-6 mb-36">
     <div class="w-full max-w-6xl mx-auto">
 
@@ -52,7 +51,8 @@
                             <th class="px-6 py-4 text-center font-bold">House</th>
                             <th class="px-6 py-4 text-center font-bold">Competition</th>
                             <th class="px-6 py-4 text-center font-bold">Status</th>
-                            <th class="px-6 py-4 text-center font-bold">Action</th>
+                            <th class="px-6 py-4 text-center font-bold">Detail</th>
+                            <th class="px-6 py-4 text-center font-bold">Delete</th>
                         </tr>
                     </thead>
 
@@ -89,7 +89,10 @@
                                      class="shrink-0 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10" >
                                      <i data-feather="info"></i>
                                     </a>
-
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center gap-2">
                                     <!-- Delete Button -->
                                     <form action="{{ route('teams.destroy', $team->id) }}" 
                                         method="POST"
@@ -117,8 +120,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
+        </div>        
     </div>
 </section>
 
@@ -144,26 +146,27 @@
             <!-- Competition -->
             <div style="margin-bottom:20px;">
                 <label style="font-size:18px;">Competition</label><br>
-                <select name="competition" class="form-input h40" required>
+                
+                <select name="competition" id="kategori" class="form-input h40" required>
                     <option value="" disabled selected>-- Pilih cabang lomba --</option>
-                    <option style="color:black;" value="Basket Putra">Basket Putra</option>
-                    <option style="color:black;" value="Basket Putri">Basket Putri</option>
-
-                    <option style="color:black;" value="Futsal">Futsal</option>
-
-                    <option style="color:black;" value="Voli Putra">Voli Putra</option>
-                    <option style="color:black;" value="Voli Putri">Voli Putri</option>
-
-                    <option style="color:black;" value="Badminton Ganda Putra">Badminton Ganda Putra</option>
-                    <option style="color:black;" value="Badminton Ganda Putri">Badminton Ganda Putri</option>
-                    <option style="color:black;" value="Badminton Ganda Campuran">Badminton Ganda Campuran</option>
-
-                    <option style="color:black;" value="E-sport">E-sport</option>
-                    <option style="color:black;" value="Poster">Poster</option>
-                    <option style="color:black;" value="Lukis">Lukis</option>
-                    <option style="color:black;" value="Dance">Dance</option>
-                    <option style="color:black;" value="Fotografi">Fotografi</option>                    
                 </select>
+            
+                <script>
+                const data = [
+                    "Basket Putra", "Basket Putri", "Futsal Putra", "Voli Putra",
+                    "Badminton Ganda Putra", "Badminton Tunggal Putra",
+                    "Badminton Ganda Campuran", "E-sport", "Poster",
+                    "Lukis", "Dance", "Fotografi"
+                ];
+
+                const select = document.getElementById("kategori");
+
+                // cara paling efisien
+                select.insertAdjacentHTML(
+                    "beforeend",
+                    data.map(item => `<option value="${item}" style="color:black;">${item}</option>`).join("")
+                );
+                </script>
 
                 @error('competition')
                     <div style="color:red; margin-top:6px;">

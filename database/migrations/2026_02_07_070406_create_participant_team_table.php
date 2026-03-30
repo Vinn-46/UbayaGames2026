@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('back_number', 20)->nullable();            
             $table->text('revision')->nullable();            
             $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
+            $table->enum('role', ['Utama', 'Cadangan']);
         });
     }
 

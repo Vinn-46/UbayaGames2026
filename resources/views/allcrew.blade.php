@@ -64,12 +64,13 @@
                 <table class="w-full text-base text-white" style="min-width: max-content;">
                     <thead class="bg-white/5 uppercase tracking-widest text-sm">
                         <tr>
-                            <th class="px-6 py-4 text-center font-bold">NO</th>
-                            <th class="px-6 py-4 text-left font-bold">NAME</th>
+                            <th class="px-6 py-4 text-center font-bold">No</th>
+                            <th class="px-6 py-4 text-left font-bold">Name</th>
                             <th class="px-6 py-4 text-center font-bold">NRP</th>
-                            <th class="px-6 py-4 text-center font-bold">MAJOR</th>
-                            <th class="px-6 py-4 text-center font-bold">DETAILS</th>
-                            <th class="px-6 py-4 text-center font-bold">ACTION</th>
+                            <th class="px-6 py-4 text-center font-bold">Major</th>
+                            <th class="px-6 py-4 text-center font-bold">Details</th>
+                            <th class="px-6 py-4 text-center font-bold">Edit</th>
+                            <th class="px-6 py-4 text-center font-bold">Action</th>
                         </tr>
                     </thead>
 
@@ -101,20 +102,33 @@
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center">
                                         <button onclick="openCrewModal('{{ $crew->id }}')"
-                                           class="shrink-0 px-4 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 transition text-sm font-bold text-blue-400 hover:text-white border border-blue-500/20 flex items-center gap-2">
-                                            <i data-feather="info" class="w-4 h-4"></i>
-                                            Detail
+                                           class="inline-flex px-4 py-2 text-xs font-semibold rounded-lg
+                                              bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">
+                                            <i data-feather="info" class="w-5 h-5"></i>
                                         </button>
                                     </div>
                                 </td>
-
+                                <td class="px-6 py-4">
+                                    <div class="flex justify-center">
+                                        <button onclick="openEditCrewModal('{{ $crew->id }}')"
+                                           class="openCrewEdit inline-flex px-4 py-2 text-xs font-semibold rounded-lg
+                                              bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
+                                              data-id="{{ $crew->id }}"
+                                              data-name="{{ $crew->name }}"
+                                              data-whatsapp="{{ $crew->whatsapp }}"
+                                              data-nrp="{{ $crew->nrp }}"
+                                              data-major="{{ $crew->major }}">
+                                            <i data-feather="edit" class="w-5 h-5"></i>
+                                        </button>
+                                    </div>
+                                </td>
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center gap-2">
                                         <form action="{{ route('crew.destroy', $crew->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus crew ini sepenuhnya?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20 flex items-center justify-center">
-                                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                                            <button type="submit" class="shrink-0 px-4 py-2 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20 flex items-center justify-center">
+                                                <i data-feather="trash-2" class="w-5 h-5"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -150,32 +164,87 @@
                 <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-5 text-sm">
 
                     <div class="space-y-6">
+                        <div class="bg-white/5 border border-white/10 p-4 rounded-xl space-y-4">                                
+                            <!-- Crew Name -->
+                            <div>
+                                <label class="block text-white/70 mb-1 font-semibold">
+                                    Crew Name
+                                </label>
+                                <input type="text" value="{{ $crew->name }}"  
+                                    class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none" 
+                                    readonly>
+                            </div>
+                            <!-- WhatsApp -->
+                            <div>
+                                <label class="block text-white/70 mb-1 font-semibold">
+                                    Whatsapp Number
+                                </label>
+                                <input type="text" value="{{ $crew->whatsapp }}" 
+                                    class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none"
+                                    readonly>
+                            </div>                            
+                            <!-- NRP -->
+                            <div>
+                                <label class="block text-white/70 mb-1 font-semibold">
+                                    NRP
+                                </label>
+                                <input type="text" value="{{ $crew->nrp ?? '-'}}" 
+                                    class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none" 
+                                    readonly>
+                            </div>
+                            <!-- Major -->
+                            <div>
+                                <label class="block text-white/70 mb-1 font-semibold">
+                                    Major
+                                </label>
+                                <input type="text" value="{{ $crew->major ?? '-'}}" 
+                                    class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none" 
+                                    readonly>
+                            </div>
+                            <!-- KTM -->
+                            <div>
+                                <label class="block text-white/70 mb-1 font-semibold">                                
+                                    KTM: 
+                                    @if($crew->ktm_photo)
+                                        <a href="{{ asset('storage/' . $crew->ktm_photo) }}" 
+                                        target="_blank" 
+                                        class="text-blue-400 underline">
+                                            View KTM
+                                        </a>
+                                    @else
+                                        <span class="text-gray-400">
+                                            Tidak ada KTM
+                                        </span>
+                                    @endif
+                                </label>          
+                            </div>                              
+                        </div>
                         @forelse($crew->teams as $team)
                             <div class="bg-white/5 border border-white/10 p-4 rounded-xl space-y-4">
                                 
                                 <div>
                                     <label class="block text-white/70 mb-1 font-semibold">Team Name</label>
-                                    <input type="text" value="{{ $team->name }}" disabled class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white font-bold outline-none cursor-not-allowed">
+                                    <input type="text" value="{{ $team->name }}" readonly class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white font-bold outline-none">
                                 </div>
 
                                 <div>
                                     <label class="block text-white/70 mb-1 font-semibold">Competition</label>
-                                    <input type="text" value="{{ $team->competition }}" disabled class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white font-bold outline-none cursor-not-allowed">
+                                    <input type="text" value="{{ $team->competition }}" readonly class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white font-bold outline-none">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-white/70 mb-1 font-semibold">Role</label>
-                                    <input type="text" value="{{ $team->pivot->role }}" disabled class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none cursor-not-allowed">
+                                    <input type="text" value="{{ $team->pivot->role }}" readonly class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none">
                                 </div>
 
                                 <div>
                                     <label class="block text-white/70 mb-1 font-semibold">Status</label>
-                                    <input type="text" value="{{ $team->pivot->status ?? 'Menunggu' }}" disabled class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none cursor-not-allowed">
+                                    <input type="text" value="{{ $team->pivot->status ?? 'Menunggu' }}" readonly class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none ">
                                 </div>
 
                                 <div>
                                     <label class="block text-white/70 mb-1 font-semibold">Revision</label>
-                                    <textarea disabled rows="2" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none cursor-not-allowed resize-none">{{ $team->pivot->revision ?? '-' }}</textarea>
+                                    <textarea readonly rows="2" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none resize-none">{{ $team->pivot->revision ?? '-' }}</textarea>
                                 </div>
 
                             </div>
@@ -190,6 +259,64 @@
     @endforeach
 
 </section>
+
+{{-- POP UP EDIT CREW --}}
+<div id="crewEditModal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+        <h2 class="modal-title">Edit Crew</h2>
+        <div class="modal-body">
+            <form id="editCrewForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Crew Name</label><br>
+                    <input name="name" id="editCrewName" class="form-input h35" type="text" required>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
+                    <input name="whatsapp" id="editCrewWhatsapp" class="form-input h35" type="text" required>
+                </div>
+                
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        NRP <span style="opacity:0.5;">(optional)</span>
+                    </label><br>
+                    <input name="nrp" id="editCrewNRP" class="form-input h35" type="text">
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;">
+                        Major <span style="opacity:0.5;">(optional)</span>
+                    </label><br>
+                    <select name="major" id="editCrewMajor" class="form-input h40 text-black">
+                        <option value="" disabled selected>-- Select Major --</option>
+                        @foreach($majorsForCurrentHouse as $major)
+                            <option style="color:black;" value="{{ $major }}">{{ $major }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Upload KTM <span style="opacity:0.5;">(optional)</span>
+                    </label><br>
+                    <input type="file" name="ktm_photo" class="form-input h45">
+                </div>
+
+                <div style="display:flex; justify-content:space-between; gap:8px;">
+                    <button type="button" id="cancelCrewEditModal" class="btn btn-cancel hover:bg-gray-500">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Update Crew
+                    </button>
+                </div>
+            </form>
+        </div>        
+    </div>
+</div>
 
 {{-- SCRIPT IKON, MODAL & MULTI-FILTER --}}
 <script src="https://unpkg.com/feather-icons"></script>
@@ -209,8 +336,8 @@
                 const rowCabloms = row.getAttribute('data-cabloms') || ''; 
                 const rowRoles = row.getAttribute('data-roles') || ''; 
 
-                const matchComp = (selectedComp === 'all' || rowCabloms.includes(selectedComp));
-                const matchRole = (selectedRole === 'all' || rowRoles.includes(selectedRole));
+                const matchComp = (selectedComp === 'all' || rowCabloms === selectedComp);
+                const matchRole = (selectedRole === 'all' || rowRoles === selectedRole);
 
                 if (matchComp && matchRole) {
                     row.style.display = ''; 
@@ -228,7 +355,33 @@
         document.getElementById('modal-' + id).classList.remove('hidden');
         document.getElementById('modal-' + id).classList.add('flex');
     }
+    function openEditCrewModal(crewId) {
+        // Ambil tombol berdasarkan data-id
+        const btn = document.querySelector(`.openCrewEdit[data-id='${crewId}']`);
+        if (!btn) return;
 
+        // Ambil data dari attribute
+        const name = btn.getAttribute('data-name');
+        const whatsapp = btn.getAttribute('data-whatsapp');
+        const nrp = btn.getAttribute('data-nrp');
+        const major = btn.getAttribute('data-major');
+
+        // Isi form
+        document.getElementById('editCrewName').value = name ?? '';
+        document.getElementById('editCrewWhatsapp').value = whatsapp ?? '';
+        document.getElementById('editCrewNRP').value = nrp ?? '';
+        document.getElementById('editCrewMajor').value = major ?? '';
+
+        // Set action form (PENTING)
+        const form = document.getElementById('editCrewForm');
+        form.action = `/crew/${crewId}`;
+
+        // Tampilkan modal
+        document.getElementById('crewEditModal').style.display = 'flex';
+    }
+        document.getElementById('cancelCrewEditModal').addEventListener('click', function () {
+        document.getElementById('crewEditModal').style.display = 'none';
+    });
     function closeCrewModal(id) {
         document.getElementById('modal-' + id).classList.remove('flex');
         document.getElementById('modal-' + id).classList.add('hidden');
@@ -241,5 +394,10 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 </style>
-
+{{-- Modal Edit Player Crew --}}
+@if ($errors->crewEdit->any())
+<script>
+    openEditCrewModal("{{ session('editCrewId') }}");
+</script>
+@endif
 @endsection

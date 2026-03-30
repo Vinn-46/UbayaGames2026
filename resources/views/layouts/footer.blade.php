@@ -57,7 +57,7 @@
                 
                 </div>
         <div class="w-full text-center mt-2">   
-            <p class="text-[10px] text-gray-400">
+            <p class="text-[15px] text-gray-400">
                 &copy; Information Systems UBAYA GAMES 2026
             </p>
          </div>

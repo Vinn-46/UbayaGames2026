@@ -38,7 +38,7 @@ class Team extends Model
             'participant_team',
             'team_id',
             'participant_id'
-        )->withPivot('back_number', 'status', 'revision');
+        )->withPivot('back_number', 'status', 'revision', 'role');
     }
     public function crews()
     {
