@@ -53,7 +53,7 @@
             {{-- BUTTON RESET --}}
             @if(request('search'))
                 <a href="{{ route('teamlist.sekre') }}"
-                class="px-5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 text-sm font-semibold transition">
+                class="inline-flex items-center justify-center px-5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 text-sm font-semibold transition">
                     Clear
                 </a>
             @endif
@@ -163,11 +163,10 @@ const options = {
         competition: [
             'Basket Putra',
             'Basket Putri',
-            'Futsal',
+            'Futsal Putra',
             'Voli Putra',
-            'Voli Putri',
             'Badminton Ganda Putra',
-            'Badminton Ganda Putri',
+            'Badminton Tunggal Putra',
             'Badminton Ganda Campuran',
             'E-sport',
             'Poster',
