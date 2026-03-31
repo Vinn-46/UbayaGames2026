@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Crew;
+use App\Models\CrewTeam;
 use App\Models\Participant;
 use App\Models\Team;
+use App\Models\ParticipantTeam;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -124,7 +126,8 @@ class TeamController extends Controller
     public function destroyPlayer(Team $team, Participant $participant)
     {
         $team->participants()->detach($participant->id);
-
+        $team->status = 'Menunggu';
+        $team->save();
         return redirect()->back()->with('success', 'Player berhasil dihapus dari tim');
     }
     public function deleteTeam($id)
@@ -180,11 +183,89 @@ class TeamController extends Controller
         $request->validate([
             'status' => 'required|in:Menunggu,Ditolak,Diterima']);
         $team = Team::findOrFail($id);
-        $team->status = $request->status;
-        $oldrevision = $team->revision;
-        $team->revision = ($request->status === 'Diterima' ? null : $oldrevision);
+        $status = $request->status;
+        $competition = $team->competition;
+        if ($status === 'Diterima'){ //kalu diterima cek dulu jumlah minimum 
+            $participantTeam = ParticipantTeam::where('team_id', $team->id)->get();
+            $playerCount = $participantTeam->count();
+            $utamaCount  = $participantTeam->where('role', 'Utama')->count();
+            $rulesPlayer = [
+                'Basket Putra' => ['minPlayer' => 7, 'minUtama' => 5],
+                'Basket Putri' => ['minPlayer' => 7, 'minUtama' => 5],
+                'Futsal Putra' => ['minPlayer' => 7, 'minUtama' => 5],
+                'Voli Putra' => ['minPlayer' => 8, 'minUtama' => 6],
+                'Badminton Ganda Putra' => ['minPlayer' => 2, 'minUtama' => 2],
+                'Badminton Tunggal Putra' => ['minPlayer' => 1, 'minUtama' => 1],
+                'Badminton Ganda Campuran' => ['minPlayer' => 2, 'minUtama' => 2],
+                'E-sport' => ['minPlayer' => 5, 'minUtama' => 5],
+                'Poster' => ['minPlayer' => 1, 'minUtama' => 1],
+                'Lukis' => ['minPlayer' => 1, 'minUtama' => 1],
+                'Dance' => ['minPlayer' => 2, 'minUtama' => 2],
+                'Fotografi' => ['minPlayer' => 1, 'minUtama' => 1],
+            ];            
+            $minPlayer = $rulesPlayer[$competition]['minPlayer'];
+            $minUtama  = $rulesPlayer[$competition]['minUtama'];
+            if ($playerCount < $minPlayer) {
+                return back()->withErrors([
+                    'playerCount' => "Jumlah minimal pemain di $competition adalah $minPlayer orang"
+                ], 'updateStatus')->withInput();
+            }
+            if ($utamaCount < $minUtama) {
+                return back()->withErrors([
+                    'utamaCount' => "Jumlah minimal pemain utama di $competition adalah $minUtama orang"
+                ], 'updateStatus')->withInput();
+            }          
+            $crewTeam = CrewTeam::where('team_id', $team->id)->get();
+
+            $roles = $crewTeam->pluck('role');
+            $needCoach = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
+                        'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
+                        'Badminton Ganda Campuran', 'E-sport', 'Dance'];
+            $needAssistant = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
+                            'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
+                            'Badminton Ganda Campuran', 'Dance'];
+            $needMedic = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
+                        'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
+                        'Badminton Ganda Campuran', 'Dance'];
+            if (!$roles->contains('Koorcab')) {
+                return back()->withErrors([
+                    'koorcab' => "Tim belum memiliki Koorcab"
+                ], 'updateStatus')->withInput();
+            }
+            if (in_array($competition, $needCoach) && !$roles->contains('Coach')) {
+                return back()->withErrors([
+                    'coach' => "Tim belum memiliki Coach"
+                ], 'updateStatus')->withInput();
+            }
+            if (in_array($competition, $needAssistant) && !$roles->contains('Assistant Coach')) {
+                return back()->withErrors([
+                    'asstCoach' => "Tim belum memiliki Assistant Coach"
+                ], 'updateStatus')->withInput();
+            }
+            if (in_array($competition, $needMedic) && !$roles->contains('Medic')) {
+                return back()->withErrors([
+                    'medic' => "Tim belum memiliki Medic"
+                ], 'updateStatus')->withInput();
+            }
+
+            $allPlayerAccepted = $participantTeam->every(function ($item) {
+                return $item->status === 'Diterima';
+            });
+            $allCrewAccepted = $crewTeam->every(function ($item) {
+                return $item->status === 'Diterima';
+            });
+            if (!$allPlayerAccepted) {
+                return back()->withErrors(['playerAccept' => "Semua pemain belum diterima"], 'updateStatus')->withInput();
+            }
+            if (!$allCrewAccepted) {
+                return back()->withErrors(['crewAccept' => "Semua crew belum diterima"], 'updateStatus')->withInput();
+            }
+            // kalau semua validasi lolos
+            $team->revision = null;
+        }
+        $team->status = $status;
         $team->save();
-        return back()->with('success','Status berhasil diupdate');
+        return back()->with('success','Status tim berhasil diupdate');    
     }
 
     public function showSekre(Request $request)

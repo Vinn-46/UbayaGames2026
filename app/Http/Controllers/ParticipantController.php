@@ -18,14 +18,14 @@ class ParticipantController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'nrp' => 'required|max:9|unique:participants,nrp',
+            'nrp' => 'required',
             'major' => 'required',
             'ktm_photo' => 'required|image',
             'whatsapp' => 'required',
             'mobilelegend' => 'nullable',
             'backnumber' => 'nullable|integer|min:1|max:100'
         ]);
-        $nrp = $request->nrp;
+        $nrp = $validated['nrp'];
         $crew = Crew::where('nrp', $nrp)->first(); 
         $crewCount = CrewTeam::where('crew_id', $crew->id ?? 0)
                              ->where('team_id', $team->id)
@@ -68,14 +68,14 @@ class ParticipantController extends Controller
         if ($role === 'Utama')
         {
             $limitUtama = [
-                'Basket Putra' => 12,
-                'Basket Putri' => 12,
-                'Futsal Putra' => 12,
-                'Voli Putra' => 10,
+                'Basket Putra' => 5,
+                'Basket Putri' => 5,
+                'Futsal Putra' => 5,
+                'Voli Putra' => 6,
                 'Badminton Ganda Putra' => 2,
                 'Badminton Tunggal Putra' => 1,
                 'Badminton Ganda Campuran' => 2,
-                'E-sport' => 6,
+                'E-sport' => 5,
                 'Poster' => 2,
                 'Lukis' => 1,
                 'Dance' => 7,
@@ -135,7 +135,7 @@ class ParticipantController extends Controller
             'revision' => null,
             'role' => $role
         ]);
-        if ($team->status = 'Diterima')
+        if ($team->status === 'Diterima')
         {
             $team->status = 'Menunggu';
         }        
@@ -209,14 +209,14 @@ class ParticipantController extends Controller
         if ($role === 'Utama')
         {
             $limitUtama = [
-                'Basket Putra' => 12,
-                'Basket Putri' => 12,
-                'Futsal Putra' => 12,
-                'Voli Putra' => 10,
+                'Basket Putra' => 5,
+                'Basket Putri' => 5,
+                'Futsal Putra' => 5,
+                'Voli Putra' => 6,
                 'Badminton Ganda Putra' => 2,
                 'Badminton Tunggal Putra' => 1,
                 'Badminton Ganda Campuran' => 2,
-                'E-sport' => 6,
+                'E-sport' => 5,
                 'Poster' => 2,
                 'Lukis' => 1,
                 'Dance' => 7,
@@ -261,13 +261,13 @@ class ParticipantController extends Controller
         $role = in_array($competition, $noCadangan) ? 'Utama': $request->role;                            
         $team->participants()->syncWithoutDetaching([
             $request->participant_id => [
-                'back_number' => $request->backnumber,               
+                'back_number' => $request->backnumber ?? null,               
                 'status' => 'Menunggu',
                 'revision' => null,
                 'role' => $role
             ]
         ]);
-        if ($team->status = 'Diterima')
+        if ($team->status === 'Diterima')
         {
             $team->status = 'Menunggu';
         }        
@@ -286,6 +286,7 @@ class ParticipantController extends Controller
             'backnumber' => 'nullable',
             'mobilelegend' => 'nullable'
         ]);
+        $hasChanged = false;
         $nrp = $request->nrp;
         $nrpCount = Participant::where('nrp', $nrp)
                                 ->where('id', '!=', $playerId)
@@ -296,13 +297,12 @@ class ParticipantController extends Controller
                     ->withInput()
                     ->with('editPlayerId', $playerId);
         } 
-
         $team = Team::findOrFail($teamId);
         $participant = Participant::findOrFail($playerId);        
         $competition = $team->competition;
         // Jika upload foto baru
         if ($request->hasFile('ktm_photo')) {
-
+            $hasChanged = true;
             // Hapus lama kalau ada
             if ($participant->ktm_photo) {
                 Storage::disk('public')->delete($participant->ktm_photo);
@@ -330,10 +330,6 @@ class ParticipantController extends Controller
                             ->withInput()
                             ->with('editPlayerId', $playerId);
             }
-            $participant = Participant::findOrFail($playerId); 
-            $participant->update([
-                'mobilelegend' => $request->mobilelegend
-            ]);
         }
         if (in_array($competition, ['Futsal Putra', 'Basket Putra', 'Basket Putri', 'Voli Putra']))  
             {
@@ -348,24 +344,26 @@ class ParticipantController extends Controller
                         ->withInput()
                         ->with('editPlayerId', $playerId);
                 }  
-                $team->participants()->updateExistingPivot($playerId, [
-                    'back_number' => $request->backnumber
-                ]);
+                $currentBackNumber = ParticipantTeam::where('team_id', $teamId)
+                    ->where('participant_id', $playerId)
+                    ->value('back_number');
+
+                $team->participants()->updateExistingPivot($playerId, ['back_number' => $request->backnumber]);              
             }               
         
-        $role = ($request->role) ? $request->role : 'Utama';
+        $role = $request->role ?? 'Utama';
         // cek jumlah utama
         if ($role === 'Utama')
         {
             $limitUtama = [
-                'Basket Putra' => 12,
-                'Basket Putri' => 12,
-                'Futsal Putra' => 12,
-                'Voli Putra' => 10,
+                'Basket Putra' => 5,
+                'Basket Putri' => 5,
+                'Futsal Putra' => 5,
+                'Voli Putra' => 6,
                 'Badminton Ganda Putra' => 2,
                 'Badminton Tunggal Putra' => 1,
                 'Badminton Ganda Campuran' => 2,
-                'E-sport' => 6,
+                'E-sport' => 5,
                 'Poster' => 2,
                 'Lukis' => 1,
                 'Dance' => 7,
@@ -405,18 +403,28 @@ class ParticipantController extends Controller
                     ->withInput()
                     ->with('editPlayerId', $playerId);
             }
-        }            
-        $team->participants()->updateExistingPivot($playerId, [
-            'role' => $role 
-        ]);
+        }           
+        $team->participants()->updateExistingPivot($playerId, ['role' => $role]);
+        
         // Update field biasa
         $participant->name = $request->name;
         $participant->nrp = $request->nrp;
         $participant->major = $request->major;
         $participant->whatsapp = $request->whatsapp;
-        $participant->mobilelegend = $request->mobilelegend;       
+        $participant->mobilelegend = $request->mobilelegend ?: null;       
         
-        $participant->save();
+        if ($participant->isDirty()) {
+            $hasChanged = true;
+        }
+        
+        if ($hasChanged) {        
+            $participant->save();  
+            $pivotQuery = ParticipantTeam::where('participant_id', $playerId);
+            $teamIds = $pivotQuery->pluck('team_id');
+            $pivotQuery->update(['status' => 'Menunggu']);
+            Team::whereIn('id', $teamIds)
+                ->update(['status' => 'Menunggu']);                   
+        }
         return redirect()->back()->with('success', 'Player berhasil diupdate');
     }
     public function updateGeneral(Request $request, $playerId)
@@ -428,11 +436,12 @@ class ParticipantController extends Controller
             'ktm_photo' => 'nullable|image',
             'whatsapp' => 'required',
         ]);
+        $hasChanged = false;
         $nrp = $request->nrp;
-        $nrpCount = Participant::where('nrp', $nrp)
-                                ->where('id', '!=', $playerId)
-                                ->count();          
-        if ($nrpCount > 0){
+        $nrpExists = Participant::where('nrp', $nrp)
+                ->where('id', '!=', $playerId)
+                ->exists();
+        if ($nrpExists){
             return redirect()->back()
                     ->withErrors(['nrp' => 'NRP sudah didaftarkan sebelumnya'], 'playerEdit')
                     ->withInput()
@@ -441,7 +450,7 @@ class ParticipantController extends Controller
         $participant = Participant::findOrFail($playerId);        
         // Jika upload foto baru
         if ($request->hasFile('ktm_photo')) {
-
+            $hasChanged = true;
             // Hapus lama kalau ada
             if ($participant->ktm_photo) {
                 Storage::disk('public')->delete($participant->ktm_photo);
@@ -462,9 +471,18 @@ class ParticipantController extends Controller
         $participant->nrp = $request->nrp;
         $participant->major = $request->major;
         $participant->whatsapp = $request->whatsapp;      
-        
-        $participant->save();
-        return redirect()->back()->with('success', 'Player berhasil diupdate');
+        if ($participant->isDirty()) {
+            $hasChanged = true;
+        }
+        if ($hasChanged) {            
+            $participant->save();  
+            $pivotQuery = ParticipantTeam::where('participant_id', $playerId);
+            $teamIds = $pivotQuery->pluck('team_id');
+            $pivotQuery->update(['status' => 'Menunggu']);
+            Team::whereIn('id', $teamIds)
+                ->update(['status' => 'Menunggu']);           
+        }   
+        return redirect()->back()->with('success', 'Player berhasil diupdate');      
     }
     public function updateStatus(Request $request, $participantId, $teamId)
     {
@@ -478,7 +496,9 @@ class ParticipantController extends Controller
             'status' => $status,
             'revision' => $revision,
         ]);
-
+        if ($status === 'Menunggu' || $status === 'Ditolak') {
+            Team::where('id', $teamId)->update(['status' => 'Menunggu']);
+        }
         return redirect()->back()->with('success', 'Status player berhasil diupdate');
     }
 
@@ -511,11 +531,15 @@ class ParticipantController extends Controller
     {
         $player = Participant::find($id);
         if ($player) {
-            $player->teams()->detach();
+            $teamIds = ParticipantTeam::where('participant_id', $id)
+                ->pluck('team_id');
+            $player->teams()->detach();           
             if ($player->ktm_photo) {
                 Storage::disk('public')->delete($player->ktm_photo);
             }
             $player->delete();
+            Team::whereIn('id', $teamIds)
+                ->update(['status' => 'Menunggu']);
             return redirect()->back()->with('success', 'Data pemain berhasil dihapus');
         }
         return redirect()->back()->with('error', 'Pemain tidak ditemukan');

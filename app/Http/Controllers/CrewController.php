@@ -28,9 +28,9 @@ class CrewController extends Controller
         $teamId = $team->id;
         $role = $validated['role'];
         $name = $validated['name'];
-        $crew = Crew::where('name', $name)->firstOrFail();
+        $crew = Crew::where('name', $name)->first();
         if ($crew){
-            $crewCount = CrewTeam::where('crew_id', $crew->id)
+            $crewCount = CrewTeam::where('crew_id', $crew->id ?? 0)
                                     ->where('team_id', $teamId)
                                     ->count();
             if ($crewCount > 0){
@@ -54,7 +54,7 @@ class CrewController extends Controller
                 }
             }
         }   
-        if (Crew::where('nrp', $nrp)->exists()){
+        if ($nrp && Crew::where('nrp', $nrp)->exists()) {
             return redirect()->back()
                     ->withErrors(['nrp' => 'NRP sudah didaftarkan sebelumnya'], 'addNewCrew')
                     ->withInput();
@@ -96,6 +96,7 @@ class CrewController extends Controller
         ]);       
         $team->status = 'Menunggu';        
         $team->save();
+
         return redirect()->back()
             ->with('success', 'Crew berhasil ditambahkan')
             ->with('openExistingCrewModal', true);
@@ -153,17 +154,7 @@ class CrewController extends Controller
         $team->status = 'Menunggu';        
         $team->save();
         return redirect()->back()->with('success', 'Crew berhasil ditambahkan');
-    }
-
-    public function destroyCrew($teamId, $crewId)
-    {
-        $crewTeam = CrewTeam::where('team_id', $teamId)
-                            ->where('crew_id', $crewId)
-                            ->firstOrFail();
-        $crewTeam->delete();
-
-        return redirect()->back()->with('success', 'Crew berhasil dihapus.');
-    }
+    }   
 
     public function updateCrew(Request $request, $teamId, $crewId)
     {
@@ -175,8 +166,11 @@ class CrewController extends Controller
             'major'     => 'nullable',
             'ktm_photo' => 'nullable|image',
         ]);
+        $hasChanged = false;
         $nrp = $validated['nrp'] ?? null;
-        if (Crew::where('nrp', $nrp)->exists()){
+        if ($nrp && Crew::where('nrp', $nrp)
+                        ->where('id', '!=', $crewId)
+                        ->exists()){
             return redirect()->back()
                     ->withErrors(['nrp' => 'NRP sudah didaftarkan sebelumnya'], 'crewEdit')
                     ->withInput()
@@ -185,6 +179,7 @@ class CrewController extends Controller
         $role = $validated['role'];
         $roleExists = CrewTeam::where('team_id', $teamId)
                     ->where('role', $role)
+                    ->where('crew_id', '!=', $crewId)
                     ->exists();
         if ($roleExists) {
             return redirect()->back()
@@ -197,15 +192,11 @@ class CrewController extends Controller
                             ->firstOrFail();
         $crewTeam->update(['role' => $request->role]);
 
-        $crew = Crew::findOrFail($crewTeam->crew_id);
-        $crew->name     = $request->name;
-        $crew->whatsapp = $request->whatsapp;
-        $crew->nrp      = $request->nrp;
-        $crew->major    = $request->major;
+        $crew = Crew::findOrFail($crewTeam->crew_id);       
 
         // Jika upload foto baru
         if ($request->hasFile('ktm_photo')) {
-
+            $hasChanged = true;
             // Hapus lama kalau ada
             if ($crew->ktm_photo) {
                 Storage::disk('public')->delete($crew->ktm_photo);
@@ -221,9 +212,22 @@ class CrewController extends Controller
             );                
             $crew->ktm_photo = $path;
         }       
-        
-        $crew->save();
+        $crew->name     = $validated['name'];
+        $crew->whatsapp = $validated['whatsapp'];
+        $crew->nrp      = $nrp;
+        $crew->major    = $validated['major'];              
 
+        if ($crew->isDirty()) {
+            $hasChanged = true;
+        }
+        if ($hasChanged) {            
+            $crew->save();  
+            $pivotQuery = CrewTeam::where('crew_id', $crewId);
+            $teamIds = $pivotQuery->pluck('team_id');
+            $pivotQuery->update(['status' => 'Menunggu']);
+            Team::whereIn('id', $teamIds)
+                ->update(['status' => 'Menunggu']);           
+        }   
         return redirect()->back()->with('success', 'Crew berhasil diupdate.');
     }
     public function updateGeneralCrew(Request $request, $crewId)
@@ -235,23 +239,20 @@ class CrewController extends Controller
             'major'     => 'nullable',
             'ktm_photo' => 'nullable|image',
         ]);
+        $hasChanged = false;
         $nrp = $validated['nrp'] ?? null;
-        if (Crew::where('nrp', $nrp)->exists()){
+        if ($nrp && Crew::where('nrp', $nrp)
+                        ->where('id', '!=', $crewId)
+                        ->exists()){
             return redirect()->back()
                     ->withErrors(['nrp' => 'NRP sudah didaftarkan sebelumnya'], 'crewEdit')
                     ->withInput()
                     ->with('editCrewId', $crewId);
-        }  
-        
-        $crew = Crew::findOrFail($crewId);
-        $crew->name     = $request->name;
-        $crew->whatsapp = $request->whatsapp;
-        $crew->nrp      = $request->nrp;
-        $crew->major    = $request->major;
-
+        }          
+        $crew = Crew::findOrFail($crewId);       
         // Jika upload foto baru
         if ($request->hasFile('ktm_photo')) {
-
+            $hasChanged = true;
             // Hapus lama kalau ada
             if ($crew->ktm_photo) {
                 Storage::disk('public')->delete($crew->ktm_photo);
@@ -267,8 +268,22 @@ class CrewController extends Controller
             );                
             $crew->ktm_photo = $path;
         }       
-        
-        $crew->save();
+        $crew->name     = $validated['name'];
+        $crew->whatsapp = $validated['whatsapp'];
+        $crew->nrp      = $nrp;
+        $crew->major    = $validated['major'];  
+        if ($crew->isDirty()) {
+            $hasChanged = true;
+        }
+        if ($hasChanged) {            
+            $crew->save();  
+            $pivotQuery = CrewTeam::where('crew_id', $crewId);
+            $teamIds = $pivotQuery->pluck('team_id');
+            $pivotQuery->update(['status' => 'Menunggu']);
+            Team::whereIn('id', $teamIds)
+                ->update(['status' => 'Menunggu']);    
+        }   
+            dd($hasChanged);       
 
         return redirect()->back()->with('success', 'Crew berhasil diupdate.');
     }
@@ -281,6 +296,9 @@ class CrewController extends Controller
             'status' => $status,
             'revision' => $revision,
         ]);
+        if ($status === 'Menunggu' || $status === 'Ditolak') {
+            Team::where('id', $teamId)->update(['status' => 'Menunggu']);
+        }
         return redirect()->back()->with('success', 'Status crew berhasil diupdate');
     }
 
@@ -306,17 +324,30 @@ class CrewController extends Controller
         $majorsForCurrentHouse = getMajorsByHouse($houseName);                
         return view('allcrew', compact('crews', 'majorsForCurrentHouse'));
     }
-
+    public function destroyCrew($teamId, $crewId)
+    {
+        $crewTeam = CrewTeam::where('team_id', $teamId)
+                            ->where('crew_id', $crewId)
+                            ->firstOrFail();
+        $crewTeam->delete();
+        Team::where('id', $teamId)
+            ->update(['status' => 'Menunggu']);
+        return redirect()->back()->with('success', 'Crew berhasil dihapus.');
+    }
     public function destroy($id)
     {
         $crew = Crew::find($id);
-        if ($crew) {
-            $crew->teams()->detach();
+        if ($crew) {            
+            $teamIds = CrewTeam::where('crew_id', $id)
+                ->pluck('team_id');
+            $crew->teams()->detach();           
             if ($crew->ktm_photo) {
                 Storage::disk('public')->delete($crew->ktm_photo);
             }
             $crew->delete();
-            return redirect()->back()->with('success', 'Data crew berhasil dihapus');
+            Team::whereIn('id', $teamIds)
+                ->update(['status' => 'Menunggu']);
+            return redirect()->back()->with('success', 'Data crew berhasil dihapus');           
         }
         return redirect()->back()->with('error', 'Crew tidak ditemukan');
     }

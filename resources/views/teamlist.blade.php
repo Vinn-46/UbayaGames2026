@@ -18,7 +18,7 @@
                 
                 {{-- TEKS SELAMAT DATANG (Sudah benar) --}}
                 <div class="text-[#CBDCC1] font-['Georgia'] text-sm sm:text-base text-right">
-                    Haii, Selamat Datang 
+                    Selamat Datang, 
                     <span class="text-white font-bold">
                         {{ Auth::user()->username ?? 'Admin' }}
                     </span>
@@ -109,11 +109,10 @@
                                 </div>
                             </td>
                         </tr>
-
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center py-6 text-white/50">
-                                Belum ada data team
+                            <td colspan="7" class="text-center py-6 text-white/50">
+                                <i>Belum ada data team</i>
                             </td>
                         </tr>
                         @endforelse

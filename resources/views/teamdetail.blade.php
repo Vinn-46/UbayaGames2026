@@ -698,7 +698,7 @@
 
         <!-- FORM -->
         <div class="modal-body">
-            <form action="{{ route('crew.addCrew', $team->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('crew.addCrew', $team) }}" method="POST" enctype="multipart/form-data">
             @csrf
                 <!-- Crew Name -->
                 <div style="margin-bottom:5px;">
@@ -783,7 +783,7 @@
                 <!-- BUTTONS -->
                 <div style="
                     display:flex;
-                    justify-content:flex-end;
+                    justify-content:space-between;
                     gap:8px;
                 ">
 
@@ -1010,13 +1010,12 @@
     <div class="modal-card">
 
         <!-- TITLE -->
-        <h2 class="modal-title">Edit Player</h2>
+        <h2 class="modal-title">Edit Player</h2>        
         <div class="modal-body">
             <!-- FORM -->
             <form id="editPlayerForm" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
-
+                @method('PUT')                
                 <!-- Player Name -->
                 <div style="margin-bottom:10px;">
                     <label style="font-size:16px;opacity:1;">

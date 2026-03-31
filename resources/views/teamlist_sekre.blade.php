@@ -17,7 +17,7 @@
             {{-- WELCOME --}}
             <div class="flex flex-col items-end gap-3">
                 <div class="text-[#CBDCC1] font-['Georgia'] text-sm sm:text-base text-right">
-                    Haii, Selamat Datang
+                    Selamat Datang, 
                     <span class="text-white font-bold">
                         {{ Auth::user()->username ?? 'Sekretaris' }}
                     </span>
@@ -76,7 +76,7 @@
                             <th class="px-6 py-4 text-center font-bold">House</th>
                             <th class="px-6 py-4 text-center font-bold">Competition</th>
                             <th class="px-6 py-4 text-center font-bold">Status</th>
-                            <th class="px-6 py-4 text-center font-bold">Action</th>
+                            <th class="px-6 py-4 text-center font-bold">Details</th>
                         </tr>
                     </thead>
 

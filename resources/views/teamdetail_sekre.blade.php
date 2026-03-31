@@ -63,7 +63,7 @@
                                             <option value="Diterima" {{ $team->status=='Diterima'?'selected':'' }}>
                                                 Diterima
                                             </option>
-                                        </select>
+                                        </select>                                                                              
                                     </form>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -78,9 +78,16 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table>                    
                 </div>
             </div>
+            @foreach (['playerCount','utamaCount', 'playerAccept', 'crewAccept', 'koorcab', 'coach', 'asstCoach', 'medic'] as $field)
+                @error($field, 'updateStatus')
+                    <div style="color:red; margin-top:6px; text-align:right; font-size:18px;">
+                        {{ $message }}
+                    </div>
+                @enderror
+            @endforeach  
             @if ($team->revision!==null)
                 <h2 class="text-xl sm:text-l font-heading font-bold text-white uppercase tracking-widest"
                     style="margin-top:20px;">
@@ -109,7 +116,9 @@
                     <table class="w-full text-base text-white whitespace-nowrap">
                         <thead class="bg-white/5 text-sm uppercase tracking-widest">
                             <tr>
+                                <th class="px-6 py-4 text-center">No</th>
                                 <th class="px-6 py-4 text-left">Player</th>
+                                <th class="px-6 py-4 text-Center">Role</th>
                                 <th class="px-6 py-4 text-center">Detail</th>
                                 <th class="px-6 py-4 text-center">Status</th>
                                 <th class="px-6 py-4 text-center">Notes</th>
@@ -117,12 +126,17 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @foreach($players as $player)
+                            @foreach($players as $index => $player)
                                 <tr>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $index+1 }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         {{ $player->name }}
                                     </td>
-
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $player->pivot->role }}
+                                    </td>
                                     <td class="px-6 py-4 text-center">
                                         <button type="button" 
                                             class="openPlayerDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
@@ -135,6 +149,7 @@
                                                 data-status="{{ $player->pivot->status ?? '-' }}"
                                                 data-mobilelegend="{{ $player->mobilelegend }}"
                                                 data-revision="{{ $player->pivot->revision }}"   
+                                                data-role="{{ $player->pivot->role }}"   
                                                 data-backnumber="{{ $player->pivot->back_number ?? '-' }}">                   
                                             <i data-feather="info"></i>
                                         </button>
@@ -195,6 +210,7 @@
                     <table class="w-full text-base text-white whitespace-nowrap">
                         <thead class="bg-white/5 text-sm uppercase tracking-widest">
                             <tr>
+                                <th class="px-6 py-4 text-center">No</th>
                                 <th class="px-6 py-4 text-left">Crew</th>
                                 <th class="px-6 py-4 text-center">Role</th>
                                 <th class="px-6 py-4 text-center">Detail</th>
@@ -204,44 +220,47 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @foreach($crews as $crew)
+                            @foreach($crews as $index => $crew)
                                 <tr>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $index+1 }}
+                                    </td>
                                     <td class="px-6 py-4">
-                                        {{ $crew->crew->name }}
+                                        {{ $crew->name }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        {{ $crew->role }}
+                                        {{ $crew->pivot->role }}
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <button type="button" 
                                                 class="openCrewDetail inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                                     bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
                                                     data-id="{{ $crew->crew_id }}"
-                                                    data-name="{{ $crew->crew->name }}"
-                                                    data-whatsapp="{{ $crew->crew->whatsapp }}"
-                                                    data-role="{{ $crew->role }}"
-                                                    data-nrp="{{ $crew->crew->nrp ?? '-' }}"
-                                                    data-major="{{ $crew->crew->major ?? '-' }}"
-                                                    data-ktm="{{ $crew->crew->ktm_photo }}"
-                                                    data-status="{{ $crew->status }}"
+                                                    data-name="{{ $crew->name }}"
+                                                    data-whatsapp="{{ $crew->whatsapp }}"
+                                                    data-role="{{ $crew->pivot->role }}"
+                                                    data-nrp="{{ $crew->nrp ?? '-' }}"
+                                                    data-major="{{ $crew->major ?? '-' }}"
+                                                    data-ktm="{{ $crew->ktm_photo }}"
+                                                    data-status="{{ $crew->pivot->status }}"
                                                     data-revision="{{ $crew->pivot->revision ?? '-' }}">    
                                                 <i data-feather="info"></i>
                                         </button>
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        <form action="{{ route('crew.updateStatus', [$crew->crew->id, $team->id]) }}" method="POST">
+                                        <form action="{{ route('crew.updateStatus', [$crew->id, $team->id]) }}" method="POST">
                                             @csrf
                                             @method('PUT')
                                             <select name="status"
                                                     onchange="this.form.submit()"
                                                     class="bg-white text-black px-2 py-1 rounded">
-                                                <option value="Menunggu" {{ $crew->status=='Menunggu'?'selected':'' }}>
+                                                <option value="Menunggu" {{ $crew->pivot->status=='Menunggu'?'selected':'' }}>
                                                     Menunggu
                                                 </option>
-                                                <option value="Ditolak" {{ $crew->status=='Ditolak'?'selected':'' }}>
+                                                <option value="Ditolak" {{ $crew->pivot->status=='Ditolak'?'selected':'' }}>
                                                     Ditolak
                                                 </option>
-                                                <option value="Diterima" {{ $crew->status=='Diterima'?'selected':'' }}>
+                                                <option value="Diterima" {{ $crew->pivot->status=='Diterima'?'selected':'' }}>
                                                     Diterima
                                                 </option>
                                             </select>
@@ -250,7 +269,7 @@
                                     <td class="px-6 py-4 text-center">
                                         <div class="flex justify-center">
                                             <button
-                                                onclick="openRevisionModal('crew', {{ $crew->crew->id }}, `{{ $crew->crew->revision }}`)"
+                                                onclick="openRevisionModal('crew', {{ $crew->id }}, `{{ $crew->pivot->revision }}`)"
                                                 class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                                     bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10">
                                                 <i data-feather="edit"></i>
@@ -365,6 +384,16 @@
                     </label><br>
 
                     <input type="text" id="modalStatus" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
+                <!-- Role -->                    
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Role
+                    </label><br>
+                    <input type="text" id="modalRole" 
                         class="form-input h35" 
                         readonly>
                 </div>
@@ -533,6 +562,7 @@
             document.getElementById('modalWhatsapp').value = btn.dataset.whatsapp || '-';
             document.getElementById('modalStatus').value = btn.dataset.status || '-';            
             document.getElementById('modalRevision').value = btn.dataset.revision || '-';
+            document.getElementById('modalRole').value = btn.dataset.role || '-';
             const mobileLegendInput = document.getElementById('modalMobilelegend');
             if (mobileLegendInput) {
                 mobileLegendInput.value = btn.dataset.mobilelegend || '-';

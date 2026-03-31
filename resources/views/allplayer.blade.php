@@ -148,9 +148,7 @@
                     </button>
                 </div>
 
-                <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-5 text-sm">
-                    <h3 class="text-lg font-heading font-bold text-white uppercase tracking-widest mb-4">Competitions Joined</h3>
-                    
+                <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-5 text-sm">                   
                     <div class="space-y-6">
                         <div class="bg-white/5 border border-white/10 p-4 rounded-xl space-y-4">                                
                             <!-- Player Name -->
@@ -202,6 +200,7 @@
                                     readonly>
                             </div>    
                         </div>
+                        <h3 class="text-lg font-heading font-bold text-white uppercase tracking-widest mb-4">Competitions Joined</h3>
                         {{-- Looping Tiap Lomba yang Diikuti Pemain --}}
                         @forelse($player->teams as $team)
                             <div class="bg-white/5 border border-white/10 p-4 rounded-xl space-y-4">
@@ -260,7 +259,7 @@
 <div id="playerEditModal" class="modal-overlay" style="display:none;">
     <div class="modal-card">
     <!-- TITLE -->
-    <h2 class="modal-title">Edit Player</h2>
+    <h2 class="modal-title">Edit Player</h2>  
         <div class="modal-body">
             <!-- FORM -->
             <form id="editPlayerForm" method="POST" enctype="multipart/form-data">

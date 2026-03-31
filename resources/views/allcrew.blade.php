@@ -190,7 +190,7 @@
                                 </label>
                                 <input type="text" value="{{ $crew->nrp ?? '-'}}" 
                                     class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none" 
-                                    readonly>
+                                    readonly>                                
                             </div>
                             <!-- Major -->
                             <div>
@@ -219,6 +219,7 @@
                                 </label>          
                             </div>                              
                         </div>
+                        <h3 class="text-lg font-heading font-bold text-white uppercase tracking-widest mb-4">Competitions Joined</h3>
                         @forelse($crew->teams as $team)
                             <div class="bg-white/5 border border-white/10 p-4 rounded-xl space-y-4">
                                 
@@ -284,6 +285,11 @@
                         NRP <span style="opacity:0.5;">(optional)</span>
                     </label><br>
                     <input name="nrp" id="editCrewNRP" class="form-input h35" type="text">
+                    @error('nrp', 'crewEdit')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div style="margin-bottom:10px;">

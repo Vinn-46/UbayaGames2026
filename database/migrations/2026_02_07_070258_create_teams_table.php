@@ -25,7 +25,6 @@ return new class extends Migration
                   ->cascadeOnDelete();
             $table->enum('status', ['Menunggu', 'Ditolak', 'Diterima']);
             $table->text('revision')->nullable();
-            $table->timestamps();
         });
     }
 

@@ -71,7 +71,8 @@ Route::post('/teams/{team}/attach-player',
     [ParticipantController::class, 'attachExistingPlayer']
 )->name('participant.attachPlayer');
 
-Route::post('/teams/{team}/add-player', [ParticipantController::class, 'addPlayer'])
+Route::post('/teams/{team}/add-player', 
+    [ParticipantController::class, 'addPlayer'])
     ->name('participant.addPlayer');
 
 //hapus player
@@ -129,7 +130,7 @@ Route::post('/crew/{crew}/teams/{team}/status',
     [CrewController::class,'updateRevision'])
     ->name('crew.updateRevision');
 
-Route::post('/crew/{team}/addCrew', 
+Route::post('/teams/{team}/crew/add', 
     [CrewController::class, 'addCrew'])
     ->name('crew.addCrew');
 
