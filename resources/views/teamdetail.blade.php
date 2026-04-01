@@ -18,15 +18,6 @@
                     ← Back
                 </a> 
             </div>
-            <!-- Kanan -->
-            <button id="openChangeTeamNameModal"
-                class="inline-flex items-center gap-2 px-5 py-2 text-white
-                    bg-blue-600 hover:bg-blue-500 rounded-lg transition
-                    shadow-lg shadow-blue-600/20 border border-blue-400/20"
-                    data-teamName="{{ $team->name }}">                
-                <span class="font-bold font-['Georgia'] text-sm sm:text-base">Change Team Name</span>
-                <i data-feather="edit" class="w-5 h-5"></i>
-            </button>
             </header>
 
             <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl overflow-hidden w-full">
@@ -35,7 +26,6 @@
                         <thead class="bg-white/5 text-sm uppercase tracking-widest">
                             <tr>
                                 <th class="px-6 py-4 text-center font-semibold">ID</th>
-                                <th class="px-6 py-4 text-left font-semibold">Team Name</th>
                                 <th class="px-6 py-4 text-center font-semibold">House</th>
                                 <th class="px-6 py-4 text-center font-semibold">Competition</th>
                                 <th class="px-6 py-4 text-center font-semibold">Status</th>
@@ -46,10 +36,6 @@
                             <tr class="hover:bg-white/5 transition">
                                 <td class="px-6 py-4 text-center text-white/70">
                                     {{ $team->id }}
-                                </td>
-
-                                <td class="px-6 py-4">
-                                    {{ $team->name }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center">
@@ -1219,55 +1205,6 @@
     </div>
 </div>
 
-{{-- POP UP CHANGE TEAM NAME --}}
-<div id="changeTeamNameModal" class="modal-overlay">
-    <div class="modal-card" style="max-width: 500px;">
-                    
-        <h2 class="modal-title">Change Team Name</h2>
-        
-        <form action="{{ route('teams.changeName', $team->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div style="margin-bottom:20px;">
-                <label style="font-size:16px;opacity:1;">Current Team Name</label><br>
-                <input id="currentTeamName" class="form-input h35" type="text" value="{{ $team->name }}" readonly>  
-                @error('sameName', 'changeTeamName')
-                    <div style="color:red; margin-top:6px;">
-                        {{ $message }}
-                    </div>
-                @enderror    
-            </div>
-            <div style="margin-bottom:20px;">
-                <label style="font-size:16px;opacity:1;">New Team Name</label><br>
-                <input name="newTeamName" class="form-input h35" type="text" required>                
-                @error('nameExist', 'changeTeamName')
-                    <div style="color:red; margin-top:6px;">
-                        {{ $message }}
-                    </div>
-                @enderror          
-            </div>
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                gap:12px;
-            ">
-                <button type="button" 
-                       id="closeChangeTeamNameModal"
-                        class="btn btn-cancel hover:bg-gray-500">
-                        Cancel
-                </button>
-
-                <button type="submit"
-                    class="btn btn-primary bg-blue-600 hover:bg-blue-500">
-                        Change Name
-                </button>
-            </div>             
-
-        </form>
-    </div>
-</div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     //Add Player
@@ -1573,7 +1510,7 @@ document.addEventListener('DOMContentLoaded', function () {
 @endif
 @endsection
 
-@if('openExistingCrewModal')
+@if('openExistingCrewModal')    
 <script>
     document.getElementById('addExistingCrewModal').style.display = 'flex';
 </script>

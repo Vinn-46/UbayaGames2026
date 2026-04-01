@@ -47,8 +47,6 @@
                     <thead class="bg-white/5 uppercase tracking-widest text-sm">
                         <tr>
                             <th class="px-6 py-4 text-center font-bold">ID</th>
-                            <th class="px-6 py-4 text-left font-bold">Team Name</th>
-                            <th class="px-6 py-4 text-center font-bold">House</th>
                             <th class="px-6 py-4 text-center font-bold">Competition</th>
                             <th class="px-6 py-4 text-center font-bold">Status</th>
                             <th class="px-6 py-4 text-center font-bold">Detail</th>
@@ -62,15 +60,7 @@
                         <tr class="hover:bg-white/5 transition" style="white-space: nowrap;">
 
                             <td class="px-6 py-4 text-center text-white/70">
-                                {{ $team->id }}
-                            </td>
-
-                            <td class="px-6 py-4">
-                                {{ $team->name }}
-                            </td>
-
-                            <td class="px-6 py-4 text-center">
-                                {{ $team->house->name ?? '-' }}
+                                {{ $loop->iteration }}
                             </td>
 
                             <td class="px-6 py-4 text-center">
@@ -131,39 +121,41 @@
         <form method="POST" action="{{ route('teams.store') }}">
             @csrf
 
-            <!-- Team Name -->
-            <div style="margin-bottom:16px;">
-                <label style="font-size:18px;">Team Name</label><br>
-                <input type="text" name="name" class="form-input" required>
-                @error('name')
-                    <div style="color:red; margin-top:6px;">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-
-            <!-- Competition -->
             <div style="margin-bottom:20px;">
                 <label style="font-size:18px;">Competition</label><br>
                 
                 <select name="competition" id="kategori" class="form-input h40" required>
-                    <option value="" disabled selected>-- Pilih cabang lomba --</option>
+                    <option value="" disabled selected>Pilih cabang lomba</option>
                 </select>
             
                 <script>
+                // Potong kata "House of " langsung dari Blade PHP
+                const houseName = "{{ trim(str_replace('House of ', '', Auth::user()->house->name ?? 'Tim')) }}";
+
                 const data = [
-                    "Basket Putra", "Basket Putri", "Futsal Putra", "Voli Putra",
-                    "Badminton Ganda Putra", "Badminton Tunggal Putra",
-                    "Badminton Ganda Campuran", "E-sport", "Poster",
-                    "Lukis", "Dance", "Fotografi"
+                    { val: "Basket Putra", label: "Basket Putra" },
+                    { val: "Basket Putri", label: "Basket Putri" },
+                    { val: "Futsal Putra", label: "Futsal Putra" },
+                    { val: "Voli Putra", label: "Voli Putra" },
+                    { val: "Badminton Ganda Putra", label: "Badminton Ganda Putra" },
+                    { val: "Badminton Tunggal Putra", label: "Badminton Tunggal Putra" },
+                    { val: "Badminton Ganda Campuran", label: "Badminton Ganda Campuran" },
+                    
+                    // Label otomatis ikut nama House yang sudah dipotong
+                    { val: "E-sport 1", label: "E-sport 1" }, 
+                    { val: "E-sport 2", label: "E-sport 2" },
+                    
+                    { val: "Poster", label: "Poster" },
+                    { val: "Lukis", label: "Lukis" },
+                    { val: "Dance", label: "Dance" },
+                    { val: "Fotografi", label: "Fotografi" }
                 ];
 
                 const select = document.getElementById("kategori");
 
-                // cara paling efisien
                 select.insertAdjacentHTML(
                     "beforeend",
-                    data.map(item => `<option value="${item}" style="color:black;">${item}</option>`).join("")
+                    data.map(item => `<option value="${item.val}" style="color:black;">${item.label}</option>`).join("")
                 );
                 </script>
 
@@ -174,7 +166,7 @@
                 @enderror
             </div>
 
-            <div class="modal-actions">
+            <div class="modal-actions mt-4">
                 <button type="button" id="closeModal" class="btn btn-cancel">
                     Cancel
                 </button>

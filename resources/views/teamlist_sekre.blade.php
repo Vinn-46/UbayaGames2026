@@ -72,7 +72,6 @@
                     <thead class="bg-white/5 uppercase tracking-widest text-sm">
                         <tr>
                             <th class="px-6 py-4 text-center font-bold">ID</th>
-                            <th class="px-6 py-4 text-left font-bold">Team Name</th>
                             <th class="px-6 py-4 text-center font-bold">House</th>
                             <th class="px-6 py-4 text-center font-bold">Competition</th>
                             <th class="px-6 py-4 text-center font-bold">Status</th>
@@ -90,11 +89,6 @@
                                 {{-- ID --}}
                                 <td class="px-6 py-4 text-center text-white/70">
                                     {{ $team->id }}
-                                </td>
-
-                                {{-- TEAM NAME --}}
-                                <td class="px-6 py-4">
-                                    {{ $team->name }}
                                 </td>
 
                                 {{-- HOUSE --}}

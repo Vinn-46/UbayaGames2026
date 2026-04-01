@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->string('name',45)->unique();
+            $table->string('name',45);
             $table->enum('competition', [
                     "Basket Putra", "Basket Putri", "Futsal Putra", "Voli Putra",
                     "Badminton Ganda Putra", "Badminton Tunggal Putra",

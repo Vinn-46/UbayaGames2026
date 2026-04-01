@@ -23,50 +23,59 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
             'competition' => 'required'
         ]);
 
-        $houseId = Auth::user()->house_id;
-        $competition = $request->competition;
-        $teamName = $request->name;
+        $user = Auth::user();
+        $houseId = $user->house_id;
+        
+        // Ambil nama house asli dari database
+        $rawHouseName = $user->house ? $user->house->name : 'Tim Admin';
+        
+        // POTONG KATA "House of " DARI NAMA (Contoh: "House of Fortis" -> "Fortis")
+        $houseName = trim(str_replace('House of ', '', $rawHouseName)); 
 
-        // Hitung jumlah tim dengan house dan kompetisi yang sama
-        $existingCount = Team::where('house_id', $houseId)
-                            ->where('competition', $competition)
-                            ->count();
+        $inputCompetition = $request->competition;
 
-        // Aturan khusus E-sport
-        if ($competition === 'E-sport') {
-            if ($existingCount >= 2) {
+        // 1. Logika Pintar Penentuan Nama Tim & Cablom
+        if ($inputCompetition === 'E-sport 1') {
+            $actualCompetition = 'E-sport';
+            $teamName = $houseName . ' 1';     // Hasil: "Fortis 1"
+        } elseif ($inputCompetition === 'E-sport 2') {
+            $actualCompetition = 'E-sport';
+            $teamName = $houseName . ' 2';     // Hasil: "Fortis 2"
+        } else {
+            $actualCompetition = $inputCompetition;
+            $teamName = $houseName;            // Hasil: "Fortis"
+        }
+
+        // 2. Validasi Duplikat (Mencegah tim mendaftar lomba yang sama 2x)
+        if ($actualCompetition === 'E-sport') {
+            $exists = Team::where('house_id', $houseId)->where('name', $teamName)->exists();
+            if ($exists) {
                 return redirect()->back()
-                    ->withErrors(['competition' => 'E-sport maksimal 2 tim per kontingen'])
+                    ->withErrors(['competition' => "Tim $teamName sudah terdaftar!"])
                     ->withInput();
             }
         } else {
-            if ($existingCount >= 1) {
+            $exists = Team::where('house_id', $houseId)->where('competition', $actualCompetition)->exists();
+            if ($exists) {
                 return redirect()->back()
-                    ->withErrors(['competition' => 'Kompetisi ini sudah memiliki tim untuk kontingen Anda'])
+                    ->withErrors(['competition' => "Kompetisi $actualCompetition sudah memiliki tim untuk kontingen Anda."])
                     ->withInput();
             }
         }
-        //aturan nama unik
-        if (Team::where('name', $teamName)->exists()) {
-            return redirect()->back()
-                    ->withErrors(['name' => 'Nama tim sudah ada'])
-                    ->withInput();
-        }           
 
-        // Jika lolos validasi
+        // 3. Simpan ke Database
         Team::create([
-            'name' => $request->name,
-            'competition' => $competition,
+            'name' => $teamName,
+            'competition' => $actualCompetition,
             'house_id' => $houseId,
             'status' => 'Menunggu',
             'revision' => null
         ]);
 
-        return redirect()->back()->with('success','Team berhasil ditambahkan');
+        return redirect()->back()->with('success', "Team $teamName berhasil ditambahkan");
     }
 
     public function show(Request $request)

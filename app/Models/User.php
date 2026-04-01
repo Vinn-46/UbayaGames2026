@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Tambahkan relasi ini agar user tahu dia dari house mana
+    public function house()
+    {
+        return $this->belongsTo(House::class, 'house_id');
+    }
 }
