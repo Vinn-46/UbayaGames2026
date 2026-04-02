@@ -347,12 +347,13 @@
         if(filterSelect) {
             filterSelect.addEventListener('change', function() {
                 const selectedValue = this.value;
-
+                let counter = 1; 
                 playerRows.forEach(row => {
                     const rowCabloms = row.getAttribute('data-cabloms'); 
-                    
                     if (selectedValue === 'all' || rowCabloms.includes(selectedValue)) {
                         row.style.display = ''; 
+                        row.querySelector('td:first-child').innerText = counter;
+                        counter++; 
                     } else {
                         row.style.display = 'none'; 
                     }
