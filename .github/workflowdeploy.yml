@@ -3,7 +3,7 @@ name: Auto Deploy to cPanel
 on:
   push:
     branches:
-      - main # Ubah jadi 'master' kalau branch utama kamu namanya master
+      - master # Ubah jadi 'master' kalau branch utama kamu namanya master
 
 jobs:
   deploy:
