@@ -54,14 +54,14 @@ class TeamController extends Controller
             $exists = Team::where('house_id', $houseId)->where('name', $teamName)->exists();
             if ($exists) {
                 return redirect()->back()
-                    ->withErrors(['competition' => "Tim $teamName sudah terdaftar!"])
+                    ->withErrors(['competition' => "Tim E-Sports $teamName sudah terdaftar!"])
                     ->withInput();
             }
         } else {
             $exists = Team::where('house_id', $houseId)->where('competition', $actualCompetition)->exists();
             if ($exists) {
                 return redirect()->back()
-                    ->withErrors(['competition' => "Kompetisi $actualCompetition sudah memiliki tim untuk kontingen Anda."])
+                    ->withErrors(['competition' => "Tim $actualCompetition sudah terdaftar!"])
                     ->withInput();
             }
         }
