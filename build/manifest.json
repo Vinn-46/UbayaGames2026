@@ -1,6 +1,10 @@
 {
+  "assets/fonts/GameofThrones.ttf": {
+    "file": "assets/GameofThrones-xo9CSmv3.ttf",
+    "src": "assets/fonts/GameofThrones.ttf"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-fjNounYC.css",
+    "file": "assets/app-BwzuDVIZ.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
