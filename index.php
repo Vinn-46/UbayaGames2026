@@ -12,11 +12,13 @@ if (file_exists($maintenance = __DIR__.'/storage/framework/maintenance.php')) {
 // Register the Composer autoloader...
 require __DIR__.'/vendor/autoload.php';
 
-// Simpan hasil require ke dalam variabel $app
-$app = (require_once __DIR__.'/bootstrap/app.php')
-    ->handleRequest(Request::capture());
+// 1. Simpan aplikasi ke variabel $app TERLEBIH DAHULU
+$app = require_once __DIR__.'/bootstrap/app.php';
 
-// Sekarang variabel $app sudah tersedia untuk di-bind
+// 2. Lakukan binding folder public SEBELUM menangani request
 $app->bind('path.public', function() {
     return __DIR__;
 });
+
+// 3. Baru jalankan aplikasinya
+$app->handleRequest(Request::capture());
