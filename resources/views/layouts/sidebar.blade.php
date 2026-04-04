@@ -40,6 +40,10 @@
         ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
     </style>
 </head>
+<script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      feather.replace()
+    </script>
 <body class="text-[#CBDCC1] font-['Georgia'] antialiased overflow-hidden custom-bg-responsive relative">
     <div class="fixed inset-0 bg-black/40 z-0"></div>
     <div class="flex h-screen w-full relative z-10">
