@@ -25,7 +25,7 @@
                     <table class="w-full text-base text-white whitespace-nowrap" style="min-width: max-content;">
                         <thead class="bg-white/5 text-sm uppercase tracking-widest">
                             <tr>
-                                <th class="px-6 py-4 text-center font-semibold">ID</th>
+                                <!-- <th class="px-6 py-4 text-center font-semibold">ID</th> -->
                                 <th class="px-6 py-4 text-center font-semibold">House</th>
                                 <th class="px-6 py-4 text-center font-semibold">Competition</th>
                                 <th class="px-6 py-4 text-center font-semibold">Status</th>
@@ -34,9 +34,9 @@
 
                         <tbody class="divide-y divide-white/10">
                             <tr class="hover:bg-white/5 transition">
-                                <td class="px-6 py-4 text-center text-white/70">
+                                <!-- <td class="px-6 py-4 text-center text-white/70">
                                     {{ $team->id }}
-                                </td>
+                                </td> -->
 
                                 <td class="px-6 py-4 text-center">
                                     {{ $team->house->name ?? '-' }}
