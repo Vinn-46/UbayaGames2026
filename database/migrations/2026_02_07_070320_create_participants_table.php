@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->string('nrp',9)->unique();;
             $table->string('major',45);
+            $table->date('birthdate');
             $table->text('ktm_photo');
             $table->string('whatsapp',20);
             $table->string('mobilelegend', 20)->nullable();

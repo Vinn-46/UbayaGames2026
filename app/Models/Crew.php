@@ -11,6 +11,7 @@ class Crew extends Model
     protected $fillable = [
         'name',
         'whatsapp',
+        'birthdate',
         'nrp',
         'major',
         'ktm_photo',

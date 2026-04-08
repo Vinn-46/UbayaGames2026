@@ -19,6 +19,7 @@ class CrewController extends Controller
         $validated = $request->validate([
             'name'      => 'required',
             'whatsapp'  => 'required',
+            'birthdate' => 'required',
             'nrp'       => 'nullable',
             'major'     => 'nullable',
             'ktm_photo' => 'nullable|image',
@@ -83,6 +84,7 @@ class CrewController extends Controller
         $crew = Crew::create([
             'name'      => $validated['name'],
             'whatsapp'  => $validated['whatsapp'],
+            'birthdate'  => $validated['birthdate'],
             'nrp'       => $nrp,
             'major'     => $validated['major'] ?? null,
             'ktm_photo' => $path,
@@ -161,6 +163,7 @@ class CrewController extends Controller
         $validated = $request->validate([
             'name'      => 'required',
             'whatsapp'  => 'required',
+            'birthdate'  => 'required',
             'role'      => 'required',
             'nrp'       => 'nullable',
             'major'     => 'nullable',
@@ -214,8 +217,9 @@ class CrewController extends Controller
         }       
         $crew->name     = $validated['name'];
         $crew->whatsapp = $validated['whatsapp'];
+        $crew->birthdate = $validated['birthdate'];
         $crew->nrp      = $nrp;
-        $crew->major    = $validated['major'];              
+        $crew->major    = $validated['major'] ?? null;              
 
         if ($crew->isDirty()) {
             $hasChanged = true;
@@ -235,6 +239,7 @@ class CrewController extends Controller
         $validated = $request->validate([
             'name'      => 'required',
             'whatsapp'  => 'required',
+            'birthdate'  => 'required',
             'nrp'       => 'nullable',
             'major'     => 'nullable',
             'ktm_photo' => 'nullable|image',
@@ -270,8 +275,9 @@ class CrewController extends Controller
         }       
         $crew->name     = $validated['name'];
         $crew->whatsapp = $validated['whatsapp'];
+        $crew->birthdate= $validated['birthdate'];
         $crew->nrp      = $nrp;
-        $crew->major    = $validated['major'];  
+        $crew->major    = $validated['major'] ?? null;  
         if ($crew->isDirty()) {
             $hasChanged = true;
         }
@@ -282,9 +288,7 @@ class CrewController extends Controller
             $pivotQuery->update(['status' => 'Menunggu']);
             Team::whereIn('id', $teamIds)
                 ->update(['status' => 'Menunggu']);    
-        }   
-            dd($hasChanged);       
-
+        }       
         return redirect()->back()->with('success', 'Crew berhasil diupdate.');
     }
     public function updateStatus(Request $request, $crewId, $teamId)

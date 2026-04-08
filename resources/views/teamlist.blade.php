@@ -46,7 +46,7 @@
                 <table class="w-full text-base text-white" style="min-width: max-content;">
                     <thead class="bg-white/5 uppercase tracking-widest text-sm">
                         <tr>
-                            <th class="px-6 py-4 text-center font-bold">ID</th>
+                            <th class="px-6 py-4 text-center font-bold">No</th>
                             <th class="px-6 py-4 text-center font-bold">Competition</th>
                             <th class="px-6 py-4 text-center font-bold">Status</th>
                             <th class="px-6 py-4 text-center font-bold">Detail</th>
@@ -56,11 +56,11 @@
 
                     <tbody class="divide-y divide-white/10 text-base">
                         
-                        @forelse ($teams as $team)
+                        @forelse ($teams as $index => $team)
                         <tr class="hover:bg-white/5 transition" style="white-space: nowrap;">
 
                             <td class="px-6 py-4 text-center text-white/70">
-                                {{ $loop->iteration }}
+                                {{ $index+1 }}
                             </td>
 
                             <td class="px-6 py-4 text-center">

@@ -94,6 +94,7 @@
                     <table class="w-full text-base text-white whitespace-nowrap" style="min-width: max-content;">
                         <thead class="bg-white/5 text-sm uppercase tracking-widest">
                             <tr>
+                                <th class="px-6 py-4 text-center font-semibold">No</th>
                                 <th class="px-6 py-4 text-left font-semibold">Player Name</th>
                                 <th class="px-6 py-4 text-center font-semibold">Role</th>
                                 <th class="px-6 py-4 text-center font-semibold">Status</th>
@@ -104,8 +105,11 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @forelse ($players as $player)
+                            @forelse ($players as $index => $player)
                             <tr class="hover:bg-white/5 transition">
+                                <td class="px-6 py-4 text-center">
+                                    {{ $index+1 }}
+                                </td>
                                 <td class="px-6 py-4">
                                     {{ $player->name }}
                                 </td>
@@ -124,6 +128,7 @@
                                               data-role="{{ $player->pivot->role }}"
                                               data-nrp="{{ $player->nrp }}"
                                               data-major="{{ $player->major }}"
+                                              data-dob="{{ $player->birthdate }}"
                                               data-ktm="{{ $player->ktm_photo }}"
                                               data-whatsapp="{{ $player->whatsapp }}"
                                               data-status="{{ $player->pivot->status ?? '-' }}"
@@ -144,6 +149,7 @@
                                         data-role="{{ $player->pivot->role }}"
                                         data-nrp="{{ $player->nrp }}"
                                         data-major="{{ $player->major }}"
+                                        data-dob="{{ $player->birthdate }}"
                                         data-whatsapp="{{ $player->whatsapp }}"
                                         data-mobilelegend="{{ $player->mobilelegend }}"
                                         data-backnumber="{{ $player->pivot->back_number ?? '-' }}">   
@@ -168,7 +174,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-6 text-white/50">
+                                <td colspan="7" class="text-center py-6 text-white/50">
                                     Belum ada data pemain
                                 </td>
                             </tr>
@@ -207,6 +213,7 @@
                     <table class="w-full text-base text-white whitespace-nowrap" style="min-width: max-content;">
                         <thead class="bg-white/5 text-sm uppercase tracking-widest">
                             <tr>
+                                <th class="px-6 py-4 text-center font-semibold">No</th>
                                 <th class="px-6 py-4 text-left font-semibold">Crew Name</th>
                                 <th class="px-6 py-4 text-center font-semibold">Role</th>
                                 <th class="px-6 py-4 text-center font-semibold">Status</th>
@@ -218,8 +225,11 @@
 
                         <tbody class="divide-y divide-white/10">
 
-                            @forelse ($crews as $crew)
+                            @forelse ($crews as $index => $crew)
                             <tr class="hover:bg-white/5 transition">
+                                <td class="px-6 py-4 text-center">
+                                    {{ $index+1 }}
+                                </td>
                                 <td class="px-6 py-4">
                                     {{ $crew->name }}
                                 </td>
@@ -238,6 +248,7 @@
                                             data-name="{{ $crew->name }}"
                                             data-whatsapp="{{ $crew->whatsapp }}"
                                             data-role="{{ $crew->pivot->role }}"
+                                            data-dob="{{ $crew->birthdate }}"
                                             data-nrp="{{ $crew->nrp ?? '-'}} "
                                             data-major="{{ $crew-> major }}"
                                             data-ktm="{{ $crew->ktm_photo }}"
@@ -255,6 +266,7 @@
                                         data-id="{{ $crew->id }}"
                                         data-name="{{ $crew->name }}"
                                         data-whatsapp="{{ $crew->whatsapp }}"
+                                        data-dob="{{ $crew->birthdate }}"
                                         data-role="{{ $crew->pivot->role }}"
                                         data-nrp="{{ $crew->nrp }}"
                                         data-major="{{ $crew->major  }}">
@@ -277,7 +289,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-6 text-white/50">
+                                <td colspan="7" class="text-center py-6 text-white/50">
                                     Belum ada data crew
                                 </td>
                             </tr>
@@ -486,6 +498,20 @@
                     </select>
                 </div>
 
+                <!-- DOB -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Date of Birth
+                    </label><br>
+                    <input 
+                        type="date" 
+                        name="birthdate" 
+                        required
+                        max="<?= date('Y-m-d') ?>"
+                        class="form-input h40"
+                        style="-webkit-appearance: auto; appearance: auto; color-scheme: dark;">               
+                </div>
+
                 <!-- KTM -->
                 <div style="margin-bottom:10px;">
                     <label style="font-size:16px;opacity:1;">
@@ -620,10 +646,10 @@
                     {{ $houseCrews->isEmpty() ? 'disabled' : '' }}>                
                     
                     <option value="" disabled selected>-- Select Role --</option>
+                    <option style="color:black;" value="Koorcab">Koorcab</option>
                     <option style="color:black;" value="Coach">Coach</option>
                     <option style="color:black;" value="Assistant Coach">Assistant Coach</option>
                     <option style="color:black;" value="Medic">Medic</option>
-                    <option style="color:black;" value="Koorcab">Koorcab</option>
                 </select>
 
                 @error('role', 'addExistingCrew')
@@ -708,15 +734,28 @@
                     </label><br>
                     <input name="whatsapp" class="form-input h35" required>                    
                 </div>
+                <!-- DOB -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Date of Birth
+                    </label><br>
+                    <input 
+                        type="date" 
+                        name="birthdate" 
+                        required
+                        max="<?= date('Y-m-d') ?>"
+                        class="form-input h40"
+                        style="-webkit-appearance: auto; appearance: auto; color-scheme: dark;">               
+                </div>
                 <!-- Role -->
                 <div style="margin-bottom:5px;">
                     <label style="font-size:16px;opacity:1;">Role</label><br>
                     <select name="role" class="form-input h40 text-black" required>
                         <option value="" disabled selected>-- Select Role --</option>
+                        <option style="color:black;" value="Koorcab">Koorcab</option>
                         <option style="color:black;" value="Coach">Coach</option>
                         <option style="color:black;" value="Assistant Coach">Assistant Coach</option>
                         <option style="color:black;" value="Medic">Medic</option>
-                        <option style="color:black;" value="Koorcab">Koorcab</option>
                     </select>
                     @error('role', 'addNewCrew')
                     <div style="color:red; margin-top:6px;">
@@ -832,6 +871,17 @@
                         readonly>
                 </div>
 
+                <!-- DOB -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Date of Birth
+                    </label><br>
+
+                    <input type="text" id="modalDOB" 
+                        class="form-input h35" 
+                        readonly>
+                </div>
+
                 <!-- KTM -->
                 <div style="margin-bottom:10px;">
                     <label style="font-size:16px;opacity:1;">
@@ -942,6 +992,12 @@
                     <input type="text" id="modalCrewWhatsapp" class="form-input h35" readonly>
                 </div>
 
+                <!-- DOB -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Date of Birth</label><br>
+                    <input type="text" id="modalCrewDOB" class="form-input h35" readonly>
+                </div>
+
                 <div style="margin-bottom:10px;">
                     <label style="font-size:16px;opacity:1;">Role</label><br>
                     <input type="text" id="modalCrewRole" class="form-input h35" readonly>
@@ -1040,6 +1096,21 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+
+                <!-- DOB -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Date of Birth
+                    </label><br>
+                    <input 
+                        type="date" 
+                        name="birthdate" 
+                        id = "editDOB"
+                        required
+                        max="<?= date('Y-m-d') ?>"
+                        class="form-input h40"
+                        style="-webkit-appearance: auto; appearance: auto; color-scheme: dark;">               
                 </div>
 
                 <!-- KTM Upload -->
@@ -1148,6 +1219,19 @@
                 <div style="margin-bottom:10px;">
                     <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
                     <input name="whatsapp" id="editCrewWhatsapp" class="form-input h35" type="text" required>
+                </div>
+
+                <!-- DOB -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Date of Birth</label><br>
+                    <input 
+                        type="date" 
+                        name="birthdate" 
+                        id = "editCrewDOB"
+                        required
+                        max="<?= date('Y-m-d') ?>"
+                        class="form-input h40"
+                        style="-webkit-appearance: auto; appearance: auto; color-scheme: dark;">               
                 </div>
 
                 <div style="margin-bottom:10px;">
@@ -1292,6 +1376,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalName').value = btn.dataset.name || '-';
             document.getElementById('modalNRP').value = btn.dataset.nrp || '-';
             document.getElementById('modalMajor').value = btn.dataset.major || '-';
+            document.getElementById('modalDOB').value = btn.dataset.dob || '-';
             document.getElementById('modalWhatsapp').value = btn.dataset.whatsapp || '-';
             document.getElementById('modalStatus').value = btn.dataset.status || '-';            
             document.getElementById('modalRevision').value = btn.dataset.revision || '-';
@@ -1311,7 +1396,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let ktmPath = btn.dataset.ktm;
 
             if (ktmPath) {
-                let fullPath = `/storage/${ktmPath}`;
+                let fullPath = `/storage/app/public/${ktmPath}`;
 
                 document.getElementById('modalKTM').href = fullPath;                
             }
@@ -1338,6 +1423,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('modalCrewName').value     = btn.dataset.name     || '-';
             document.getElementById('modalCrewWhatsapp').value = btn.dataset.whatsapp || '-';
             document.getElementById('modalCrewRole').value     = btn.dataset.role     || '-';
+            document.getElementById('modalCrewDOB').value      = btn.dataset.dob     || '-';
             document.getElementById('modalCrewNRP').value      = btn.dataset.nrp      || '-';
             document.getElementById('modalCrewMajor').value    = btn.dataset.major    || '-';
             document.getElementById('modalCrewStatus').value   = btn.dataset.status   || '-';
@@ -1346,7 +1432,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let ktmPath = btn.dataset.ktm;
             let modalLink = document.getElementById('modalCrewKTM');
             if (ktmPath) {
-                modalLink.href = `/storage/${ktmPath}`;
+                modalLink.href = `/storage/app/public/${ktmPath}`;
                 modalLink.textContent = "View KTM"; // optional, reset text if needed
                 modalLink.style.pointerEvents = "auto";  // ensure link is clickable
                 modalLink.style.color = ""; // reset any styling
@@ -1400,6 +1486,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('editName').value = btn.dataset.name || '';
         document.getElementById('editNRP').value = btn.dataset.nrp || '';
         document.getElementById('editMajor').value = btn.dataset.major || '';
+        document.getElementById('editDOB').value = btn.dataset.dob || '';
         document.getElementById('editWhatsapp').value = btn.dataset.whatsapp || '';
 
         const editML = document.getElementById('editMobilelegend');
@@ -1433,6 +1520,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const name = btn.getAttribute('data-name');
         const whatsapp = btn.getAttribute('data-whatsapp');
         const role = btn.getAttribute('data-role');
+        const dob = btn.getAttribute('data-dob')
         const nrp = btn.getAttribute('data-nrp');
         const major = btn.getAttribute('data-major');
 
@@ -1440,6 +1528,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('editCrewName').value = name ?? '';
         document.getElementById('editCrewWhatsapp').value = whatsapp ?? '';
         document.getElementById('editCrewRole').value = role ?? '';
+        document.getElementById('editCrewDOB').value = dob ?? '';
         document.getElementById('editCrewNRP').value = nrp ?? '';
         document.getElementById('editCrewMajor').value = major ?? '';
 

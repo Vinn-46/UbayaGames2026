@@ -13,6 +13,7 @@ class Participant extends Model
         'name',
         'nrp',
         'major',
+        'birthdate',
         'ktm_photo',
         'whatsapp',
         'mobilelegend'

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',255);
             $table->string('whatsapp', 20);
+            $table->date('birthdate');
             $table->string('nrp',20)->nullable();
             $table->string('major',45)->nullable();
             $table->text('ktm_photo')->nullable();

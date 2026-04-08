@@ -20,6 +20,7 @@ class ParticipantController extends Controller
             'name' => 'required',
             'nrp' => 'required',
             'major' => 'required',
+            'birthdate' => 'required',
             'ktm_photo' => 'required|image',
             'whatsapp' => 'required',
             'mobilelegend' => 'nullable',
@@ -125,6 +126,7 @@ class ParticipantController extends Controller
             'name' => $validated['name'],
             'nrp' => $validated['nrp'],
             'major' => $validated['major'],
+            'birthdate' => $validated['birthdate'],
             'ktm_photo' => $path,
             'whatsapp' => $validated['whatsapp'],
             'mobilelegend' => $team->competition == 'E-sport' ? $validated['mobilelegend'] : null,
@@ -281,6 +283,7 @@ class ParticipantController extends Controller
             'name' => 'required',
             'nrp' => 'required',
             'major' => 'required',
+            'birthdate' => 'required',
             'ktm_photo' => 'nullable|image',
             'whatsapp' => 'required',
             'backnumber' => 'nullable',
@@ -410,6 +413,7 @@ class ParticipantController extends Controller
         $participant->name = $request->name;
         $participant->nrp = $request->nrp;
         $participant->major = $request->major;
+        $participant->birthdate = $request->birthdate;
         $participant->whatsapp = $request->whatsapp;
         $participant->mobilelegend = $request->mobilelegend ?: null;       
         
@@ -433,6 +437,7 @@ class ParticipantController extends Controller
             'name' => 'required',
             'nrp' => 'required',
             'major' => 'required',
+            'birthdate' => 'required',
             'ktm_photo' => 'nullable|image',
             'whatsapp' => 'required',
         ]);
@@ -470,6 +475,7 @@ class ParticipantController extends Controller
         $participant->name = $request->name;
         $participant->nrp = $request->nrp;
         $participant->major = $request->major;
+        $participant->birthdate = $request->birthdate;
         $participant->whatsapp = $request->whatsapp;      
         if ($participant->isDirty()) {
             $hasChanged = true;

@@ -104,6 +104,7 @@
                                                 data-name="{{ $player->name }}"
                                                 data-nrp="{{ $player->nrp }}"
                                                 data-major="{{ $player->major }}"
+                                                data-dob="{{ $player->birthdate }}"
                                                 data-whatsapp="{{ $player->whatsapp }}">
                                             <i data-feather="edit" class="w-5 h-5"></i>                                            
                                         </button>
@@ -113,7 +114,7 @@
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center gap-2">
                                         {{-- Tombol Delete --}}
-                                        <form action="{{ route('participant.destroy', $player->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus?')">
+                                        <form action="{{ route('participant.destroy', $player->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus player dari SEMUA tim?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="shrink-0 px-4 py-2 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20 flex items-center justify-center">
@@ -125,7 +126,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-6 text-white/50 italic">
+                                <td colspan="7" class="text-center py-6 text-white/50 italic">
                                     Belum ada data pemain kontingen.
                                 </td>
                             </tr>
@@ -181,11 +182,21 @@
                                     readonly>
                             </div>
 
+                            <!-- DOB -->
+                            <div>
+                                <label class="block text-white/70 mb-1 font-semibold">
+                                    Date of Birth
+                                </label>
+                                <input type="text" value="{{ $player->birthdate }}" 
+                                    class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none" 
+                                    readonly>
+                            </div>
+
                             <!-- KTM -->
                             <div>
                                 <label class="block text-white/70 mb-1 font-semibold">                                
                                     KTM:  
-                                    <a href="{{ asset('storage/' . $player->ktm_photo) }}" target="_blank" 
+                                    <a href="{{ asset('storage/app/public/' . $player->ktm_photo) }}" target="_blank" 
                                         class="text-blue-400 underline"> View KTM </a>                                                                            
                                 </label>          
                             </div>
@@ -300,6 +311,20 @@
                         @endforeach
                     </select>
                 </div>
+                <!-- DOB -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">
+                        Date of Birth
+                    </label><br>
+                    <input 
+                        type="date" 
+                        name="birthdate" 
+                        id = "editDOB"
+                        required
+                        max="<?= date('Y-m-d') ?>"
+                        class="form-input h40"
+                        style="-webkit-appearance: auto; appearance: auto; color-scheme: dark;">               
+                </div>                
                 <!-- KTM Upload -->
                 <div style="margin-bottom:10px;">
                     <label style="font-size:16px;opacity:1;">
@@ -380,6 +405,7 @@
         document.getElementById('editName').value = btn.dataset.name || '';
         document.getElementById('editNRP').value = btn.dataset.nrp || '';
         document.getElementById('editMajor').value = btn.dataset.major || '';
+        document.getElementById('editDOB').value = btn.dataset.dob || '';
         document.getElementById('editWhatsapp').value = btn.dataset.whatsapp || '';
 
         const editML = document.getElementById('editMobilelegend');

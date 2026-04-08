@@ -116,6 +116,7 @@
                                               data-id="{{ $crew->id }}"
                                               data-name="{{ $crew->name }}"
                                               data-whatsapp="{{ $crew->whatsapp }}"
+                                              data-dob="{{ $crew->birthdate }}"
                                               data-nrp="{{ $crew->nrp }}"
                                               data-major="{{ $crew->major }}">
                                             <i data-feather="edit" class="w-5 h-5"></i>
@@ -124,7 +125,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center gap-2">
-                                        <form action="{{ route('crew.destroy', $crew->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus crew ini sepenuhnya?')">
+                                        <form action="{{ route('crew.destroy', $crew->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus crew dari SEMUA tim?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="shrink-0 px-4 py-2 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20 flex items-center justify-center">
@@ -136,7 +137,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-6 text-white/50 italic">
+                                <td colspan="7" class="text-center py-6 text-white/50 italic">
                                     Belum ada data crew kontingen.
                                 </td>
                             </tr>
@@ -182,7 +183,16 @@
                                 <input type="text" value="{{ $crew->whatsapp }}" 
                                     class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none"
                                     readonly>
-                            </div>                            
+                            </div>   
+                            <!-- DOB -->
+                            <div>
+                                <label class="block text-white/70 mb-1 font-semibold">
+                                    Date of Birth
+                                </label>
+                                <input type="text" value="{{ $crew->birthdate }}" 
+                                    class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white outline-none"
+                                    readonly>
+                            </div>   
                             <!-- NRP -->
                             <div>
                                 <label class="block text-white/70 mb-1 font-semibold">
@@ -206,7 +216,7 @@
                                 <label class="block text-white/70 mb-1 font-semibold">                                
                                     KTM: 
                                     @if($crew->ktm_photo)
-                                        <a href="{{ asset('storage/' . $crew->ktm_photo) }}" 
+                                        <a href="{{ asset('storage/app/public/' . $crew->ktm_photo) }}" 
                                         target="_blank" 
                                         class="text-blue-400 underline">
                                             View KTM
@@ -279,7 +289,18 @@
                     <label style="font-size:16px;opacity:1;">Whatsapp Number</label><br>
                     <input name="whatsapp" id="editCrewWhatsapp" class="form-input h35" type="text" required>
                 </div>
-                
+                <!-- DOB -->
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:16px;opacity:1;">Date of Birth</label><br>
+                    <input 
+                        type="date" 
+                        name="birthdate" 
+                        id = "editCrewDOB"
+                        required
+                        max="<?= date('Y-m-d') ?>"
+                        class="form-input h40"
+                        style="-webkit-appearance: auto; appearance: auto; color-scheme: dark;">               
+                </div>
                 <div style="margin-bottom:10px;">
                     <label style="font-size:16px;opacity:1;">
                         NRP <span style="opacity:0.5;">(optional)</span>
@@ -369,12 +390,14 @@
         // Ambil data dari attribute
         const name = btn.getAttribute('data-name');
         const whatsapp = btn.getAttribute('data-whatsapp');
+        const dob = btn.getAttribute('data-dob');
         const nrp = btn.getAttribute('data-nrp');
         const major = btn.getAttribute('data-major');
 
         // Isi form
         document.getElementById('editCrewName').value = name ?? '';
         document.getElementById('editCrewWhatsapp').value = whatsapp ?? '';
+        document.getElementById('editCrewDOB').value = dob ?? '';
         document.getElementById('editCrewNRP').value = nrp ?? '';
         document.getElementById('editCrewMajor').value = major ?? '';
 
