@@ -47,6 +47,7 @@
                     <thead class="bg-white/5 uppercase tracking-widest text-sm">
                         <tr>
                             <th class="px-6 py-4 text-center font-bold">No</th>
+                            <th class="px-6 py-4 text-center font-bold">Team Name</th>
                             <th class="px-6 py-4 text-center font-bold">Competition</th>
                             <th class="px-6 py-4 text-center font-bold">Status</th>
                             <th class="px-6 py-4 text-center font-bold">Detail</th>
@@ -61,6 +62,10 @@
 
                             <td class="px-6 py-4 text-center text-white/70">
                                 {{ $index+1 }}
+                            </td>
+
+                            <td class="px-6 py-4 text-center">
+                                {{ $team->name }}
                             </td>
 
                             <td class="px-6 py-4 text-center">
@@ -140,11 +145,7 @@
                     { val: "Badminton Ganda Putra", label: "Badminton Ganda Putra" },
                     { val: "Badminton Tunggal Putra", label: "Badminton Tunggal Putra" },
                     { val: "Badminton Ganda Campuran", label: "Badminton Ganda Campuran" },
-                    
-                    // Label otomatis ikut nama House yang sudah dipotong
-                    { val: "E-sport 1", label: "E-sport 1" }, 
-                    { val: "E-sport 2", label: "E-sport 2" },
-                    
+                    { val: "E-sport", label: "E-sport" },                     
                     { val: "Poster", label: "Poster" },
                     { val: "Lukis", label: "Lukis" },
                     { val: "Dance", label: "Dance" },

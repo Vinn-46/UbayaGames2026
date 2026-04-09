@@ -35,41 +35,34 @@ class TeamController extends Controller
         // POTONG KATA "House of " DARI NAMA (Contoh: "House of Fortis" -> "Fortis")
         $houseName = trim(str_replace('House of ', '', $rawHouseName)); 
 
-        $inputCompetition = $request->competition;
+        $competition = $request->competition;
 
-        // 1. Logika Pintar Penentuan Nama Tim & Cablom
-        if ($inputCompetition === 'E-sport 1') {
-            $actualCompetition = 'E-sport';
-            $teamName = $houseName . ' 1';     // Hasil: "Fortis 1"
-        } elseif ($inputCompetition === 'E-sport 2') {
-            $actualCompetition = 'E-sport';
-            $teamName = $houseName . ' 2';     // Hasil: "Fortis 2"
-        } else {
-            $actualCompetition = $inputCompetition;
-            $teamName = $houseName;            // Hasil: "Fortis"
-        }
-
-        // 2. Validasi Duplikat (Mencegah tim mendaftar lomba yang sama 2x)
-        if ($actualCompetition === 'E-sport') {
-            $exists = Team::where('house_id', $houseId)->where('name', $teamName)->exists();
-            if ($exists) {
+        $count = Team::where('house_id', $houseId)
+                ->where('competition', $competition)
+                ->count();
+        if ($competition === 'E-sport' ||
+            $competition === 'Badminton Tunggal Putra' || 
+            $competition === 'Fotografi') { // kalo yg bisa lebih dari 1 tim
+            if ($count === 2) {
                 return redirect()->back()
-                    ->withErrors(['competition' => "Tim E-Sports $teamName sudah terdaftar!"])
+                    ->withErrors(['competition' => "Cabang lomba $competition maksimal 2 tim per kontingen"])
                     ->withInput();
             }
-        } else {
-            $exists = Team::where('house_id', $houseId)->where('competition', $actualCompetition)->exists();
-            if ($exists) {
-                return redirect()->back()
-                    ->withErrors(['competition' => "Tim $actualCompetition sudah terdaftar!"])
-                    ->withInput();
-            }
+            $teamName = $houseName . ' ' . ($count + 1); // otomatis 1 atau 2
+        } 
+        else {            
+            if ($count >= 1) {
+               return redirect()->back()
+                   ->withErrors(['competition' => "Cabang lomba $competition sudah terdaftar untuk kontingan ini"])
+                   ->withInput();
+            }        
+            $teamName = $houseName;                
         }
-
+        
         // 3. Simpan ke Database
         Team::create([
             'name' => $teamName,
-            'competition' => $actualCompetition,
+            'competition' => $competition,
             'house_id' => $houseId,
             'status' => 'Menunggu',
             'revision' => null
@@ -201,15 +194,15 @@ class TeamController extends Controller
             $rulesPlayer = [
                 'Basket Putra' => ['minPlayer' => 7, 'minUtama' => 5],
                 'Basket Putri' => ['minPlayer' => 7, 'minUtama' => 5],
-                'Futsal Putra' => ['minPlayer' => 7, 'minUtama' => 5],
-                'Voli Putra' => ['minPlayer' => 8, 'minUtama' => 6],
+                'Futsal Putra' => ['minPlayer' => 6, 'minUtama' => 5],
+                'Voli Putra' => ['minPlayer' => 6, 'minUtama' => 6],
                 'Badminton Ganda Putra' => ['minPlayer' => 2, 'minUtama' => 2],
                 'Badminton Tunggal Putra' => ['minPlayer' => 1, 'minUtama' => 1],
                 'Badminton Ganda Campuran' => ['minPlayer' => 2, 'minUtama' => 2],
                 'E-sport' => ['minPlayer' => 5, 'minUtama' => 5],
                 'Poster' => ['minPlayer' => 1, 'minUtama' => 1],
                 'Lukis' => ['minPlayer' => 1, 'minUtama' => 1],
-                'Dance' => ['minPlayer' => 2, 'minUtama' => 2],
+                'Dance' => ['minPlayer' => 3, 'minUtama' => 3],
                 'Fotografi' => ['minPlayer' => 1, 'minUtama' => 1],
             ];            
             $minPlayer = $rulesPlayer[$competition]['minPlayer'];
@@ -230,12 +223,10 @@ class TeamController extends Controller
             $needCoach = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
                         'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
                         'Badminton Ganda Campuran', 'E-sport', 'Dance'];
-            $needAssistant = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
-                            'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
-                            'Badminton Ganda Campuran', 'Dance'];
+            $needAssistant = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra'];
             $needMedic = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
                         'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
-                        'Badminton Ganda Campuran', 'Dance'];
+                        'Badminton Ganda Campuran'];
             if (!$roles->contains('Koorcab')) {
                 return back()->withErrors([
                     'koorcab' => "Tim belum memiliki Koorcab"
