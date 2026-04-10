@@ -95,10 +95,12 @@ class CrewController extends Controller
             'role'     => $role,
             'status'   => 'Menunggu',
             'revision' => null,
-        ]);       
-        $team->status = 'Menunggu';        
+        ]);           
+        if ($team->status === 'Diterima')
+        {
+            $team->status = 'Menunggu';
+        }           
         $team->save();
-
         return redirect()->back()
             ->with('success', 'Crew berhasil ditambahkan')
             ->with('openExistingCrewModal', true);
@@ -152,8 +154,11 @@ class CrewController extends Controller
             'role'    => $request->role,
             'status'    => 'Menunggu',
             'revision'  => null,
-        ]);
-        $team->status = 'Menunggu';        
+        ]);        
+        if ($team->status === 'Diterima')
+        {
+            $team->status = 'Menunggu';
+        }   
         $team->save();
         return redirect()->back()->with('success', 'Crew berhasil ditambahkan');
     }   

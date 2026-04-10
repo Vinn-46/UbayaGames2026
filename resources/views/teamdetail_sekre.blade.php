@@ -575,8 +575,7 @@
             let ktmPath = btn.dataset.ktm;
 
             if (ktmPath) {
-                let fullPath = `/storage/${ktmPath}`;
-
+                let fullPath = `/storage/app/public/${ktmPath}`;
                 document.getElementById('modalKTM').href = fullPath;                
             }
 
@@ -610,7 +609,7 @@
             let ktmPath = btn.dataset.ktm;
             let modalLink = document.getElementById('modalCrewKTM');
             if (ktmPath) {
-                modalLink.href = `/storage/${ktmPath}`;
+                modalLink.href = `/storage/app/public/${ktmPath}`;
                 modalLink.textContent = "View KTM"; // optional, reset text if needed
                 modalLink.style.pointerEvents = "auto";  // ensure link is clickable
                 modalLink.style.color = ""; // reset any styling
