@@ -16,6 +16,7 @@ class ParticipantController extends Controller
 {
     public function addPlayer(Request $request, Team $team)
     {
+        if (Auth::user()->role === 'Kontingen' && Auth::user()->house_id !== $team->house_id) { abort(404); }
         $validated = $request->validate([
             'name' => 'required',
             'nrp' => 'required',
@@ -147,6 +148,7 @@ class ParticipantController extends Controller
 
     public function attachExistingPlayer(Request $request, Team $team)
     {
+        if (Auth::user()->role === 'Kontingen' && Auth::user()->house_id !== $team->house_id) { abort(404); }
         $teamId = $team->id;
         $participantId = $request->participant_id;
 

@@ -74,12 +74,23 @@ class TeamController extends Controller
     public function show(Request $request)
     {
         $id = $request->id;
+        $user = Auth::user();
 
-        $team = Team::with([
+        // 1. Mulai query dengan relasi yang dibutuhkan
+        $query = Team::with([
             'participantTeams.participant',
             'crewTeams.crew'
-        ])->findOrFail($id);
+        ]);
 
+        // 2. Kunci akses JIKA yang login adalah Kontingen
+        if ($user->role === 'Kontingen') {
+            $query->where('house_id', $user->house_id);
+        }
+
+        // 3. Eksekusi pencarian (otomatis 404 jika iseng ganti ID kontingen lain)
+        $team = $query->findOrFail($id);
+
+        // --- SISA KODE DI BAWAH INI SAMA PERSIS SEPERTI MILIKMU SEBELUMNYA ---
         $majorsForCurrentHouse = getMajorsByHouse($team->house->name);
 
         $houseParticipants = Participant::where('house_id', Auth::user()->house_id)->get();
@@ -106,6 +117,7 @@ class TeamController extends Controller
     }   
     public function changeName(Request $request, Team $team)
     {
+        if (Auth::user()->role === 'Kontingen' && Auth::user()->house_id !== $team->house_id) { abort(404); }
         $currentName = $team->name;
         $newName = $request->newTeamName;
         //jika nama sama sebelumnya
@@ -127,6 +139,7 @@ class TeamController extends Controller
     }
     public function destroyPlayer(Team $team, Participant $participant)
     {
+        if (Auth::user()->role === 'Kontingen' && Auth::user()->house_id !== $team->house_id) { abort(404); }
         $team->participants()->detach($participant->id);
         $team->status = 'Menunggu';
         $team->save();
@@ -134,7 +147,16 @@ class TeamController extends Controller
     }
     public function deleteTeam($id)
     {
-        $team = Team::findOrFail($id);
+        $user = Auth::user();
+        $query = Team::query();
+
+        // Kunci akses JIKA yang login adalah Kontingen
+        if ($user->role === 'Kontingen') {
+            $query->where('house_id', $user->house_id);
+        }
+
+        // Cari timnya. Jika mencoba hapus ID tim lain, otomatis gagal (404)
+        $team = $query->findOrFail($id);
 
         // Hapus semua relasi di pivot table
         $team->participants()->detach();
@@ -144,7 +166,7 @@ class TeamController extends Controller
         $team->delete();
 
         return redirect()->back()->with('success', 'Team berhasil dihapus');
-    }
+    }   
 
     # POV Sekretaris
     public function indexSekre(Request $request)
