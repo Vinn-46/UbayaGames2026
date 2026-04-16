@@ -97,10 +97,10 @@ class ParticipantController extends Controller
         if ($role === 'Cadangan')
         {            
             $limitCadangan = [
-                'Basket Putra' => 7,
-                'Basket Putri' => 7,
-                'Futsal Putra' => 7,
-                'Voli Putra' => 4,
+                'Basket Putra' => 10,
+                'Basket Putri' => 10,
+                'Futsal Putra' => 10,
+                'Voli Putra' => 7,
                 'E-sport' => 1,
             ];
             $cadanganCount = ParticipantTeam::where('team_id', $team->id)
@@ -240,10 +240,10 @@ class ParticipantController extends Controller
         if ($role === 'Cadangan')
         {
             $limitCadangan = [
-                'Basket Putra' => 7,
-                'Basket Putri' => 7,
-                'Futsal Putra' => 7,
-                'Voli Putra' => 4,
+                'Basket Putra' => 10,
+                'Basket Putri' => 10,
+                'Futsal Putra' => 10,
+                'Voli Putra' => 7,
                 'E-sport' => 1,
             ];
             $cadanganCount = ParticipantTeam::where('team_id', $team->id)
@@ -390,10 +390,10 @@ class ParticipantController extends Controller
         if ($role === 'Cadangan')
         {
             $limitCadangan = [
-                'Basket Putra' => 7,
-                'Basket Putri' => 7,
-                'Futsal Putra' => 7,
-                'Voli Putra' => 4,
+                'Basket Putra' => 10,
+                'Basket Putri' => 10,
+                'Futsal Putra' => 10,
+                'Voli Putra' => 7,
                 'E-sport' => 1,
             ];
             $cadanganCount = ParticipantTeam::where('team_id', $team->id)

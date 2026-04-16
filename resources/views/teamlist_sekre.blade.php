@@ -114,6 +114,7 @@
                                         {{-- DETAIL --}}
                                         <a
                                             href="{{ route('teamdetail.sekre', ['id' => $team->id]) }}"
+                                            target="_blank"
                                             class="shrink-0 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
                                         >
                                             <i data-feather="alert-circle"></i>

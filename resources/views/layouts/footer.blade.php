@@ -8,15 +8,19 @@
                     <ul class="space-y-4 text-gray-300">
                         <li class="flex items-center gap-3">
                             <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-5 h-5 object-contain">
-                            <span>Tiara (083866142476)</span>
+                            <span><a href="https://wa.me/6283866142476" target="_blank">Tiara (083866142476)</a></span>
                         </li>
                         <li class="flex items-center gap-3">
                             <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-5 h-5 object-contain">
-                            <span>Jeje (081233508315)</span>
+                            <span><a href="https://wa.me/6281233508315" target="_blank">Jeje (081233508315)</a></span>
                         </li>
                         <li class="flex items-center gap-3">
                             <img src="{{ asset('assets/icons/instagram.png') }}" alt="Instagram" class="w-5 h-5 object-contain">
-                            <span>@ubayagames2026</span>
+                            <span><a href="https://www.instagram.com/ubayagames2026" target="_blank">@ubayagames2026</a></span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <img src="{{ asset('assets/icons/tiktok.png') }}" alt="Instagram" class="w-5 h-5 object-contain">
+                            <span><a href="https://www.tiktok.com/@ubayagames2k26" target="_blank">@ubayagames2k26</a></span>
                         </li>
                     </ul>
                 </div>
@@ -57,7 +61,7 @@
                 
                 </div>
         <div class="w-full text-center mt-2">   
-            <p class="text-[15px] text-gray-400">
+            <p class="text-[30px] text-gray-400">
                 &copy; Information Systems UBAYA GAMES 2026
             </p>
          </div>

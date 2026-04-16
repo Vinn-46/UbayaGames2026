@@ -126,7 +126,7 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @foreach($players as $index => $player)
+                            @forelse($players as $index => $player)
                                 <tr>
                                     <td class="px-6 py-4 text-center">
                                         {{ $index+1 }}
@@ -186,7 +186,13 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-6 text-white/50">
+                                    Belum ada data pemain
+                                </td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -220,7 +226,7 @@
                         </thead>
 
                         <tbody class="divide-y divide-white/10">
-                            @foreach($crews as $index => $crew)
+                            @forelse($crews as $index => $crew)
                                 <tr>
                                     <td class="px-6 py-4 text-center">
                                         {{ $index+1 }}
@@ -277,7 +283,13 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-6 text-white/50">
+                                    Belum ada data crew
+                                </td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
