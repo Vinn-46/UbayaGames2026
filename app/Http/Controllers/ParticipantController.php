@@ -22,7 +22,7 @@ class ParticipantController extends Controller
             'nrp' => 'required',
             'major' => 'required',
             'birthdate' => 'required',
-            'ktm_photo' => 'required|image',
+            'ktm_photo' => 'required',
             'whatsapp' => 'required',
             'mobilelegend' => 'nullable',
             'backnumber' => 'nullable|integer|min:1|max:100'
@@ -114,7 +114,16 @@ class ParticipantController extends Controller
                     ->withInput();
             }
         }
-        $extension = $request->file('ktm_photo')->getClientOriginalExtension();
+        // Ambil ekstensi dan ubah ke huruf kecil agar konsisten
+        $extension = strtolower($request->file('ktm_photo')->getClientOriginalExtension());
+
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+        if (!in_array($extension, $allowedExtensions)) {
+            return back()
+                ->withErrors(['ktm' => "KTM harus dalam format foto (.jpg/.png)"], 'addNewPlayer')
+                ->withInput();
+        }
         $time = date('His_dmy');
         $filename = $validated['nrp'] . '_' . $time . '.' . $extension;
         $path = $request->file('ktm_photo')->storeAs(
@@ -286,7 +295,7 @@ class ParticipantController extends Controller
             'nrp' => 'required',
             'major' => 'required',
             'birthdate' => 'required',
-            'ktm_photo' => 'nullable|image',
+            'ktm_photo' => 'nullable',
             'whatsapp' => 'required',
             'backnumber' => 'nullable',
             'mobilelegend' => 'nullable'
@@ -312,7 +321,17 @@ class ParticipantController extends Controller
             if ($participant->ktm_photo) {
                 Storage::disk('public')->delete($participant->ktm_photo);
             }
-            $extension = $request->file('ktm_photo')->getClientOriginalExtension();
+            // Ambil ekstensi dan ubah ke huruf kecil agar konsisten
+            $extension = strtolower($request->file('ktm_photo')->getClientOriginalExtension());
+
+            // Gunakan array untuk mengecek banyak format sekaligus
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+            if (!in_array($extension, $allowedExtensions)) {
+                return back()
+                    ->withErrors(['ktm' => "KTM harus dalam format foto (.jpg/.png)"], 'playerEdit')
+                    ->withInput()->with('editPlayerId', $playerId);
+            }
             $time = date('His_dmy');
             $filename = $validated['nrp'] . '_' . $time . '.' . $extension;
 
@@ -440,7 +459,7 @@ class ParticipantController extends Controller
             'nrp' => 'required',
             'major' => 'required',
             'birthdate' => 'required',
-            'ktm_photo' => 'nullable|image',
+            'ktm_photo' => 'nullable',
             'whatsapp' => 'required',
         ]);
         $hasChanged = false;
@@ -462,7 +481,17 @@ class ParticipantController extends Controller
             if ($participant->ktm_photo) {
                 Storage::disk('public')->delete($participant->ktm_photo);
             }
-            $extension = $request->file('ktm_photo')->getClientOriginalExtension();
+            // Ambil ekstensi dan ubah ke huruf kecil agar konsisten
+            $extension = strtolower($request->file('ktm_photo')->getClientOriginalExtension());
+
+            // Gunakan array untuk mengecek banyak format sekaligus
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+            if (!in_array($extension, $allowedExtensions)) {
+                return back()
+                    ->withErrors(['ktm' => "KTM harus dalam format foto (.jpg/.png)"], 'playerEdit')
+                    ->withInput()->with('editPlayerId', $playerId);
+            }
             $time = date('His_dmy');
             $filename = $validated['nrp'] . '_' . $time . '.' . $extension;
 

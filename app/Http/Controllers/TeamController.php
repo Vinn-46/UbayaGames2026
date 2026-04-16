@@ -115,28 +115,6 @@ class TeamController extends Controller
             'houseCrews'
         ));
     }   
-    public function changeName(Request $request, Team $team)
-    {
-        if (Auth::user()->role === 'Kontingen' && Auth::user()->house_id !== $team->house_id) { abort(404); }
-        $currentName = $team->name;
-        $newName = $request->newTeamName;
-        //jika nama sama sebelumnya
-        if ($currentName === $newName) {
-            return redirect()->back()
-                    ->withErrors(['sameName' => 'Nama tim tidak boleh sama dengan sebelumnya'], 'changeTeamName')
-                    ->withInput();
-        } 
-        //aturan nama unik
-        if (Team::where('name', $newName)->exists()) {
-            return redirect()->back()
-                    ->withErrors(['nameExist' => 'Nama tim sudah ada'], 'changeTeamName')
-                    ->withInput();
-        } 
-        $team->update([
-            'name' => $newName
-        ]);
-        return redirect()->back()->with('success', 'Nama tim berhasil diganti');
-    }
     public function destroyPlayer(Team $team, Participant $participant)
     {
         if (Auth::user()->role === 'Kontingen' && Auth::user()->house_id !== $team->house_id) { abort(404); }
@@ -244,7 +222,7 @@ class TeamController extends Controller
             $roles = $crewTeam->pluck('role');
             $needCoach = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
                         'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
-                        'Badminton Ganda Campuran', 'E-sport', 'Dance'];
+                        'Badminton Ganda Campuran', 'E-sport'];
             $needAssistant = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra'];
             $needMedic = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
                         'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
@@ -298,9 +276,9 @@ class TeamController extends Controller
             'crewTeams.crew',
             'house'
         ])->findOrFail($id);
-        $players = $team->participants;
-        $crews = $team->crews;
-        // Bisa langsung pakai property karena sudah di-eager load via crewTeams.crew
+        $players = $team->participants()->orderBy('role', 'asc')->get();
+        $crews = $team->crews()->orderByRaw("FIELD(role, 'Koorcab', 'Coach', 'Assistant Coach', 'Medic')")->get();
+        
         return view('teamdetail_sekre', compact(
             'team',
             'players',

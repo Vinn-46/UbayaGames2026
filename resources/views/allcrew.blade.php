@@ -330,6 +330,11 @@
                         Upload KTM <span style="opacity:0.5;">(optional)</span>
                     </label><br>
                     <input type="file" name="ktm_photo" class="form-input h45">
+                    @error('ktm', 'crewEdit')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div style="display:flex; justify-content:space-between; gap:8px;">

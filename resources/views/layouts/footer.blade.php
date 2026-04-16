@@ -4,30 +4,31 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-0 text-xs sm:text-sm">
                 {{-- KOLOM 1: CONTACT US --}}
                 <div class="md:pr-8 md:border-r md:border-white/20 pb-12 flex flex-col items-center md:items-start">
-                    <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase">Contact Us</h3>
-                    <ul class="space-y-4 text-gray-300">
-                        <li class="flex items-center gap-3">
-                            <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-5 h-5 object-contain">
-                            <span><a href="https://wa.me/6283866142476" target="_blank">Tiara (083866142476)</a></span>
+                    <h3 class="mb-6 font-bold text-yellow-500 tracking-widest uppercase text-xl">Contact Us</h3>
+                    
+                    <ul class="space-y-4 text-gray-300 text-lg">
+                        <li class="flex items-center gap-4">
+                            <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-6 h-6 object-contain">
+                            <span class="hover:text-white transition-colors"><a href="https://wa.me/6283866142476" target="_blank">Tiara (083866142476)</a></span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-5 h-5 object-contain">
-                            <span><a href="https://wa.me/6281233508315" target="_blank">Jeje (081233508315)</a></span>
+                        <li class="flex items-center gap-4">
+                            <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp" class="w-6 h-6 object-contain">
+                            <span class="hover:text-white transition-colors"><a href="https://wa.me/6281233508315" target="_blank">Jeje (081233508315)</a></span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <img src="{{ asset('assets/icons/instagram.png') }}" alt="Instagram" class="w-5 h-5 object-contain">
-                            <span><a href="https://www.instagram.com/ubayagames2026" target="_blank">@ubayagames2026</a></span>
+                        <li class="flex items-center gap-4">
+                            <img src="{{ asset('assets/icons/instagram.png') }}" alt="Instagram" class="w-6 h-6 object-contain">
+                            <span class="hover:text-white transition-colors"><a href="https://www.instagram.com/ubayagames2026" target="_blank">@ubayagames2026</a></span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <img src="{{ asset('assets/icons/tiktok.png') }}" alt="Instagram" class="w-5 h-5 object-contain">
-                            <span><a href="https://www.tiktok.com/@ubayagames2k26" target="_blank">@ubayagames2k26</a></span>
+                        <li class="flex items-center gap-4">
+                            <img src="{{ asset('assets/icons/tiktok.png') }}" alt="TikTok" class="w-6 h-6 object-contain">
+                            <span class="hover:text-white transition-colors"><a href="https://www.tiktok.com/@ubayagames2k26" target="_blank">@ubayagames2k26</a></span>
                         </li>
                     </ul>
                 </div>
 
                 {{-- KOLOM 2: SUPPORTED BY --}}
                 <div class="md:col-span-2 md:border-r md:border-white/20 pb-12 flex flex-col items-center">
-                    <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase">Supported By</h3>
+                    <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase text-xl">Supported By</h3>
                     <div class="flex flex-col md:flex-row items-center justify-center gap-6 w-full">
                         <div class="h-14 sm:h-16 bg-white rounded-md flex items-center justify-center p-2">
                             <img src="{{ asset('assets/collab/Logo ubaya.jpg') }}" class="h-full w-auto object-contain" alt="Logo Ubaya">
@@ -51,7 +52,7 @@
 
                 {{-- KOLOM 3: SPONSORED BY --}}
                 <div class="md:pl-8 pb-12 flex flex-col items-center md:items-start">
-                    <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase">Sponsored By</h3>
+                    <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase text-xl">Sponsored By</h3>
                     <div class="flex flex-col gap-4">
                         <div class="h-12 w-32 sm:w-36 px-2 bg-white rounded-md flex items-center justify-center">
                             <img src="{{ asset('assets/sponsor/surken.png') }}" class="h-full w-full object-contain" alt="Surken Logo">

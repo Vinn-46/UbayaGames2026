@@ -331,8 +331,12 @@
                         Upload KTM 
                         <span style="opacity:0.5;">(optional)</span>
                     </label><br>
-                    <input type="file" name="ktm_photo"
-                        class="form-input h60">
+                    <input type="file" name="ktm_photo" class="form-input h60">
+                    @error('ktm', 'playerEdit')
+                        <div style="color:red; margin-top:6px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
                 <!-- WhatsApp -->
                 <div style="margin-bottom:10px;">

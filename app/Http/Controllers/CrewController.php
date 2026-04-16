@@ -22,7 +22,7 @@ class CrewController extends Controller
             'birthdate' => 'required',
             'nrp'       => 'nullable',
             'major'     => 'nullable',
-            'ktm_photo' => 'nullable|image',
+            'ktm_photo' => 'nullable',
             'role'      => 'required'
         ]);
         $nrp = $validated['nrp'] ?? null;
@@ -71,7 +71,16 @@ class CrewController extends Controller
         
         $path = null;
         if ($request->hasFile('ktm_photo')) {
-            $extension = $request->file('ktm_photo')->getClientOriginalExtension();
+            $extension = strtolower($request->file('ktm_photo')->getClientOriginalExtension());
+
+            // Gunakan array untuk mengecek banyak format sekaligus
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+            if (!in_array($extension, $allowedExtensions)) {
+                return back()
+                    ->withErrors(['ktm' => "KTM harus dalam format foto (.jpg/.png)"], 'addNewCrew')
+                    ->withInput();
+            }
             $time = date('His_dmy');
             $filename = $nrp . '_' . $time . '.' . $extension;
             $path = $request->file('ktm_photo')->storeAs(
@@ -172,7 +181,7 @@ class CrewController extends Controller
             'role'      => 'required',
             'nrp'       => 'nullable',
             'major'     => 'nullable',
-            'ktm_photo' => 'nullable|image',
+            'ktm_photo' => 'nullable',
         ]);
         $hasChanged = false;
         $nrp = $validated['nrp'] ?? null;
@@ -209,7 +218,16 @@ class CrewController extends Controller
             if ($crew->ktm_photo) {
                 Storage::disk('public')->delete($crew->ktm_photo);
             }
-            $extension = $request->file('ktm_photo')->getClientOriginalExtension();
+            $extension = strtolower($request->file('ktm_photo')->getClientOriginalExtension());
+
+            // Gunakan array untuk mengecek banyak format sekaligus
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+            if (!in_array($extension, $allowedExtensions)) {
+                return back()
+                    ->withErrors(['ktm' => "KTM harus dalam format foto (.jpg/.png)"], 'crewEdit')
+                    ->withInput()->with('editCrewId', $crewId);
+            }
             $time = date('His_dmy');
             $filename = $request->nrp . '_' . $time . '.' . $extension;
 
@@ -247,7 +265,7 @@ class CrewController extends Controller
             'birthdate'  => 'required',
             'nrp'       => 'nullable',
             'major'     => 'nullable',
-            'ktm_photo' => 'nullable|image',
+            'ktm_photo' => 'nullable',
         ]);
         $hasChanged = false;
         $nrp = $validated['nrp'] ?? null;
@@ -267,7 +285,16 @@ class CrewController extends Controller
             if ($crew->ktm_photo) {
                 Storage::disk('public')->delete($crew->ktm_photo);
             }
-            $extension = $request->file('ktm_photo')->getClientOriginalExtension();
+            $extension = strtolower($request->file('ktm_photo')->getClientOriginalExtension());
+
+            // Gunakan array untuk mengecek banyak format sekaligus
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+            if (!in_array($extension, $allowedExtensions)) {
+                return back()
+                    ->withErrors(['ktm' => "KTM harus dalam format foto (.jpg/.png)"], 'crewEdit')
+                    ->withInput()->with('editCrewId', $crewId);
+            }
             $time = date('His_dmy');
             $filename = $request->nrp . '_' . $time . '.' . $extension;
 
