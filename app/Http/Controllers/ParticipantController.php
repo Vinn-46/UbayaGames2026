@@ -25,7 +25,7 @@ class ParticipantController extends Controller
             'ktm_photo' => 'required',
             'whatsapp' => 'required',
             'mobilelegend' => 'nullable',
-            'backnumber' => 'nullable|integer|min:1|max:100'
+            'backnumber' => 'nullable|integer'
         ]);
         $nrp = $validated['nrp'];
         $crew = Crew::where('nrp', $nrp)->first(); 
@@ -268,7 +268,7 @@ class ParticipantController extends Controller
         }                
         $request->validate([
             'participant_id' => 'required|exists:participants,id',
-            'backnumber' => 'nullable|integer|min:1|max:100'
+            'backnumber' => 'nullable|integer'
         ]);       
         $noCadangan = ['Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'Poster', 'Lukis', 'Dance', 'Fotografi'];
         $role = in_array($competition, $noCadangan) ? 'Utama': $request->role;                            

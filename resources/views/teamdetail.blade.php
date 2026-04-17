@@ -349,7 +349,7 @@
                     class="form-input h35
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"    
-                            name="backnumber" min="1" max="100" step="1" required
+                            name="backnumber" min="0" max="100" step="1" required
                             {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}>
                     @error('backnumber', 'addExistingPlayer')
                         <div style="color:red; margin-top:6px;">
@@ -539,7 +539,7 @@
                         <label style ="font-size:16px;opacity:1;">
                             Back Number                    
                         </label><br>
-                        <input type="number" name="backnumber" min="1" max="100" step="1"  class="form-input h35" required>
+                        <input type="number" name="backnumber" min="0" max="100" step="1"  class="form-input h35" required>
                         @error('backnumber', 'addNewPlayer')
                         <div style="color:red; margin-top:6px;">
                             {{ $message }}
@@ -1152,7 +1152,7 @@
                         <label style="font-size:16px;opacity:1;">
                             Back Number
                         </label><br>
-                        <input type="number" name="backnumber" min="1" max="100" step="1"  id="editBackNumber" class="form-input h35">
+                        <input type="number" name="backnumber" min="0" max="100" step="1"  id="editBackNumber" class="form-input h35">
                         @error('backnumber', 'playerEdit')
                             <div style="color:red; margin-top:6px;">
                                 {{ $message }}
