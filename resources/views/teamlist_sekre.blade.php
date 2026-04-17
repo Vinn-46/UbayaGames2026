@@ -72,10 +72,10 @@
                     <thead class="bg-white/5 uppercase tracking-widest text-sm">
                         <tr>
                             <th class="px-6 py-4 text-center font-bold">ID</th>
-                            <th class="px-6 py-4 text-center font-bold">House</th>
+                            <th class="px-6 py-4 text-center font-bold">Team Name</th>
                             <th class="px-6 py-4 text-center font-bold">Competition</th>
                             <th class="px-6 py-4 text-center font-bold">Status</th>
-                            <th class="px-6 py-4 text-center font-bold">Details</th>
+                            <th class="px-6 py-4 text-center font-bold">Detail</th>
                         </tr>
                     </thead>
 
@@ -91,9 +91,9 @@
                                     {{ $team->id }}
                                 </td>
 
-                                {{-- HOUSE --}}
+                                {{-- NAME --}}
                                 <td class="px-6 py-4 text-center">
-                                    {{ $team->house->name ?? '-' }}
+                                    {{ $team->name ?? '-' }}
                                 </td>
 
                                 {{-- COMPETITION --}}

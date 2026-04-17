@@ -42,6 +42,8 @@ class TeamController extends Controller
                 ->count();
         if ($competition === 'E-sport' ||
             $competition === 'Badminton Tunggal Putra' || 
+            $competition === 'Badminton Ganda Putra' ||            
+            $competition === 'Badminton Ganda Campuran' ||
             $competition === 'Fotografi') { // kalo yg bisa lebih dari 1 tim
             if ($count === 2) {
                 return redirect()->back()
@@ -220,33 +222,33 @@ class TeamController extends Controller
             $crewTeam = CrewTeam::where('team_id', $team->id)->get();
 
             $roles = $crewTeam->pluck('role');
-            $needCoach = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
-                        'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
-                        'Badminton Ganda Campuran', 'E-sport'];
-            $needAssistant = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra'];
-            $needMedic = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
-                        'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
-                        'Badminton Ganda Campuran'];
+            // $needCoach = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
+            //             'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
+            //             'Badminton Ganda Campuran', 'E-sport'];
+            // $needAssistant = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra'];
+            // $needMedic = ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 
+            //             'Badminton Ganda Putra', 'Badminton Tunggal Putra', 
+            //             'Badminton Ganda Campuran'];
             if (!$roles->contains('Koorcab')) {
                 return back()->withErrors([
                     'koorcab' => "Tim belum memiliki Koorcab"
                 ], 'updateStatus')->withInput();
             }
-            if (in_array($competition, $needCoach) && !$roles->contains('Coach')) {
-                return back()->withErrors([
-                    'coach' => "Tim belum memiliki Coach"
-                ], 'updateStatus')->withInput();
-            }
-            if (in_array($competition, $needAssistant) && !$roles->contains('Assistant Coach')) {
-                return back()->withErrors([
-                    'asstCoach' => "Tim belum memiliki Assistant Coach"
-                ], 'updateStatus')->withInput();
-            }
-            if (in_array($competition, $needMedic) && !$roles->contains('Medic')) {
-                return back()->withErrors([
-                    'medic' => "Tim belum memiliki Medic"
-                ], 'updateStatus')->withInput();
-            }
+            // if (in_array($competition, $needCoach) && !$roles->contains('Coach')) {
+            //     return back()->withErrors([
+            //         'coach' => "Tim belum memiliki Coach"
+            //     ], 'updateStatus')->withInput();
+            // }
+            // if (in_array($competition, $needAssistant) && !$roles->contains('Assistant Coach')) {
+            //     return back()->withErrors([
+            //         'asstCoach' => "Tim belum memiliki Assistant Coach"
+            //     ], 'updateStatus')->withInput();
+            // }
+            // if (in_array($competition, $needMedic) && !$roles->contains('Medic')) {
+            //     return back()->withErrors([
+            //         'medic' => "Tim belum memiliki Medic"
+            //     ], 'updateStatus')->withInput();
+            // }
 
             $allPlayerAccepted = $participantTeam->every(function ($item) {
                 return $item->status === 'Diterima';
