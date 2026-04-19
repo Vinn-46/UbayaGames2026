@@ -36,10 +36,16 @@
                     {{-- Icon Plus Square --}}
                     <i data-feather="plus-square" class="w-5 h-5"></i>
                 </button>
-            </div>
-
+            </div>            
         </header>
-
+        <div class="mb-4 p-2 bg-yellow-500/20 border-l-4 border-yellow-500 rounded-r-lg">
+            <h3 class="text-xl text-center font-bold text-yellow-500">
+                INFORMASI: Pendaftaran Tim Baru untuk Cabang Lomba Seni Telah Ditutup
+            </h3>
+            <h4 class='text-center'>
+                Untuk melakukan pergantian data tim yang statusnya 'Diterima', harap menghubungi panitia
+            </h4>
+        </div>
         {{-- TABLE --}}
         <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl overflow-hidden w-full">
             <div class="overflow-x-auto">
@@ -87,7 +93,13 @@
                                     </a>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                             @php
+                                $isClosed = in_array($team->competition, ['Poster', 'Lukis', 'Dance', 'Fotografi']);
+                                $diterima = $team->status === 'Diterima'
+                            @endphp
+                            <td class="px-6 py-4"
+                                <td class="px-6 py-4 text-center"
+                                    title="{{ ($diterima &&  $isClosed) ? 'Tim sudah diterima' : '' }}">                                    
                                 <div class="flex justify-center gap-2">
                                     <!-- Delete Button -->
                                     <form action="{{ route('teams.destroy', $team->id) }}" 
@@ -98,8 +110,11 @@
 
                                         <button 
                                             type="submit"
-                                            class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20">
-                                            <i data-feather="trash-2"></i>
+                                            class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20
+                                                   disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70"
+                                            {!! ($isClosed & $diterima) ? "disabled" :  "" !!}>
+                                            <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'trash-2' }}"
+                                            class="{{ ($isClosed && $diterima) ? 'text-black' : '' }}"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -147,10 +162,10 @@
                     { val: "Badminton Tunggal Putra", label: "Badminton Tunggal Putra" },
                     { val: "Badminton Ganda Campuran", label: "Badminton Ganda Campuran" },
                     { val: "E-sport", label: "E-sport" },                     
-                    { val: "Poster", label: "Poster" },
-                    { val: "Lukis", label: "Lukis" },
-                    { val: "Dance", label: "Dance" },
-                    { val: "Fotografi", label: "Fotografi" }
+                    //{ val: "Poster", label: "Poster" },
+                    //{ val: "Lukis", label: "Lukis" },
+                    //{ val: "Dance", label: "Dance" },
+                    //{ val: "Fotografi", label: "Fotografi" }
                 ];
 
                 const select = document.getElementById("kategori");

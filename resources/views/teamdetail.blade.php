@@ -2,7 +2,12 @@
 
 @section('content')
 <section class="w-full px-4 sm:px-6 mb-36">
-    <div class="w-full max-w-6xl mx-auto">
+    <div class="w-full max-w-6xl mx-auto">        
+
+        @php
+            $isClosed = in_array($team->competition, ['Poster', 'Lukis', 'Dance', 'Fotografi']);
+            $diterima = $team->status === 'Diterima'
+        @endphp
 
         {{-- TEAM DETAIL --}}
         <section class="mb-24">
@@ -79,7 +84,11 @@
                 <button id="openAddPlayer"
                     class="inline-flex items-center gap-2 px-5 py-2 text-white
                             bg-blue-600 hover:bg-blue-500 rounded-lg transition
-                            shadow-lg shadow-blue-600/20 border border-blue-400/20">
+                            shadow-lg shadow-blue-600/20 border border-blue-400/20
+                            disabled:bg-gray-400 disabled:hover:bg-gray-400 
+                            disabled:cursor-not-allowed disabled:opacity-70"
+                    {!! ($isClosed & $diterima) ? "disabled" :  "" !!}
+                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">                                                
                     
                     {{-- Teks menggunakan font Georgia agar sesuai tema --}}
                     <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Player</span>
@@ -139,7 +148,7 @@
                                     </button>
                                 </td>
 
-                                <td class="px-6 py-4 text-center">
+                                <!-- <td class="px-6 py-4 text-center"> 
                                     <button type="button"
                                         class="editPlayerButton inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                             bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
@@ -155,10 +164,36 @@
                                         data-backnumber="{{ $player->pivot->back_number ?? '-' }}">   
                                     <i data-feather="edit"></i>
                                     </button>
+                                </td> -->
+
+                                <td class="px-6 py-4 text-center {{ ($isClosed &&  $diterima) ? 'cursor-not-allowed' : '' }}" 
+                                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">
+                                    
+                                    <button type="button"
+                                        class="editPlayerButton inline-flex px-3 py-1 text-xs font-semibold rounded-lg
+                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10
+                                            disabled:bg-gray-400 disabled:hover:bg-gray-400 
+                                            disabled:cursor-not-allowed disabled:opacity-70"                        
+                                        
+                                        {!! ($isClosed && $diterima) ? "disabled" :  "onclick='openEditPlayerModalById({$player->id})'" !!}
+
+                                        data-id="{{ $player->id }}"
+                                        data-name="{{ $player->name }}"
+                                        data-role="{{ $player->pivot->role }}"
+                                        data-nrp="{{ $player->nrp }}"
+                                        data-major="{{ $player->major }}"
+                                        data-dob="{{ $player->birthdate }}"
+                                        data-whatsapp="{{ $player->whatsapp }}"
+                                        data-mobilelegend="{{ $player->mobilelegend }}"
+                                        data-backnumber="{{ $player->pivot->back_number ?? '-' }}">   
+                                        
+                                        <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'edit' }}"></i>
+                                    </button>
                                 </td>
 
-                                <td class="px-6 py-4 text-center">
-                                   <form action="{{ route('teams.destroyPlayer', [$team->id, $player->id]) }}"
+                                <td class="px-6 py-4 text-center"
+                                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">
+                                    <form action="{{ route('teams.destroyPlayer', [$team->id, $player->id]) }}"
                                         method="POST"
                                         class="inline"
                                         onsubmit="return confirm('Yakin ingin menghapus player ini?')">
@@ -166,8 +201,13 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                                bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30">                                        
-                                            <i data-feather="trash-2"></i>                                            
+                                            bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30
+                                            disabled:bg-gray-400 disabled:hover:bg-gray-400 
+                                            disabled:cursor-not-allowed disabled:opacity-70" 
+                                                
+                                            {!! ($isClosed & $diterima) ? "disabled" :  "" !!}>
+                                                
+                                            <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'trash-2' }}"></i>
                                         </button>
                                     </form>
                                 </td>
@@ -198,7 +238,11 @@
                 <button id="openAddCrew"
                     class="inline-flex items-center gap-2 px-5 py-2 text-white
                             bg-blue-600 hover:bg-blue-500 rounded-lg transition
-                            shadow-lg shadow-blue-600/20 border border-blue-400/20">
+                            shadow-lg shadow-blue-600/20 border border-blue-400/20
+                            disabled:bg-gray-400 disabled:hover:bg-gray-400 
+                            disabled:cursor-not-allowed disabled:opacity-70"
+                    {!! ($isClosed & $diterima) ? "disabled" :  "" !!}
+                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">    
                     
                     {{-- Teks menggunakan font Georgia agar sesuai tema --}}
                     <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Crew</span>
@@ -258,11 +302,16 @@
                                 </button>
                                 </td>
 
-                                <td class="px-6 py-4 text-center">
+                                <td class="px-6 py-4 text-center"
+                                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">
                                     <button type="button"
                                         class="openCrewEdit inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
-                                        onclick="openEditCrewModalById({{ $crew->id }})"
+                                        bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10
+                                        disabled:bg-gray-400 disabled:hover:bg-gray-400 
+                                        disabled:cursor-not-allowed disabled:opacity-70"
+                                        
+                                        {!! ($isClosed && $diterima) ? "disabled" : "onclick='openEditCrewModalById({$crew->id})'" !!}
+
                                         data-id="{{ $crew->id }}"
                                         data-name="{{ $crew->name }}"
                                         data-whatsapp="{{ $crew->whatsapp }}"
@@ -270,10 +319,12 @@
                                         data-role="{{ $crew->pivot->role }}"
                                         data-nrp="{{ $crew->nrp }}"
                                         data-major="{{ $crew->major  }}">
-                                        <i data-feather="edit"></i>
+
+                                        <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'edit' }}"></i>
                                     </button>
                                 </td>                                
-                                <td class="px-6 py-4 text-center">
+                                <td class="px-6 py-4 text-center"
+                                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">
                                     <form action="{{ route('crew.destroyCrew', [$team->id, $crew->id]) }}"
                                         method="POST" class="inline"
                                         onsubmit="return confirm('Yakin ingin menghapus crew ini?')">
@@ -281,8 +332,13 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             class="inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                                bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30 transition">
-                                            <i data-feather="trash-2"></i>
+                                            bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30 transition
+                                            disabled:bg-gray-400 disabled:hover:bg-gray-400  
+                                            disabled:cursor-not-allowed disabled:opacity-70"
+
+                                            {!! ($isClosed & $diterima) ? "disabled" :  "" !!}>
+                                                
+                                            <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'trash-2' }}"></i>
                                         </button>
                                     </form>
                                 </td>
