@@ -82,13 +82,13 @@
                 </h2>
 
                 <button id="openAddPlayer"
-                    class="inline-flex items-center gap-2 px-5 py-2 text-white
+                    class="inline-flex items-center gap-2 px-5 py-2 text-white justify-center
                             bg-blue-600 hover:bg-blue-500 rounded-lg transition
                             shadow-lg shadow-blue-600/20 border border-blue-400/20
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"
-                    {!! ($isClosed & $diterima) ? "disabled" :  "" !!}
-                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">                                                
+                    {!! ($isClosed) ? "disabled" :  "" !!}
+                    title="{{ ($isClosed ) ? 'Tidak bisa menambahkan player lagi' : '' }}">                                                 
                     
                     {{-- Teks menggunakan font Georgia agar sesuai tema --}}
                     <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Player</span>
@@ -192,10 +192,9 @@
                                 </td>
 
                                 <td class="px-6 py-4 text-center"
-                                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">
+                                    title="{{ ($isClosed) ? 'Tidak dapat menghapus player' : '' }}">
                                     <form action="{{ route('teams.destroyPlayer', [$team->id, $player->id]) }}"
-                                        method="POST"
-                                        class="inline"
+                                        method="POST" class="inline"
                                         onsubmit="return confirm('Yakin ingin menghapus player ini?')">
                                         @csrf
                                         @method('DELETE')
@@ -205,9 +204,9 @@
                                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                                             disabled:cursor-not-allowed disabled:opacity-70" 
                                                 
-                                            {!! ($isClosed & $diterima) ? "disabled" :  "" !!}>
+                                            {!! ($isClosed) ? "disabled" :  "" !!}>
                                                 
-                                            <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'trash-2' }}"></i>
+                                            <i data-feather="{{ ($isClosed) ? 'slash' : 'trash-2' }}"></i>
                                         </button>
                                     </form>
                                 </td>
@@ -236,13 +235,13 @@
                 </h2>
 
                 <button id="openAddCrew"
-                    class="inline-flex items-center gap-2 px-5 py-2 text-white
+                    class="inline-flex items-center gap-2 px-5 py-2 text-white justify-center   
                             bg-blue-600 hover:bg-blue-500 rounded-lg transition
                             shadow-lg shadow-blue-600/20 border border-blue-400/20
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"
-                    {!! ($isClosed & $diterima) ? "disabled" :  "" !!}
-                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">    
+                    {!! ($isClosed) ? "disabled" :  "" !!}
+                    title="{{ ($isClosed) ? 'Tidak bisa menambahkan crew lagi' : '' }}">    
                     
                     {{-- Teks menggunakan font Georgia agar sesuai tema --}}
                     <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Crew</span>
@@ -324,7 +323,7 @@
                                     </button>
                                 </td>                                
                                 <td class="px-6 py-4 text-center"
-                                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">
+                                    title="{{ ($isClosed) ? 'Tidak dapat menghapus crew' : '' }}">
                                     <form action="{{ route('crew.destroyCrew', [$team->id, $crew->id]) }}"
                                         method="POST" class="inline"
                                         onsubmit="return confirm('Yakin ingin menghapus crew ini?')">
@@ -336,9 +335,9 @@
                                             disabled:bg-gray-400 disabled:hover:bg-gray-400  
                                             disabled:cursor-not-allowed disabled:opacity-70"
 
-                                            {!! ($isClosed & $diterima) ? "disabled" :  "" !!}>
+                                            {!! ($isClosed) ? "disabled" :  "" !!}>
                                                 
-                                            <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'trash-2' }}"></i>
+                                            <i data-feather="{{ ($isClosed) ? 'slash' : 'trash-2' }}"></i>
                                         </button>
                                     </form>
                                 </td>

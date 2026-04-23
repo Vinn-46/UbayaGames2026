@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\ScheduleController;
 
 // untuk aboutus (jadi tampilan utama saat web dibuka)
 Route::get('/', function () {
@@ -14,9 +15,7 @@ Route::get('/', function () {
 })->name('aboutus');
 
 // untuk schedule
-Route::get('/schedule', function () {
-    return view('schedule');
-})->name('schedule');
+Route::get('/schedule', [ScheduleController::class, 'show'])->name('schedule');
 
 // untuk house
 Route::get('/house', function () {

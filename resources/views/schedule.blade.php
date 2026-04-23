@@ -17,28 +17,21 @@
         {{-- ================= FILTER BAR ================= --}}
         <form method="GET" action="{{ route('schedule') }}" class="mb-6 flex flex-col sm:flex-row gap-3">
 
+            <input type="hidden" name="date" value="{{ request('date', now()->toDateString()) }}">
+            
             {{-- COMBO BOX 1: Filter By --}}
             <select id="filter_by" name="filter_by"
-                    class="bg-black/60 border border-white/10 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-white/30">
+                    class="bg-black/60 border border-white/10 text-white rounded-lg px-4 py-3 text-m focus:outline-none focus:ring-1 focus:ring-white/30">
                 <option value="" disabled {{ !request('filter_by') ? 'selected' : '' }}>-- Filter By --</option>
                 <option value="cabang"  {{ request('filter_by') === 'cabang'  ? 'selected' : '' }}>Cabang Lomba</option>
                 <option value="house"   {{ request('filter_by') === 'house'   ? 'selected' : '' }}>House</option>
-                <option value="tanggal" {{ request('filter_by') === 'tanggal' ? 'selected' : '' }}>Tanggal</option>
             </select>
 
-            {{-- COMBO BOX 2 / Date Input --}}
+            {{-- COMBO BOX 2 --}}
             <select id="search" name="search"
-                    class="flex-1 bg-black/60 border border-white/10 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-white/30
-                           {{ request('filter_by') === 'tanggal' ? 'hidden' : '' }}"
+                    class="flex-1 bg-black/60 border border-white/10 text-white rounded-lg px-4 py-3 text-m focus:outline-none focus:ring-1 focus:ring-white/30
                     style="box-sizing: border-box; font-size: 0.875rem;">
             </select>
-
-            <input type="date" id="input-tanggal" name="tanggal"
-                   value="{{ request('tanggal') }}"
-                   onclick="this.showPicker()"
-                   class="flex-1 bg-black/60 border border-white/10 text-white rounded-lg px-4 py-[9px] focus:outline-none focus:ring-1 focus:ring-white/30 text-sm
-                          {{ request('filter_by') === 'tanggal' ? '' : 'hidden' }}" 
-                   style="color-scheme: dark;" />
 
             {{-- BUTTON SEARCH --}}
             <button type="submit"
@@ -47,8 +40,8 @@
             </button>
 
             {{-- BUTTON CLEAR --}}
-            @if(request('search') || request('tanggal'))
-                <a href="{{ route('schedule') }}"
+            @if(request('search'))
+                <a href="{{ route('schedule', ['date' => request('date')]) }}"
                    class="inline-flex items-center justify-center px-5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 text-sm font-semibold transition">
                     Clear
                 </a>
@@ -57,150 +50,7 @@
         </form>
 
 
-        {{-- ================= SCHEDULE LIST ================= --}}
-
         @php
-            // ---- DUMMY DATA ----
-            $schedules = [
-                [
-                    'date_label' => 'Sabtu, 16 Mei 2026',
-                    'competitions' => [
-                        [
-                            'name' => 'E-Sport',
-                            'matches' => [
-                                [
-                                    'team_home'  => 'FORTIS 1',
-                                    'team_away'  => 'JUSTICIA 2',
-                                    'house_home' => 'Fortis',
-                                    'house_away' => 'Justicia',
-                                    'score_home' => 2,
-                                    'score_away' => 0,
-                                    'phase'      => 'Group Phase',
-                                    'venue'      => 'SGFK',
-                                    'time'       => '13.00 WIB',
-                                ],
-                                [
-                                    'team_home'  => 'ELIXIR 1',
-                                    'team_away'  => 'ARCANA 1',
-                                    'house_home' => 'Elixir',
-                                    'house_away' => 'Arcana',
-                                    'score_home' => 1,
-                                    'score_away' => 2,
-                                    'phase'      => 'Group Phase',
-                                    'venue'      => 'SGFBE',
-                                    'time'       => '13.00 WIB',
-                                ],
-                            ],
-                        ],
-                        [
-                            'name' => 'Basket Putri',
-                            'matches' => [
-                                [
-                                    'team_home'  => 'FORTIS',
-                                    'team_away'  => 'MERCATOR 2',
-                                    'house_home' => 'Fortis',
-                                    'house_away' => 'Mercator',
-                                    'score_home' => 67,
-                                    'score_away' => 52,
-                                    'phase'      => 'Semifinal',
-                                    'venue'      => 'UBAYA Sports Center',
-                                    'time'       => '13.00 WIB',
-                                ],
-                                [
-                                    'team_home'  => 'ELIXIR',
-                                    'team_away'  => 'JUSTICIA',
-                                    'house_home' => 'Elixir',
-                                    'house_away' => 'Justicia',
-                                    'score_home' => 30,
-                                    'score_away' => 46,
-                                    'phase'      => 'Semifinal',
-                                    'venue'      => 'UBAYA Sports Center',
-                                    'time'       => '15.00 WIB',
-                                ],
-                            ],
-                        ],
-                        [
-                            'name' => 'Futsal Putra',
-                            'matches' => [
-                                [
-                                    'team_home'  => 'VIVENS',
-                                    'team_away'  => 'PRAXIS',
-                                    'house_home' => 'Vivens',
-                                    'house_away' => 'Praxis',
-                                    'score_home' => null,
-                                    'score_away' => null,
-                                    'phase'      => 'Group Phase',
-                                    'venue'      => 'GOR UBAYA',
-                                    'time'       => '16.00 WIB',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'date_label' => 'Minggu, 17 Mei 2026',
-                    'competitions' => [
-                        [
-                            'name' => 'Basket Putra',
-                            'matches' => [
-                                [
-                                    'team_home'  => 'ARCANA',
-                                    'team_away'  => 'VITALIS',
-                                    'house_home' => 'Arcana',
-                                    'house_away' => 'Vitalis',
-                                    'score_home' => null,
-                                    'score_away' => null,
-                                    'phase'      => 'Group Phase',
-                                    'venue'      => 'UBAYA Sports Center',
-                                    'time'       => '09.00 WIB',
-                                ],
-                                [
-                                    'team_home'  => 'CREATIO',
-                                    'team_away'  => 'MERCATOR',
-                                    'house_home' => 'Creatio',
-                                    'house_away' => 'Mercator',
-                                    'score_home' => null,
-                                    'score_away' => null,
-                                    'phase'      => 'Group Phase',
-                                    'venue'      => 'UBAYA Sports Center',
-                                    'time'       => '11.00 WIB',
-                                ],
-                            ],
-                        ],
-                        [
-                            'name' => 'Voli Putra',
-                            'matches' => [
-                                [
-                                    'team_home'  => 'FORTIS',
-                                    'team_away'  => 'ELIXIR',
-                                    'house_home' => 'Fortis',
-                                    'house_away' => 'Elixir',
-                                    'score_home' => null,
-                                    'score_away' => null,
-                                    'phase'      => 'Final',
-                                    'venue'      => 'GOR UBAYA',
-                                    'time'       => '14.00 WIB',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ];
-            // ---- END DUMMY DATA ----
-
-            // House color map for avatar circles (Tetap dipertahankan untuk referensi warna lain jika butuh)
-            $houseColors = [
-                'Fortis'   => '#b45309',
-                'Justicia' => '#b91c1c',
-                'Mercator' => '#0369a1',
-                'Praxis'   => '#4d7c0f',
-                'Arcana'   => '#6d28d9',
-                'Elixir'   => '#0f766e',
-                'Vivens'   => '#0e7490',
-                'Creatio'  => '#be185d',
-                'Vitalis'  => '#15803d',
-            ];
-
             // House logo map -> Sesuaikan nama file ini dengan yang ada di assets/fakultas/
             $houseLogos = [
                 'Fortis'   => 'teknik.png',
@@ -214,39 +64,65 @@
                 'Vitalis'  => 'kedok.png',
             ];
         @endphp
-
-        @forelse($schedules as $day)
+    
+        
         {{-- DATE HEADER --}}
         <div class="mb-12">
-            <h3 class="text-lg font-heading font-bold text-white uppercase tracking-widest mb-6 mt-6">
-                {{ $day['date_label'] }}
+            <h3 class="text-lg font-heading font-bold text-white text-center uppercase tracking-widest mb-6 mt-6">
+                <div class="flex items-center justify-between gap-3 w-full">                     
+                    <div class="flex flex-col items-start flex-1 gap-3">
+                        <a href="{{ route('schedule', ['date' => \Carbon\Carbon::parse(request('date', now()))->subDay()->toDateString()]) }}" 
+                        class="inline-flex items-center gap-2 px-3 py-2 text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition shadow-lg shadow-blue-600/20 border border-blue-400/20">
+                            <i data-feather="arrow-left" class="w-5 h-5"></i> 
+                        </a>
+                    </div>
+                    <div class="flex flex-col items-center justify-center min-w-[140px]">
+                        {{ convertToDate(request('date')) }}
+                    </div>
+                    <div class="flex flex-col items-end flex-1 gap-3">
+                        <a href="{{ route('schedule', ['date' => \Carbon\Carbon::parse(request('date', now()))->addDay()->toDateString()]) }}" 
+                        class="inline-flex items-center gap-2 px-3 py-2 text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition shadow-lg shadow-blue-600/20 border border-blue-400/20">
+                            <i data-feather="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
             </h3>
-
-            {{-- Loop masuk ke level Kompetisi (Basket, Futsal, dll) --}}
-            @foreach($day['competitions'] as $competition)
-                <div class="mb-8">
-                    <table class="w-full text-base text-white bg-gray-900 shadow-xl rounded-2xl" style="min-width: 300px;">
+            @forelse($groupedSchedules as $competitionName => $matches)
+                <div class="mb-8 w-full">
+                    <table class="w-full table-fixed text-base text-white bg-gray-900 shadow-xl rounded-2xl overflow-hidden border-separate border-spacing-0">
                         <thead class="bg-white/5 uppercase tracking-widest text-sm">
                             <tr>
                                 <th class="px-6 py-4 text-lg text-center font-bold text-yellow-400"> 
-                                    {{ $competition['name'] }} 
+                                    {{ $competitionName }} 
                                 </th>
                             </tr>
                         </thead>
-
-                        {{-- BODY: Daftar Pertandingan --}}
                         <tbody class="divide-y divide-white/10 text-base bg-black/20">
-                            @foreach ($competition['matches'] as $match)
-                                @php
-                                    $finished  = !is_null($match['score_home']);
-                                    $logoHome  = $houseLogos[$match['house_home']] ?? 'default.png';
-                                    $logoAway  = $houseLogos[$match['house_away']] ?? 'default.png';
-                                @endphp
-                                <tr>
-                                    <td class="px-2 py-4 w-full border-t border-white/50 my-3" >
-                                        {{-- WRAPPER UTAMA: Berbaris ke bawah (Kolom) --}}
-                                        <div class="flex flex-col items-center gap-3 w-full">
+                        @foreach ($matches as $match)       
+                            {{-- BODY: Daftar Pertandingan --}}                                                            
+                            @php
+                                $finished  = $match->is_finished;
+                                $homeTeam = $match->teams->where('pivot.home_away', 'Home')->first();
+                                $awayTeam = $match->teams->where('pivot.home_away', 'Away')->first();
+                                $getHouseName = function($teamName) {
+                                    if (!$teamName) return null;
+                                    return explode(' ', trim($teamName))[0];
+                                };
+                                $homeHouse = $homeTeam ? $getHouseName($homeTeam->name) : null;
+                                $awayHouse = $awayTeam ? $getHouseName($awayTeam->name) : null;
+                                $logoHome = ($homeHouse && isset($houseLogos[$homeHouse])) 
+                                            ? $houseLogos[$homeHouse] 
+                                            : 'default.png';
                                             
+                                $logoAway = ($awayHouse && isset($houseLogos[$awayHouse])) 
+                                            ? $houseLogos[$awayHouse] 
+                                            : 'default.png';
+                            @endphp
+                            <tr>
+                                <td class="px-2 py-4 w-full border-t border-white/50 my-3 hover:bg-white/20" >
+                                    {{-- WRAPPER UTAMA: Berbaris ke bawah (Kolom) --}}
+                                    <div class="flex flex-col items-center gap-3 w-full">
+                                        @if ($match->type === 'Pertandingan')                 
                                             {{-- BARIS ATAS: Tim Home, Score/VS, Tim Away --}}
                                             <div class="flex items-center justify-between gap-3 w-full">
                                                 
@@ -255,21 +131,21 @@
                                                     <img src="{{ asset('assets/fakultas/' . $logoHome) }}" 
                                                         class="w-12 h-12 object-contain flex-shrink-0">
                                                     <span class="text-white text-center font-bold text-l uppercase tracking-wide">
-                                                        {{ $match['team_home'] }}
+                                                        {{ $homeTeam->name }}
                                                     </span>
                                                 </div>
 
                                                 {{-- SCORE / VS (Tengah) --}}
                                                 <div class="flex flex-col items-center justify-center min-w-[140px]">
                                                     <span class="text-sm text-center uppercase tracking-widest text-white/70 mb-1">
-                                                        {{ $match['phase'] }}
+                                                        {{ $match->phase }}
                                                     </span>
 
                                                     @if($finished)
                                                         <div class="flex items-center gap-3">
-                                                            <span class="text-2xl text-center font-bold" style="color: #eab308;">{{ $match['score_home'] }}</span>
+                                                            <span class="text-2xl text-center font-bold" style="color: #eab308;">{{ $homeTeam->pivot->total_score }}</span>
                                                             <span class="text-white/30 text-2xl">VS</span>
-                                                            <span class="text-2xl text-center font-bold" style="color: #eab308;">{{ $match['score_away'] }}</span>
+                                                            <span class="text-2xl text-center font-bold" style="color: #eab308;">{{ $awayTeam->pivot->total_score }}</span>
                                                         </div>
                                                         <span class="text-sm text-white text-center uppercase tracking-tighter mt-2">Finished</span>
                                                     @else                                                
@@ -278,53 +154,52 @@
                                                 </div>
 
                                                 {{-- NAMA & LOGO AWAY --}}
-                                                <div class="flex flex-col items-center justify-end flex-1 gap-3 text-right">                                                
+                                                <div class="flex flex-col items-center flex-1 gap-3">                                                
                                                     <img src="{{ asset('assets/fakultas/' . $logoAway) }}" 
                                                         class="w-12 h-12 object-contain flex-shrink-0">
                                                     <span class="text-white text-center font-bold text-l uppercase tracking-wide">
-                                                        {{ $match['team_away'] }}
+                                                        {{ $awayTeam->name }}
                                                     </span>
                                                 </div>
-
                                             </div>
-
-                                            {{-- BARIS BAWAH: Venue & Time (Turun ke bawah) --}}
-                                            @if(!$finished)
-                                                <div class="w-full border-t border-white/10 my-3"></div>
-                                                <div class="flex items-center justify-center w-full">
-                                                    <span class="text-[5px] text-white text-center leading-relaxed tracking-wide">
-                                                        {{ $match['venue'] }} ({{ $match['time'] }})
-                                                    </span>
-                                                </div>
-                                            @endif 
+                                        @else
+                                            {{-- LAYOUT PERLOMBAAN --}}
+                                            <div class="flex flex-col items-center justify-center w-full px-4">
+                                                <span class="text-white text-center text-xl font-bold tracking-wide">{{ $match->name }}</span>
+                                            </div>
+                                        @endif
+                                        {{-- BARIS BAWAH: Venue & Time (Turun ke bawah) --}}
+                                        @if(!$finished || $finished && $match->type === 'Perlombaan')
+                                            <div class="w-full border-t border-white/10 my-3"></div>
+                                            <div class="flex items-center justify-center w-full">
+                                                <span class="text-[5px] text-white text-center leading-relaxed tracking-wide">
+                                                    @if(!$finished)
+                                                        {{ $match->venue }} ({{ \Carbon\Carbon::parse($match->time)->format('H.i') }} WIB)
+                                                    @elseif ($finished && $match->type === 'Perlombaan')
+                                                        FINISHED
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        @endif 
                                         </div>
                                     </td>
-                                </tr>                                    
+                                </tr>  
                             @endforeach
                         </tbody>
                     </table>
+                </div> 
+            @empty
+                <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-12 text-center">
+                    <p class="text-white text-lg mb-4 mt-4">Tidak ada jadwal yang ditemukan.</p>
                 </div>
-            @endforeach
-        </div>
+            @endforelse                 
+        </div>      
+</section>    
 
-        {{-- Divider antar hari --}}
-        @if (!$loop->last)
-            <div class="my-12 border-t border-white/10 mb-6"></div>
-        @endif
-
-    @empty
-        <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl px-6 py-12 text-center">
-            <p class="text-white/50 text-base">Tidak ada jadwal yang ditemukan.</p>
-        </div>
-    @endforelse
-
-    </div>
-</section>
-
-    {{-- 3. FOOTER (Pindahkan ke luar div konten) --}}
-    <div class="w-full mt-auto">
-        @include('layouts.footer')
-    </div>
+{{-- 3. FOOTER (Pindahkan ke luar div konten) --}}
+<div class="w-full mt-auto">
+    @include('layouts.footer')
+</div>   
 
 <script>
     const options = {
@@ -336,7 +211,11 @@
             'Badminton Ganda Putra',
             'Badminton Tunggal Putra',
             'Badminton Ganda Campuran',
-            'E-sport'
+            'E-sport',
+            'Poster',
+            'Lukis',
+            'Dance',
+            'Fotografi'
         ],
         house: [
             'House of Elixir',
@@ -353,19 +232,16 @@
 
     const filterBy    = document.getElementById('filter_by');
     const searchBox   = document.getElementById('search');
-    const inputTanggal = document.getElementById('input-tanggal');
     const currentSearch = "{{ request('search') }}";
 
     function updateOptions(selectedFilter, selectedValue = null) {
         // Toggle tanggal vs select
         if (selectedFilter === 'tanggal') {
             searchBox.classList.add('hidden');
-            inputTanggal.classList.remove('hidden');
             return;
         }
 
         searchBox.classList.remove('hidden');
-        inputTanggal.classList.add('hidden');
         searchBox.innerHTML = '';
 
         const placeholder = document.createElement('option');

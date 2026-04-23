@@ -84,3 +84,22 @@ if (!function_exists('getCrewsByTeam')) {
         return $team->crewTeams()->with('crew')->get();
     }
 }
+
+if (!function_exists('convertToDate')) {
+    function convertToDate($date = null) {
+        $timestamp = ($date === null) ? time() : strtotime($date);
+
+        $hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $bulan = [
+            1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        $tgl = $hari[date('w', $timestamp)] . ', ' . 
+               date('j', $timestamp) . ' ' . 
+               $bulan[date('n', $timestamp)] . ' ' . 
+               date('Y', $timestamp);
+        return $tgl;
+    }
+}
+?>

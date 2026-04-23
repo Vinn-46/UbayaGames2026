@@ -49,4 +49,10 @@ class Team extends Model
             'crew_id'          
         )->withPivot('role', 'status', 'revision');
     }
+    public function schedules()
+    {
+        return $this->belongsToMany(Schedule::class, 'schedule_team', 'team_id', 'schedule_id')
+                    ->withPivot('id', 'home_away', 'total_score')
+                    ->withTimestamps();
+    }
 }
