@@ -4,7 +4,7 @@
 
 <section class="w-full px-4 sm:px-6 mb-36">
     <div class="w-full max-w-6xl mx-auto">
-
+               
         {{-- HEADER --}}
         <header class="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             
@@ -28,8 +28,10 @@
                 <button id="openModal"
                     class="inline-flex items-center gap-2 px-5 py-2 text-white
                             bg-blue-600 hover:bg-blue-500 rounded-lg transition
-                            shadow-lg shadow-blue-600/20 border border-blue-400/20">
-                    
+                            shadow-lg shadow-blue-600/20 border border-blue-400/20
+                            disabled:bg-gray-400 disabled:hover:bg-gray-400 
+                            disabled:cursor-not-allowed disabled:opacity-70"
+                    disabled title="Pendaftaran telah ditutup">
                     {{-- Teks menggunakan font Georgia agar sesuai tema --}}
                     <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Team</span>
                     
@@ -40,10 +42,10 @@
         </header>
         <div class="mb-4 p-2 bg-yellow-500/20 border-l-4 border-yellow-500 rounded-r-lg">
             <h3 class="text-xl text-center font-bold text-yellow-500">
-                INFORMASI: <br>Pendaftaran <i>Team</i>, <i>Player</i>, dan <i>Crew</i> Baru untuk Cabang Lomba Seni Telah Ditutup
+                INFORMASI: <br> Pendaftaran untuk seluruh cabang lomba telah resmi ditutup
             </h3>
             <h4 class='text-center mt-2'>
-                Untuk melakukan pergantian data tim yang statusnya 'Diterima', harap menghubungi panitia
+                 Perubahan dan penambahan data peserta tidak dapat dilakukan setelah pendaftaran ditutup
             </h4>
         </div>
         {{-- TABLE --}}
@@ -94,12 +96,12 @@
                                 </div>
                             </td>
                              @php
-                                $isClosed = in_array($team->competition, ['Poster', 'Lukis', 'Dance', 'Fotografi']);
+                                $isClosed = in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
                                 $diterima = $team->status === 'Diterima'
                             @endphp
                             <td class="px-6 py-4"
                                 <td class="px-6 py-4 text-center"
-                                    title="{{ ($isClosed) ? 'Tim tidak dapat dihapus' : '' }}">                                    
+                                    title="{{ ($isClosed) ? 'Pendaftaran telah ditutup' : '' }}">                                    
                                 <div class="flex justify-center gap-2">
                                     <!-- Delete Button -->
                                     <form action="{{ route('teams.destroy', $team->id) }}" 

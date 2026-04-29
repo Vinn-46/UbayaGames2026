@@ -5,7 +5,7 @@
     <div class="w-full max-w-6xl mx-auto">        
 
         @php
-            $isClosed = in_array($team->competition, ['Poster', 'Lukis', 'Dance', 'Fotografi']);
+            $isClosed = in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
             $diterima = $team->status === 'Diterima'
         @endphp
 
@@ -88,7 +88,7 @@
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"
                     {!! ($isClosed) ? "disabled" :  "" !!}
-                    title="{{ ($isClosed ) ? 'Tidak bisa menambahkan player lagi' : '' }}">                                                 
+                    title="{{ ($isClosed ) ? 'Pendaftaran telah ditutup' : '' }}">                                                 
                     
                     {{-- Teks menggunakan font Georgia agar sesuai tema --}}
                     <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Player</span>
@@ -148,26 +148,8 @@
                                     </button>
                                 </td>
 
-                                <!-- <td class="px-6 py-4 text-center"> 
-                                    <button type="button"
-                                        class="editPlayerButton inline-flex px-3 py-1 text-xs font-semibold rounded-lg
-                                            bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10"
-                                        onclick="openEditPlayerModalById({{ $player->id }})"
-                                        data-id="{{ $player->id }}"
-                                        data-name="{{ $player->name }}"
-                                        data-role="{{ $player->pivot->role }}"
-                                        data-nrp="{{ $player->nrp }}"
-                                        data-major="{{ $player->major }}"
-                                        data-dob="{{ $player->birthdate }}"
-                                        data-whatsapp="{{ $player->whatsapp }}"
-                                        data-mobilelegend="{{ $player->mobilelegend }}"
-                                        data-backnumber="{{ $player->pivot->back_number ?? '-' }}">   
-                                    <i data-feather="edit"></i>
-                                    </button>
-                                </td> -->
-
-                                <td class="px-6 py-4 text-center {{ ($isClosed &&  $diterima) ? 'cursor-not-allowed' : '' }}" 
-                                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">
+                                <td class="px-6 py-4 text-center {{ ($isClosed) ? 'cursor-not-allowed' : '' }}" 
+                                    title="{{ ($isClosed) ? 'Pendaftaran telah ditutup' : '' }}">
                                     
                                     <button type="button"
                                         class="editPlayerButton inline-flex px-3 py-1 text-xs font-semibold rounded-lg
@@ -175,7 +157,7 @@
                                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                                             disabled:cursor-not-allowed disabled:opacity-70"                        
                                         
-                                        {!! ($isClosed && $diterima) ? "disabled" :  "onclick='openEditPlayerModalById({$player->id})'" !!}
+                                        {!! ($isClosed) ? "disabled" :  "onclick='openEditPlayerModalById({$player->id})'" !!}
 
                                         data-id="{{ $player->id }}"
                                         data-name="{{ $player->name }}"
@@ -187,12 +169,12 @@
                                         data-mobilelegend="{{ $player->mobilelegend }}"
                                         data-backnumber="{{ $player->pivot->back_number ?? '-' }}">   
                                         
-                                        <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'edit' }}"></i>
+                                        <i data-feather="{{ ($isClosed) ? 'slash' : 'edit' }}"></i>
                                     </button>
                                 </td>
 
                                 <td class="px-6 py-4 text-center"
-                                    title="{{ ($isClosed) ? 'Tidak dapat menghapus player' : '' }}">
+                                    title="{{ ($isClosed) ? 'Pendaftaran telah ditutup' : '' }}">
                                     <form action="{{ route('teams.destroyPlayer', [$team->id, $player->id]) }}"
                                         method="POST" class="inline"
                                         onsubmit="return confirm('Yakin ingin menghapus player ini?')">
@@ -241,7 +223,7 @@
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"
                     {!! ($isClosed) ? "disabled" :  "" !!}
-                    title="{{ ($isClosed) ? 'Tidak bisa menambahkan crew lagi' : '' }}">    
+                    title="{{ ($isClosed) ? 'Pendaftaran telah ditutup' : '' }}">    
                     
                     {{-- Teks menggunakan font Georgia agar sesuai tema --}}
                     <span class="font-bold font-['Georgia'] text-sm sm:text-base">Add Crew</span>
@@ -302,14 +284,14 @@
                                 </td>
 
                                 <td class="px-6 py-4 text-center"
-                                    title="{{ ($isClosed &&  $diterima) ? 'Tim sudah diterima' : '' }}">
+                                    title="{{ ($isClosed) ? 'Pendaftaran telah ditutup' : '' }}">
                                     <button type="button"
                                         class="openCrewEdit inline-flex px-3 py-1 text-xs font-semibold rounded-lg
                                         bg-white/10 hover:bg-white/20 transition text-sm text-white border border-white/10
                                         disabled:bg-gray-400 disabled:hover:bg-gray-400 
                                         disabled:cursor-not-allowed disabled:opacity-70"
                                         
-                                        {!! ($isClosed && $diterima) ? "disabled" : "onclick='openEditCrewModalById({$crew->id})'" !!}
+                                        {!! ($isClosed) ? "disabled" : "onclick='openEditCrewModalById({$crew->id})'" !!}
 
                                         data-id="{{ $crew->id }}"
                                         data-name="{{ $crew->name }}"
@@ -319,11 +301,11 @@
                                         data-nrp="{{ $crew->nrp }}"
                                         data-major="{{ $crew->major  }}">
 
-                                        <i data-feather="{{ ($isClosed &&  $diterima) ? 'slash' : 'edit' }}"></i>
+                                        <i data-feather="{{ ($isClosed) ? 'slash' : 'edit' }}"></i>
                                     </button>
                                 </td>                                
                                 <td class="px-6 py-4 text-center"
-                                    title="{{ ($isClosed) ? 'Tidak dapat menghapus crew' : '' }}">
+                                    title="{{ ($isClosed) ? 'Pendaftaran telah ditutup' : '' }}">
                                     <form action="{{ route('crew.destroyCrew', [$team->id, $crew->id]) }}"
                                         method="POST" class="inline"
                                         onsubmit="return confirm('Yakin ingin menghapus crew ini?')">
