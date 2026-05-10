@@ -5,7 +5,8 @@
     <div class="w-full max-w-6xl mx-auto">        
 
         @php
-            $isClosed = in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
+            // $isClosed = in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
+            $isClosed = false;
             $diterima = $team->status === 'Diterima'
         @endphp
 
@@ -387,7 +388,7 @@
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"    
                             name="backnumber" min="0" max="100" step="1" required
-                            {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}>
+                            <!-- {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}> -->
                     @error('backnumber', 'addExistingPlayer')
                         <div style="color:red; margin-top:6px;">
                             {{ $message }}
@@ -407,7 +408,7 @@
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"    
                             name="mobilelegend" class="form-input h35" required
-                            {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}>
+                            <!-- {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}> -->
                 </div> 
                 @error('idMlExist', 'addExistingPlayer')
                     <div style="color:red; margin-top:6px;">
@@ -424,7 +425,7 @@
                     class="form-input h40 text-black form-input h35
                         disabled:bg-gray-400 disabled:hover:bg-gray-400 
                         disabled:cursor-not-allowed disabled:opacity-70" required
-                        {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}>
+                        <!-- {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}> -->
                     <option value="" disabled selected>-- Select Role --</option>
                     <option style="color:black;" value="Utama">Utama</option>
                     @if (in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'E-sport']))
@@ -462,7 +463,7 @@
                         class="btn btn-primary bg-blue-600 hover:bg-blue-500 
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"
-                        {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}>
+                        <!-- {{ $houseParticipants->isEmpty() ? 'disabled' : '' }}> -->
                         Add Player
                     </button>
                 </div>
@@ -685,7 +686,7 @@
                 <select name="role" class="form-input h40 text-black
                     disabled:bg-gray-400 disabled:hover:bg-gray-400 
                     disabled:cursor-not-allowed disabled:opacity-70" required
-                    {{ $houseCrews->isEmpty() ? 'disabled' : '' }}>                
+                    <!-- {{ $houseCrews->isEmpty() ? 'disabled' : '' }}>                 -->
                     
                     <option value="" disabled selected>-- Select Role --</option>
                     <option style="color:black;" value="Koorcab">Koorcab</option>
@@ -725,7 +726,7 @@
                             class="btn btn-primary bg-blue-600 hover:bg-blue-500
                             disabled:bg-gray-400 disabled:hover:bg-gray-400 
                             disabled:cursor-not-allowed disabled:opacity-70"
-                        {{ $houseCrews->isEmpty() ? 'disabled' : '' }}>
+                            <!-- {{ $houseCrews->isEmpty() ? 'disabled' : '' }}> -->
                         Add Crew
                     </button>
                 </div>
