@@ -5,8 +5,7 @@
     <div class="w-full max-w-6xl mx-auto">        
 
         @php
-            // $isClosed = in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
-            $isClosed = false;
+            $isClosed = in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
             $diterima = $team->status === 'Diterima'
         @endphp
 

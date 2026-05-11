@@ -40,14 +40,14 @@
                 </button>
             </div>            
         </header>
-        <!-- <div class="mb-4 p-2 bg-yellow-500/20 border-l-4 border-yellow-500 rounded-r-lg">
+        <div class="mb-4 p-2 bg-yellow-500/20 border-l-4 border-yellow-500 rounded-r-lg">
             <h3 class="text-xl text-center font-bold text-yellow-500">
                 INFORMASI: <br> Pendaftaran untuk seluruh cabang lomba telah resmi ditutup
             </h3>
             <h4 class='text-center mt-2'>
                  Perubahan dan penambahan data peserta tidak dapat dilakukan setelah pendaftaran ditutup
             </h4>
-        </div> -->
+        </div>
         {{-- TABLE --}}
         <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl overflow-hidden w-full">
             <div class="overflow-x-auto">
@@ -95,14 +95,13 @@
                                     </a>
                                 </div>
                             </td>
-                             @php
-                                // $isClosed = in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
-                                $isClosed = false;
+                            @php
+                                $isClosed = in_array($team->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'Voli Putra', 'Badminton Ganda Putra', 'Badminton Tunggal Putra', 'Badminton Ganda Campuran', 'E-sport', 'Poster', 'Lukis', 'Dance', 'Fotografi']);
                                 $diterima = $team->status === 'Diterima'
                             @endphp
                             <td class="px-6 py-4"
                                 <td class="px-6 py-4 text-center"
-                                    title="{{ (!$isClosed) ? 'Pendaftaran telah ditutup' : '' }}">                                    
+                                    title="{{ ($isClosed) ? 'Pendaftaran telah ditutup' : '' }}">                                    
                                 <div class="flex justify-center gap-2">
                                     <!-- Delete Button -->
                                     <form action="{{ route('teams.destroy', $team->id) }}" 
@@ -115,9 +114,9 @@
                                             type="submit"
                                             class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white transition text-sm border border-red-500/20
                                                    disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70"
-                                            {!! (!$isClosed ) ? "disabled" :  "" !!}>
-                                            <i data-feather="{{ (!$isClosed) ? 'slash' : 'trash-2' }}"
-                                            class="{{ (!$isClosed) ? 'text-black' : '' }}"></i>
+                                            {!! ($isClosed ) ? "disabled" :  "" !!}>
+                                            <i data-feather="{{ ($isClosed) ? 'slash' : 'trash-2' }}"
+                                            class="{{ ($isClosed) ? 'text-black' : '' }}"></i>
                                         </button>
 
                                     </form>
