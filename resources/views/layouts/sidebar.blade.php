@@ -66,6 +66,11 @@
                         <i data-feather="users" class="w-5 h-5"></i>
                         <span class="font-heading font-semibold tracking-wide">Team List</span>
                     </a>
+                    <a href="{{ route('schedule') }}" 
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
+                        <i data-feather="calendar" class="w-5 h-5"></i>
+                        <span class="font-heading font-semibold tracking-wide">Schedule</span>
+                    </a>
                 @elseif(Auth::check() && Auth::user()->role === 'Kontingen')
 
                     {{-- POV KONTINGEN --}}
@@ -83,13 +88,19 @@
                        class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
                         <i data-feather="user" class="w-5 h-5"></i>
                         <span class="font-heading font-semibold tracking-wide">All Crews</span>
-                    </a>                   
-                @endif
-                <a href="{{ route('schedule') }}" 
-                       class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
+                    </a>     
+                    <a href="{{ route('schedule') }}" 
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
                         <i data-feather="calendar" class="w-5 h-5"></i>
                         <span class="font-heading font-semibold tracking-wide">Schedule</span>
-                    </a>
+                    </a>              
+                @elseif(Auth::check() && Auth::user()->role === 'Cabang Lomba')
+                <a href="{{ route('scheduleCablom') }}" 
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
+                    <i data-feather="calendar" class="w-5 h-5"></i>
+                    <span class="font-heading font-semibold tracking-wide">Schedule</span>
+                </a>
+                @endif
             </nav>
 
             <div class="p-6 border-t border-white/10 shrink-0">

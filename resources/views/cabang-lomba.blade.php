@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('content')
 
@@ -6,16 +6,24 @@
     <div class="w-full max-w-6xl mx-auto">
 
         {{-- ================= HEADER ================= --}}
-        <section class="mb-10">
-            <header class="mb-6">
+        <section class="mb-2">
+            <header>
                 <h2 class="text-xl text-center sm:text-2xl font-heading font-bold text-white uppercase tracking-widest">
                     Schedule
                 </h2>
             </header>
         </section>
 
+        {{-- TEKS SELAMAT DATANG (Sudah benar) --}}
+        <div class="text-[#CBDCC1] font-['Georgia'] text-sm sm:text-base text-right mb-4">
+            Selamat Datang, 
+            <span class="text-white font-bold">
+                {{ Auth::user()->username ?? 'Admin' }}
+            </span>
+        </div>
+
         {{-- ================= FILTER BAR ================= --}}
-        <form method="GET" action="{{ route('schedule') }}" class="mb-6 flex flex-col sm:flex-row gap-3">
+        <form method="GET" action="{{ route('scheduleCablom') }}" class="mb-6 flex flex-col sm:flex-row gap-3">
 
             <input type="hidden" name="date" value="{{ request('date', now()->toDateString()) }}">
             
@@ -46,7 +54,6 @@
                     Clear
                 </a>
             @endif
-
         </form>
 
         @php
@@ -62,14 +69,15 @@
                 'Creatio'  => 'indus kreatif.png',
                 'Vitalis'  => 'kedok.png',
             ];
-        @endphp    
+        @endphp  
         
         {{-- DATE HEADER --}}
         <div class="mb-12">
+
             <h3 class="text-lg font-heading font-bold text-white text-center uppercase tracking-widest mb-6 mt-6">
                 <div class="flex items-center justify-between gap-3 w-full">                     
                     <div class="flex flex-col items-start flex-1 gap-3">
-                        <a href="{{ route('schedule', ['date' => \Carbon\Carbon::parse(request('date', now()))->subDay()->toDateString()]) }}" 
+                        <a href="{{ route('scheduleCablom', ['date' => \Carbon\Carbon::parse(request('date', now()))->subDay()->toDateString()]) }}" 
                         class="inline-flex items-center gap-2 px-3 py-2 text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition shadow-lg shadow-blue-600/20 border border-blue-400/20">
                             <i data-feather="arrow-left" class="w-5 h-5"></i> 
                         </a>
@@ -78,13 +86,14 @@
                         {{ convertToDate(request('date')) }}
                     </div>
                     <div class="flex flex-col items-end flex-1 gap-3">
-                        <a href="{{ route('schedule', ['date' => \Carbon\Carbon::parse(request('date', now()))->addDay()->toDateString()]) }}" 
+                        <a href="{{ route('scheduleCablom', ['date' => \Carbon\Carbon::parse(request('date', now()))->addDay()->toDateString()]) }}" 
                         class="inline-flex items-center gap-2 px-3 py-2 text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition shadow-lg shadow-blue-600/20 border border-blue-400/20">
                             <i data-feather="arrow-right" class="w-5 h-5"></i>
                         </a>
                     </div>
                 </div>
             </h3>
+
             @forelse($groupedSchedules as $competitionName => $matches)
                 <div class="mb-8 w-full">
                     <table class="w-full table-fixed text-base text-white bg-gray-900 shadow-xl rounded-2xl overflow-hidden border-separate border-spacing-0">
@@ -116,7 +125,7 @@
                                             ? $houseLogos[$awayHouse] 
                                             : 'default.png';
                             @endphp
-                            <tr onclick="window.open('{{ route('match.details', $match->id) }}', '_blank')" class="cursor-pointer hover:bg-white/500">
+                            <tr onclick="window.open('{{ route('cabanglomba.details', $match->id) }}', '_blank')" class="cursor-pointer hover:bg-white/500">
                                 <td class="px-2 py-4 w-full border-t border-white/50 my-3 hover:bg-white/20" >
                                     {{-- WRAPPER UTAMA: Berbaris ke bawah (Kolom) --}}
                                     <div class="flex flex-col items-center gap-3 w-full">
@@ -172,10 +181,7 @@
                                             <div class="flex items-center justify-center w-full">
                                                 <span class="text-[5px] text-white text-center leading-relaxed tracking-wide">
                                                     @if(!$finished)
-                                                        {{ $match->venue }} 
-                                                        @if (date('H.i', strtotime($match->time)) !== "00.00")                                                       
-                                                            ({{ date('H.i', strtotime($match->time)) }} WIB)
-                                                        @endif
+                                                        {{ $match->venue }} ({{ date('H.i', strtotime($match->time)) }} WIB)
                                                     @elseif ($finished && $match->type === 'Perlombaan')
                                                         FINISHED
                                                     @endif
@@ -193,14 +199,13 @@
                 <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-12 text-center">
                     <p class="text-white text-lg mb-4 mt-4">Tidak ada jadwal yang ditemukan.</p>
                 </div>
-            @endforelse                 
-        </div>      
-</section>    
+            @endforelse            
 
-{{-- 3. FOOTER (Pindahkan ke luar div konten) --}}
-<div class="w-full mt-auto">
-    @include('layouts.footer')
-</div>   
+        </div>
+    </div>      
+</section> 
+
+        
 
 <script>
     const options = {

@@ -29,6 +29,10 @@ class LoginController extends Controller
             return redirect()->route('teamlist');
         }
 
+        if ($user->role === 'Cabang Lomba') {
+            return redirect()->route('scheduleCablom');
+        }
+
         // fallback
         return redirect('/');
     }

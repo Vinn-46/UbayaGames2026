@@ -135,7 +135,69 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
 
+            [
+                'username' => 'pauline',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'nadine',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'dea',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'claresta',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'kezia',
+                'password' => Hash::make('sekret@!1234'),
+                'role' => 'Sekretariat',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
             //cablom
+            [
+                'username' => 'yosi',
+                'password' => Hash::make('cablom@!1234'),
+                'role' => 'Cabang Lomba',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'username' => 'medad',
+                'password' => Hash::make('cablom@!1234'),
+                'role' => 'Cabang Lomba',
+                'house_id' => NULL,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
             //admin
             [

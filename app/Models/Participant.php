@@ -39,4 +39,9 @@ class Participant extends Model
             'team_id'             // related key di pivot
         )->withPivot('back_number', 'status', 'revision', 'role');
     }
+
+    public function stats()
+    {
+        return $this->hasMany(StatisticParticipant::class);
+    }
 }

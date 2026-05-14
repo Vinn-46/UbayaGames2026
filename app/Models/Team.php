@@ -31,6 +31,7 @@ class Team extends Model
     {
         return $this->hasMany(CrewTeam::class);
     }
+
     public function participants()
     {
         return $this->belongsToMany(
@@ -54,5 +55,10 @@ class Team extends Model
         return $this->belongsToMany(Schedule::class, 'schedule_team', 'team_id', 'schedule_id')
                     ->withPivot('id', 'home_away', 'total_score')
                     ->withTimestamps();
+    }
+
+    public function summary()
+    {
+        return $this->hasMany(StatisticTeam::class);
     }
 }

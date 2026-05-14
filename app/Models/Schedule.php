@@ -22,4 +22,9 @@ class Schedule extends Model
                     ->withPivot('id', 'home_away', 'total_score') // Mengambil kolom tambahan di tabel pivot
                     ->withTimestamps(); // Tambahkan ini jika migration pivot Anda pakai $table->timestamps()
     }
+
+    public function rounds()
+    {
+        return $this->hasMany(Rounds::class);
+    }
 }

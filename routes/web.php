@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\StatisticController;
 
 // untuk aboutus (jadi tampilan utama saat web dibuka)
 Route::get('/', function () {
@@ -16,6 +17,9 @@ Route::get('/', function () {
 
 // untuk schedule
 Route::get('/schedule', [ScheduleController::class, 'show'])->name('schedule');
+
+//match details
+Route::get('/schedule/{schedule}', [ScheduleController::class, 'matchDetails'])->name('match.details');
 
 // untuk house
 Route::get('/house', function () {
@@ -157,3 +161,35 @@ Route::get('/allcrews',
 Route::delete('/allcrews/{id}', 
     [\App\Http\Controllers\CrewController::class, 'destroy'])
     ->name('crew.destroy');
+
+//cablom
+// untuk schedule
+Route::get('/cabanglomba', 
+    [ScheduleController::class, 'showCablom'])
+    ->name('scheduleCablom');
+
+//match details
+Route::get('/cabanglomba/{schedule}', 
+    [ScheduleController::class, 'showCablomDetails'])
+    ->name('cabanglomba.details');
+
+//change schedule status
+Route::put('/cabanglomba/{schedule}/status',
+    [ScheduleController::class,'updateStatus'])
+    ->name('cabanglomba.updateStatus');
+
+//update match scores
+Route::put('/cabanglomba/{schedule}/updateScore',
+    [ScheduleController::class,'updateScore'])
+    ->name('cabanglomba.updateScore');
+
+//update match summary
+Route::put('/cabanglomba/{schedule}/updateSummary',
+    [StatisticController::class,'updateSummary'])
+    ->name('cabanglomba.updateSummary');
+
+//update match stats
+Route::put('/cabanglomba/{schedule}/updateStats',
+    [StatisticController::class,'updateStats'])
+    ->name('cabanglomba.updateStats');
+    

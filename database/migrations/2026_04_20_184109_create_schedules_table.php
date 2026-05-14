@@ -25,7 +25,7 @@ return new class extends Migration
                 'Semifinal', 
                 'Third Place Playoff', 
                 'Final'
-            ]);
+            ])->nullable();
 
             $table->string('name', 45)->nullable(); // VARCHAR(45) NULL
             $table->string('venue', 45); // VARCHAR(45) NOT NULL
