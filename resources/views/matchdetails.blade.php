@@ -268,8 +268,8 @@
                     <p class="text-white text-base text-yellow-500 font-bold tracking-wide">Home MVP:</p>
                     <div class="flex items-center gap-3">
                         <img 
-                            src="{{ file_exists('assets/foto_peserta/'.$homeMVP->nrp.'.jpg')
-                                ? asset('assets/foto_peserta/'.$homeMVP->nrp.'.jpg')
+                            src="{{ file_exists('assets/foto_peserta/'.$homeMVP->nrp.'.JPG')
+                                ? asset('assets/foto_peserta/'.$homeMVP->nrp.'.JPG')
                                 : asset('assets/icons/default.jpg') }}"
                             class="w-10 h-10 rounded-full object-cover shrink-0">
                         <span class="text-white text-base tracking-wide">
@@ -281,8 +281,8 @@
                     <p class="text-white text-base text-yellow-500 font-bold tracking-wide">Away MVP:</p> 
                     <div class="flex items-center gap-3">
                         <img 
-                            src="{{ file_exists('assets/foto_peserta/'.$awayMVP->nrp.'.jpg')
-                                ? asset('assets/foto_peserta/'.$awayMVP->nrp.'.jpg')
+                            src="{{ file_exists('assets/foto_peserta/'.$awayMVP->nrp.'.JPG')
+                                ? asset('assets/foto_peserta/'.$awayMVP->nrp.'.JPG')
                                 : asset('assets/icons/default.jpg') }}"
                             class="w-10 h-10 rounded-full object-cover shrink-0">   
                         <span class="text-white text-base tracking-wide">
@@ -384,8 +384,8 @@
                                     @endif
                                     <td class="w-[140px] px-4 py-4 text-center">
                                         <div class="flex items-center gap-3 whitespace-nowrap">
-                                            <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.jpg')
-                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.jpg')
+                                            <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.JPG')
                                                         : asset('assets/icons/default.jpg') }}"
                                                 class="w-10 h-10 rounded-full object-cover shrink-0">
                                             <span class="whitespace-nowrap">{{ $player->name }}</span>
@@ -435,8 +435,8 @@
                     @forelse($homeTeamCrews as $crew)
                     <div class="flex items-center gap-2 mb-4 px-6">
                         <img                                                         
-                            src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.jpg'))
-                                    ? asset('assets/foto_peserta/'.$crew->nrp.'.jpg')
+                            src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.JPG'))
+                                    ? asset('assets/foto_peserta/'.$crew->nrp.'.JPG')
                                     : asset('assets/icons/default.jpg') }}"                                
                             style="width:40px; height:40px;"
                             class="rounded-full object-cover shrink-0">
@@ -478,8 +478,8 @@
                                     @endif
                                     <td class="w-[140px] px-4 py-4 text-center">
                                         <div class="flex items-center gap-3 whitespace-nowrap">
-                                            <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.jpg')
-                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.jpg')
+                                            <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.JPG')
                                                         : asset('assets/icons/default.jpg') }}"
                                                 class="w-10 h-10 rounded-full object-cover shrink-0">
                                             <span class="whitespace-nowrap">{{ $player->name }}</span>
@@ -528,8 +528,8 @@
                     @forelse($awayTeamCrews as $crew)
                     <div class="flex items-center gap-2 mb-4 px-6">
                         <img 
-                            src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.jpg'))
-                                    ? asset('assets/foto_peserta/'.$crew->nrp.'.jpg')
+                            src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.JPG'))
+                                    ? asset('assets/foto_peserta/'.$crew->nrp.'.JPG')
                                     : asset('assets/icons/default.jpg') }}"                              
                             style="width:40px; height:40px;"
                             class="rounded-full object-cover shrink-0">
@@ -585,8 +585,8 @@
                                 <tr class="hover:bg-white/5 transition">
                                     <td class="px-4 py-4"> 
                                         <div class="flex items-center justify-center gap-3">
-                                            <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.jpg')
-                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.jpg')
+                                            <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.JPG')
                                                         : asset('assets/icons/default.jpg') }}"
                                                 class="w-10 h-10 rounded-full object-cover shrink-0">
                                             <span class="leading-none">
@@ -614,8 +614,8 @@
                     @forelse($homeTeamCrews as $crew)
                     <div class="flex items-center gap-2 mb-4 px-6">
                         <img 
-                            src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.jpg'))
-                                    ? asset('assets/foto_peserta/'.$crew->nrp.'.jpg')
+                            src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.JPG'))
+                                    ? asset('assets/foto_peserta/'.$crew->nrp.'.JPG')
                                     : asset('assets/icons/default.jpg') }}"                              
                             style="width:40px; height:40px;"
                             class="rounded-full object-cover shrink-0">
@@ -648,8 +648,8 @@
                                 <tr class="hover:bg-white/5 transition">
                                     <td class="px-4 py-4"> 
                                         <div class="flex items-center justify-center gap-3">
-                                            <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.jpg')
-                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.jpg')
+                                            <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.JPG')
                                                         : asset('assets/icons/default.jpg') }}"
                                                 class="w-10 h-10 rounded-full object-cover shrink-0">
                                             <span class="leading-none">
@@ -677,8 +677,8 @@
                     @forelse($awayTeamCrews as $crew)
                     <div class="flex items-center gap-2 mb-4 px-6">
                         <img 
-                            src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.jpg'))
-                                    ? asset('assets/foto_peserta/'.$crew->nrp.'.jpg')
+                            src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.JPG'))
+                                    ? asset('assets/foto_peserta/'.$crew->nrp.'.JPG')
                                     : asset('assets/icons/default.jpg') }}"                              
                             style="width:40px; height:40px;"
                             class="rounded-full object-cover shrink-0">
@@ -792,8 +792,8 @@
                                             {{-- PLAYERS --}}
                                             @foreach($teamPlayers as $player)
                                                 <div class="flex items-center justify-center gap-2 mt-4">
-                                                    <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.jpg')
-                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.jpg')
+                                                    <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.JPG')
                                                         : asset('assets/icons/default.jpg') }}"
                                                         class="w-10 h-10 rounded-full object-cover shrink-0">
                                                     <span class="leading-none text-base text-white">
@@ -804,8 +804,8 @@
                                             {{-- CREWS --}}
                                             @foreach($teamCrews as $crew)
                                                 <div class="flex items-center justify-center gap-2 mt-4">
-                                                    <img src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.jpg'))
-                                                                ? asset('assets/foto_peserta/'.$crew->nrp.'.jpg')
+                                                    <img src="{{ (isset($crew->nrp) && strlen($crew->nrp) == 9 && file_exists('assets/foto_peserta/'.$crew->nrp.'.JPG'))
+                                                                ? asset('assets/foto_peserta/'.$crew->nrp.'.JPG')
                                                                 : asset('assets/icons/default.jpg') }}"                              
                                                         style="width:40px; height:40px;"
                                                         class="rounded-full object-cover shrink-0">

@@ -454,8 +454,10 @@
                                             @endif
                                             <td class="w-[140px] px-4 py-4 text-center">
                                                 <div class="flex items-center gap-3 whitespace-nowrap">
-                                                    <img src="https://my.ubaya.ac.id/img/mhs/{{ $player->nrp }}_l.jpg" 
-                                                        class="w-10 h-10 rounded-full object-cover shrink-0">
+                                                    <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        : asset('assets/icons/default.jpg') }}"
+                                                class="w-10 h-10 rounded-full object-cover shrink-0">
                                                     <span class="whitespace-nowrap">{{ $player->name }}</span>
                                                 </div>
                                             </td>                                        
@@ -543,8 +545,10 @@
                                             @endif
                                             <td class="w-[140px] px-4 py-4 text-center">
                                                 <div class="flex items-center gap-3 whitespace-nowrap">
-                                                    <img src="https://my.ubaya.ac.id/img/mhs/{{ $player->nrp }}_l.jpg" 
-                                                        class="w-10 h-10 rounded-full object-cover shrink-0">
+                                                    <img src="{{ file_exists('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        ? asset('assets/foto_peserta/'.$player->nrp.'.JPG')
+                                                        : asset('assets/icons/default.jpg') }}"
+                                                class="w-10 h-10 rounded-full object-cover shrink-0">
                                                     <span class="whitespace-nowrap">{{ $player->name }}</span>
                                                 </div>
                                             </td>
