@@ -2,6 +2,7 @@
 /node_modules
 /public/hot
 /public/storage
+assets/foto_peserta
 /storage/*.key
 /storage/pail
 /vendor

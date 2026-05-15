@@ -172,7 +172,7 @@
                                             <div class="flex items-center justify-center w-full">
                                                 <span class="text-[5px] text-white text-center leading-relaxed tracking-wide">
                                                     @if(!$finished)
-                                                        {{ $match->venue }} 
+                                                        {{ $match->venue }} <br>
                                                         @if (date('H.i', strtotime($match->time)) !== "00.00")                                                       
                                                             ({{ date('H.i', strtotime($match->time)) }} WIB)
                                                         @endif
