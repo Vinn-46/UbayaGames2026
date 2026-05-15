@@ -245,7 +245,7 @@
                 </div>
             </form>        
         </div>
-        @if (in_array($schedule->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'E-sport']))
+        @if (in_array($schedule->competition, ['Futsal Putra', 'E-sport']))
             <div class=" border-t border-white/10 mb-6 mt-4"></div>
             <h2 class="text-xl text-center font-heading font-bold text-white uppercase tracking-widest mb-6">
                 Summary            
@@ -405,14 +405,10 @@
                                     @php
                                         if ($schedule->competition == 'Basket Putra' || $schedule->competition == 'Basket Putri') {
                                             $statsName = [
-                                                'minute_play' => 'Min',
-                                                'point'       => 'Pts',
-                                                'assist'      => 'Ast',
-                                                'rebound'     => 'Reb',
-                                                'steal'       => 'Stl',
-                                                'block'       => 'Blk',
-                                                'turnover'    => 'TO',
-                                                'foul'        => 'Foul',
+                                                'point'       => 'Points',
+                                                'assist'      => 'Assist',
+                                                'rebound'     => 'Rebound',
+                                                'steal'       => 'Steal',
                                             ];
                                         } else if ($schedule->competition == 'Futsal Putra') {
                                             $statsName = [

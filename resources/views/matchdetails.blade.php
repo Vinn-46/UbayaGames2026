@@ -170,7 +170,7 @@
         {{-- DIVIDER --}}
         <div class=" border-t border-white/10 mb-6"></div>
         
-        @if(in_array($schedule->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'E-sport']))
+        @if(in_array($schedule->competition, ['Futsal Putra', 'E-sport']))
         <div class="flex w-full gap-3  mb-6">
             <button id="summaryButton" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl
                     bg-blue-600 hover:bg-blue-500 border border-blue-400/20
@@ -189,7 +189,7 @@
                 </span>
             </button>
         </div>      
-        <div id="summary" class="{{ in_array($schedule->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'E-sport']) ? 'flex' : 'hidden' }} items-center justify-center w-full gap-3">
+        <div id="summary" class="{{ in_array($schedule->competition, ['Futsal Putra', 'E-sport']) ? 'flex' : 'hidden' }} items-center justify-center w-full gap-3">
             @if ($schedule->competition !== 'E-sport')
             <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl overflow-hidden w-full">
                 <div class="w-full overflow-hidden rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md shadow-xl">
@@ -302,13 +302,13 @@
             </div>          
             @endif
         </div>
-        @elseif($schedule->competition === 'Voli Putra')
+        @elseif(in_array($schedule->competition, ['Basket Putra', 'Basket Putri', 'Voli Putra']))
         <h2 class="text-xl text-center font-heading font-bold text-white uppercase tracking-widest">
             Stats
         </h2>
         @endif
         @if (in_array($schedule->competition, ['Basket Putra', 'Basket Putri', 'Futsal Putra', 'E-sport', 'Voli Putra']))
-        <div id="stats" class="{{ $schedule->competition === 'Voli Putra' ? 'flex flex-col' : 'hidden' }}  items-center justify-center w-full">
+        <div id="stats" class="{{ in_array($schedule->competition, ['Basket Putra', 'Basket Putri', 'Voli Putra']) ? 'flex flex-col' : 'hidden' }}  items-center justify-center w-full">
             <div class=" border-t border-white/10 mb-6"></div>
             <div class="flex w-full gap-3  mb-6">
                 <button id="homeTeamButton" class="flex-1 inline-flex items-center justify-center px-5 py-3 rounded-xl
@@ -336,14 +336,10 @@
                             @php
                             if ($schedule->competition == 'Basket Putra' || $schedule->competition == 'Basket Putri') {
                                 $statsName = [
-                                    'minute_play' => 'Min',
-                                    'point'       => 'Pts',
-                                    'assist'      => 'Ast',
-                                    'rebound'     => 'Reb',
-                                    'steal'       => 'Stl',
-                                    'block'       => 'Blk',
-                                    'turnover'    => 'TO',
-                                    'foul'        => 'Foul',
+                                    'point'       => 'Points',
+                                    'assist'      => 'Assist',
+                                    'rebound'     => 'Rebound',
+                                    'steal'       => 'Steal',
                                 ];
                             } else if ($schedule->competition == 'Futsal Putra') {
                                 $statsName = [
