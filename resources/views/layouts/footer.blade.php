@@ -53,9 +53,18 @@
                 {{-- KOLOM 3: SPONSORED BY --}}
                 <div class="md:pl-8 pb-12 flex flex-col items-center md:items-start">
                     <h3 class="mb-6 font-semibold text-yellow-500 tracking-widest uppercase text-xl">Sponsored By</h3>
-                    <div class="flex flex-col gap-4">
+                    <div class="flex flex-wrap justify-center md:justify-start gap-4">
                         <div class="h-12 w-32 sm:w-36 px-2 bg-white rounded-md flex items-center justify-center">
                             <img src="{{ asset('assets/sponsor/surken.png') }}" class="h-full w-full object-contain" alt="Surken Logo">
+                        </div>
+                        <div class="h-12 w-32 sm:w-36 px-2 bg-white rounded-md flex items-center justify-center">
+                            <img src="{{ asset('assets/sponsor/implora.png') }}" class="h-full w-full object-contain" alt="Implora Logo">
+                        </div>
+                        <div class="h-12 w-32 sm:w-36 px-2 bg-white rounded-md flex items-center justify-center">
+                            <img src="{{ asset('assets/sponsor/deorex.png') }}" class="h-full w-full object-contain" alt="Deorex Logo">
+                        </div>
+                        <div class="h-12 sm:h-12 flex items-center justify-center">
+                            <img src="{{ asset('assets/sponsor/mcd.png') }}" class="h-full w-auto object-contain rounded-md" alt="McDonald's Logo">
                         </div>
                     </div>
                 </div>
