@@ -51,7 +51,7 @@
         <aside id="sidebar" class="fixed z-50 w-64 h-full bg-black/80 backdrop-blur-2xl border-r border-white/10 flex flex-col transition-transform transform -translate-x-full md:translate-x-0 duration-300">
             <div class="p-6 flex items-center justify-center border-b border-white/10 shrink-0 relative">
                 <a href="/">
-                    <img src="{{ asset('assets/homepage.png') }}" alt="Logo UG" class="w-32 md:w-40 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                    <img src="{{ asset('assets/homepage1.png') }}" alt="Logo UG" class="w-32 md:w-40 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
                 </a>
                 <button id="closeSidebar" class="md:hidden absolute top-4 right-4 text-white/50 hover:text-white transition p-2">
                     <i data-feather="x"></i>
@@ -123,7 +123,7 @@
                 </button>
 
                 <div class="flex items-center gap-3">
-                    <img src="{{ asset('assets/Logo_UG.png') }}" alt="UG" class="w-10 h-10 object-contain">
+                    <img src="{{ asset('assets/Logo_UG1.png') }}" alt="UG" class="w-10 h-10 object-contain">
                 </div>
 
             </header>

@@ -84,7 +84,7 @@
         {{-- LOGO UTAMA --}}
         <section class="w-full px-4 sm:px-6 mb-36 shrink-0 z-10">
             <div class="w-full max-w-6xl mx-auto flex flex-col items-center text-center">
-                <img src="{{ asset('assets/homepage.png') }}" class="w-64 sm:w-80 md:w-96 mb-6">
+                <img src="{{ asset('assets/homepage1.png') }}" class="w-64 sm:w-80 md:w-96 mb-6">
             </div>
         </section>
 

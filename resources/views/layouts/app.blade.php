@@ -79,7 +79,7 @@
 
             {{-- LOGO ABSOLUTE CENTER --}}
             <a href="/" class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-                <img src="{{ asset('assets/Logo_UG.png') }}" class="h-10 sm:h-12 object-contain">
+                <img src="{{ asset('assets/Logo_UG1.png') }}" class="h-10 sm:h-12 object-contain">
             </a>
         </div>
     </nav>
