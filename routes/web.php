@@ -119,77 +119,100 @@ Route::post('/teams/revision', [TeamController::class, 'updateRevision'])
 
 Route::put('/participants/{participant}/teams/{team}/status', 
     [ParticipantController::class, 'updateStatus'])
+    ->middleware('auth')
     ->name('participants.updateStatus');
 
 Route::post('/participants/{participant}/teams/{team}/status',
     [ParticipantController::class, 'updateRevision'])
+    ->middleware('auth')
     ->name('participants.updateRevision');
 
 Route::put('/crew/{crew}/teams/{team}/status',
     [CrewController::class,'updateStatus'])
+    ->middleware('auth')
     ->name('crew.updateStatus');
 
 Route::post('/crew/{crew}/teams/{team}/status',
     [CrewController::class,'updateRevision'])
+    ->middleware('auth')
     ->name('crew.updateRevision');
 
 Route::post('/teams/{team}/crew/add', 
     [CrewController::class, 'addCrew'])
+    ->middleware('auth')
     ->name('crew.addCrew');
 
 Route::post('/crew/attach/{team}', 
     [CrewController::class, 'attachCrew'])
+    ->middleware('auth')
     ->name('crew.attachCrew');
 
 Route::put('/teams/{team}/crew/{crew}', 
     [CrewController::class, 'updateCrew'])
+    ->middleware('auth')
     ->name('crew.updateCrew');
 
 Route::put('/crew/{crew}', 
     [CrewController::class, 'updateGeneralCrew'])
+    ->middleware('auth')
     ->name('crew.updateGeneralCrew');    
 
 //delete player dari all player
 Route::delete('/allplayer/{id}', 
     [\App\Http\Controllers\ParticipantController::class, 'destroy'])
+    ->middleware('auth')
     ->name('participant.destroy');
 
 Route::get('/allcrews', 
     [\App\Http\Controllers\CrewController::class, 'allCrews'])
+    ->middleware('auth')
     ->name('allcrews');
 
 Route::delete('/allcrews/{id}', 
     [\App\Http\Controllers\CrewController::class, 'destroy'])
+    ->middleware('auth')
     ->name('crew.destroy');
 
 //cablom
 // untuk schedule
 Route::get('/cabanglomba', 
     [ScheduleController::class, 'showCablom'])
+    ->middleware('auth')
     ->name('scheduleCablom');
 
 //match details
 Route::get('/cabanglomba/{schedule}', 
     [ScheduleController::class, 'showCablomDetails'])
+    ->middleware('auth')
     ->name('cabanglomba.details');
 
 //change schedule status
 Route::put('/cabanglomba/{schedule}/status',
     [ScheduleController::class,'updateStatus'])
+    ->middleware('auth')
     ->name('cabanglomba.updateStatus');
 
 //update match scores
 Route::put('/cabanglomba/{schedule}/updateScore',
     [ScheduleController::class,'updateScore'])
+    ->middleware('auth')
     ->name('cabanglomba.updateScore');
 
 //update match summary
 Route::put('/cabanglomba/{schedule}/updateSummary',
     [StatisticController::class,'updateSummary'])
+    ->middleware('auth')
     ->name('cabanglomba.updateSummary');
 
 //update match stats
 Route::put('/cabanglomba/{schedule}/updateStats',
     [StatisticController::class,'updateStats'])
+    ->middleware('auth')
     ->name('cabanglomba.updateStats');
     
+// untuk recap
+Route::get('/recap', 
+    [StatisticController::class, 'showRecap'])
+    ->middleware('auth')
+    ->name('cabanglomba.showRecap');
+

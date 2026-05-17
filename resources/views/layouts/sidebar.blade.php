@@ -100,6 +100,11 @@
                     <i data-feather="calendar" class="w-5 h-5"></i>
                     <span class="font-heading font-semibold tracking-wide">Schedule</span>
                 </a>
+                <a href="{{ route('cabanglomba.showRecap') }}" target="_blank"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition text-[#CBDCC1] hover:bg-white/10 hover:text-white border border-transparent">
+                    <i data-feather="file-text" class="w-5 h-5"></i>
+                    <span class="font-heading font-semibold tracking-wide">Recap</span>                    
+                </a>
                 @endif
             </nav>
 
