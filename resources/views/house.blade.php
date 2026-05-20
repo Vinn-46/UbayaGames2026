@@ -61,7 +61,7 @@
                     'Melambangkan kehidupan, pertumbuhan, serta kemampuan beradaptasi dengan lingkungan yang terus berubah. House of Vivens menggabungkan semangat eksplorasi ilmu kehidupan dengan pendekatan inovatif terhadap keberlanjutan. Dalam kompetisi, mereka menunjukkan fleksibilitas strategi, kemampuan berkembang dari pengalaman, serta sinergi yang kuat dengan dinamika permainan. Adaptabilitas dan perkembangan berkelanjutan menjadi ciri khas mereka.',
             ],
             [
-                'name' => 'House of Creation',
+                'name' => 'House of Creatio',
                 'facultyName' => 'Fakultas Industri Kreatif',
                 'image' => 'indus kreatif.png',
                 'line_id' => 'shootingstars.',
